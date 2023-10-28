@@ -106,6 +106,20 @@ story = StoryBuilder(
 
 
 class Narrative(Session):
+    # TODO for options=list(story.context.options(ensemble).keys())) eg:
+    """
+    <label for="ice-cream-choice">Choose a flavor:</label>
+    <input list="ice-cream-flavors" id="ice-cream-choice" name="ice-cream-choice" />
+
+    <datalist id="ice-cream-flavors">
+      <option value="Chocolate"></option>
+      <option value="Coconut"></option>
+      <option value="Mint"></option>
+      <option value="Strawberry"></option>
+      <option value="Vanilla"></option>
+    </datalist>
+    """
+
     def compose(
         self, request, page: Page, story: StoryBuilder = None, turn: StoryBuilder.Turn = None
     ) -> Page:
