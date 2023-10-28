@@ -1,3 +1,21 @@
+#!/usr/bin/env python
+# encoding: utf8
+
+# Copyright 2023 D E Haynes
+
+# This file is part of rotu.
+# 
+# Rotu is free software: you can redistribute it and/or modify it under the terms of the
+# GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License,
+# or (at your option) any later version.
+# 
+# Rotu is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU Affero General Public License for more details.
+# 
+# You should have received a copy of the GNU Affero General Public License along with Rotu.
+# If not, see <https://www.gnu.org/licenses/>.
+
 import balladeer
 from balladeer import quick_start
 from balladeer import Dialogue
@@ -9,7 +27,7 @@ from balladeer.utils.themes import theme_page
 __doc__ = """
 Usage:
 
-    python -m balladeer.examples.ex_12_styling_themes.main > themes.html
+    python -m rotu.main > themes.html
 
 """
 
@@ -83,6 +101,10 @@ class Narrative(Session):
         return page
 
 
-if __name__ == "__main__":
+def run():
     print(theme_page().html)
     quick_start(balladeer.examples.ex_12_styling_themes, builder=story)
+
+
+if __name__ == "__main__":
+    run()
