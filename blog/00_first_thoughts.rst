@@ -12,3 +12,10 @@ Copy an Example
 ~~~~~~~~~~~~~~~
 
 Example 12 is about styles and procedural dialogue.
+There's a slight possibility of including images, but not a priority right now.
+
+
+* Check PyPI for package name availability.
+* Use hatchling  https://pypi.org/project/hatchling/ as build backend.
+
+* Walk the dog.
