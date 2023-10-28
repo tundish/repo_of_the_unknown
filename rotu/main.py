@@ -22,7 +22,12 @@ from balladeer import Dialogue
 from balladeer import Page
 from balladeer import Session
 from balladeer import StoryBuilder
+from balladeer.lite.app import About
 from balladeer.utils.themes import theme_page
+
+from starlette.responses import PlainTextResponse
+
+import rotu
 
 __doc__ = """
 Usage:
@@ -30,6 +35,20 @@ Usage:
     python -m rotu.main > themes.html
 
 """
+
+
+class AboutThisProject(About):
+    async def get(self, request):
+        return PlainTextResponse(
+            "\n".join(
+                (
+                    "©2023 D E Haynes",
+                    f"Balladeer version {balladeer.__version__}",
+                    f"Rotu version {rotu.__version__}",
+                )
+            )
+        )
+
 
 Page.themes["grey"] = {
     "ink": {
@@ -103,7 +122,7 @@ class Narrative(Session):
 
 def run():
     print(theme_page().html)
-    quick_start(balladeer.examples.ex_12_styling_themes, builder=story)
+    quick_start(rotu, builder=story)
 
 
 if __name__ == "__main__":

@@ -19,11 +19,11 @@ classifiers = [
     "Programming Language :: Python"
 ]
 dependencies = [
-    "balladeer >= 0.39.0"
+    "balladeer >= 0.40.0"
 ]
 
 [project.scripts]
-cli-name = "rotu.main:run"
+rotu-server = "rotu.main:run"
 
 [build-system]
 requires = ["hatchling"]
