@@ -124,6 +124,7 @@ class Narrative(Session):
         self, request, page: Page, story: StoryBuilder = None, turn: StoryBuilder.Turn = None
     ) -> Page:
         page = super().compose(request, page, story, turn)
+
         page.paste(
             '<div class="dressing">',
             *(f'<span class="rockery"></span>' for n in range(8)),
