@@ -22,15 +22,15 @@ dependencies = [
     "balladeer >= 0.39.0"
 ]
 
+[project.scripts]
+cli-name = "rotu.main:run"
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
-
-[project.scripts]
-cli-name = "rotu.main:run
 
 [tool.hatch.build]
 include = [
 ]
 exclude = [
-]"
+]

@@ -1,6 +1,9 @@
-include LICENSE
+include COPYING
 recursive-include . *.rst
 recursive-include . *.toml
-recursive-include balladeer *.cfg *.css *.html *.jpg *.png *.rst *.toml *.txt
-recursive-include balladeer *.js *.mjs
-recursive-include balladeer *.mp3 *.woff *.woff2
+recursive-include . *.cfg *.toml
+recursive-include . *.md *.rst *.txt
+recursive-include . *.css *.html
+recursive-include . *.jpg *.png *.mp3 *.wav *.webm
+recursive-include . *.js *.mjs
+recursive-include . *.woff *.woff2
