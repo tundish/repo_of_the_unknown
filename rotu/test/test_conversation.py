@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU Affero General Public License along with Rotu.
 # If not, see <https://www.gnu.org/licenses/>.
 
+from collections import Counter
 import textwrap
 import tomllib
 import unittest
@@ -34,8 +35,19 @@ from speechmark import SpeechMark
 class Conversation(Drama):
     # TODO: Make prompt a property which summarises option numbers
 
+    def __init__(self, *args, world=None, config=None, **kwargs):
+        super().__init__(*args, config=config, world=world, **kwargs)
+        self.state = 0
+        self.witness = Counter()
+
+    def on_testing(self, entity: Entity, *args: tuple[Entity], **kwargs):
+        self.state += 1
+        self.witness["testing"] += 1
+        print("Dunk!!!")
+
     def on_elaborating(self, entity: Entity, *args: tuple[Entity], **kwargs):
-        print("Dong!!!")
+        self.state += 1
+        self.witness["elaborating"] += 1
 
     def do_ask(self, this, text, director):
         """
@@ -75,7 +87,7 @@ class ConversationTests(unittest.TestCase):
     [[_]]
     if.CONVERSATION.state = 0
     s='''
-    <ALAN> Let's practise our conversation skills.
+    <ALAN.testing> Let's practise our conversation skills.
     '''
 
     [[_]]
@@ -130,14 +142,15 @@ class ConversationTests(unittest.TestCase):
         self.story.drama = [Conversation(world=world)]
         self.assertIsInstance(self.story.context, Conversation)
 
-    def test_terminal(self):
-        n = 0
-        while n < 4:
-            n += 1
+    def test_directives(self):
+        for n in range(4):
             with self.story.turn() as turn:
-                print(turn.blocks)
+                print(f"n: {n}")
+                print(*turn.blocks, sep="\n")
                 print(turn.roles)
-                print(turn.notes)
+                print(*turn.notes.items(), sep="\n")
                 print()
 
-            self.story.context.state = n
+        self.assertEqual(2, self.story.context.state)
+        self.assertEqual(1, self.story.context.witness["testing"])
+        self.assertEqual(1, self.story.context.witness["elaborating"])
