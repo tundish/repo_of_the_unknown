@@ -34,6 +34,9 @@ from speechmark import SpeechMark
 class Conversation(Drama):
     # TODO: Make prompt a property which summarises option numbers
 
+    def on_elaborating(self, entity: Entity, *args: tuple[Entity], **kwargs):
+        print("Dong!!!")
+
     def do_ask(self, this, text, director):
         """
         Ask {p.entity} about {p.topic}
@@ -66,12 +69,17 @@ class ConversationTests(unittest.TestCase):
     [BETH]
     type = "Gossiper"
 
+    [CONVERSATION]
+    type = "Conversation"
+
     [[_]]
+    if.CONVERSATION.state = 0
     s='''
     <ALAN> Let's practise our conversation skills.
     '''
 
     [[_]]
+    if.CONVERSATION.state = 0
     s='''
     <ALAN.elaborating> Maybe now's a good time to ask {BETH.name} a question.
         1. Ask about the weather
@@ -107,6 +115,7 @@ class ConversationTests(unittest.TestCase):
     '''
 
     [[_]]
+    if.CONVERSATION.state = 1
     s='''
     <ALAN> OK. Conversation over.
     '''
@@ -122,7 +131,13 @@ class ConversationTests(unittest.TestCase):
         self.assertIsInstance(self.story.context, Conversation)
 
     def test_terminal(self):
-        with self.story.turn() as turn:
-            print(turn)
+        n = 0
+        while n < 4:
+            n += 1
+            with self.story.turn() as turn:
+                print(turn.blocks)
+                print(turn.roles)
+                print(turn.notes)
+                print()
 
-        self.fail(self.story)
+            self.story.context.state = n
