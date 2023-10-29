@@ -23,6 +23,8 @@ import unittest
 from balladeer import Dialogue
 from balladeer import Drama
 from balladeer import Entity
+from balladeer import Grouping
+from balladeer import Loader
 from balladeer import StoryBuilder
 from balladeer import WorldBuilder
 
@@ -57,7 +59,7 @@ class ConversationTests(unittest.TestCase):
                 Entity(name="Beth", type="Gossiper"),
             ]
 
-    scene_toml = textwrap.dedent("""
+    scene_toml_text = textwrap.dedent("""
     [ALAN]
     type = "Narrator"
 
@@ -112,10 +114,15 @@ class ConversationTests(unittest.TestCase):
 
 
     def setUp(self):
-        self.story = StoryBuilder(world=self.World(), drama=[Conversation()])
+        scene_toml = Loader.read_toml(self.scene_toml_text)
+        assets = Grouping.typewise([Loader.Scene(self.scene_toml_text, scene_toml, None, None, None)])
+        world = self.World()
+        self.story = StoryBuilder(assets=assets, world=world)
+        self.story.drama = [Conversation(world=world)]
+        self.assertIsInstance(self.story.context, Conversation)
 
-    def test_asj(self):
-        data = tomllib.loads(self.scene_toml)
-        print(data)
+    def test_terminal(self):
+        with self.story.turn() as turn:
+            print(turn)
 
         self.fail(self.story)
