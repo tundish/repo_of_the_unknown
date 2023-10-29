@@ -36,35 +36,9 @@ Usage:
 
 """
 
-import tomllib
-toml_ex = """
-[[_]]
-s='''
-<NARRATOR.referring@ACTOR> Maybe now's a good time to ask {ACTOR.name} a question.
-    1. Ask about LAAR
-    2. Ask about Thackaray
-    3. Ask about Lewis
-'''
-[[_.1]]
-s='''
-<ACTOR> OK, LAAR
-'''
-[[_.2]]
-s='''
-<ACTOR> OK, Thackaray
-'''
-[[_.3]]
-s='''
-<ACTOR> OK, Lewis
-'''
-"""
-
-data = tomllib.loads(toml_ex)
-print(data)
-
 ex = (
 Dialogue("""
-<NARRATOR.referring@ACTOR> Maybe now's a good time to ask {ACTOR.name} a question.
+<NARRATOR.elaborating@ACTOR> Maybe now's a good time to ask {ACTOR.name} a question.
     1. Ask about LAAR
     2. Ask about Thackaray
     3. Ask about Lewis
