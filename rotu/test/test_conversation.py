@@ -23,6 +23,8 @@ import unittest
 from balladeer import Dialogue
 from balladeer import Drama
 from balladeer import Entity
+from balladeer import StoryBuilder
+from balladeer import WorldBuilder
 
 from speechmark import SpeechMark
 
@@ -47,6 +49,13 @@ class Conversation(Drama):
 
 
 class ConversationTests(unittest.TestCase):
+
+    class World(WorldBuilder):
+        def build(self):
+            yield from [
+                Entity(name="Alan", type="Narrator"),
+                Entity(name="Beth", type="Gossiper"),
+            ]
 
     scene_toml = textwrap.dedent("""
     [ALAN]
@@ -103,14 +112,10 @@ class ConversationTests(unittest.TestCase):
 
 
     def setUp(self):
-        self.ensemble = [
-            Entity(name="Alan", type="Narrator"),
-            Entity(name="Beth", type="Gossiper"),
-        ]
+        self.story = StoryBuilder(world=self.World(), drama=[Conversation()])
 
     def test_asj(self):
         data = tomllib.loads(self.scene_toml)
         print(data)
 
-        convo = Conversation()
-        self.fail(convo)
+        self.fail(self.story)
