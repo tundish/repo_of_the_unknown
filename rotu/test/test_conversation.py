@@ -40,14 +40,25 @@ class Conversation(Drama):
         self.state = 0
         self.witness = Counter()
 
-    def on_testing(self, entity: Entity, *args: tuple[Entity], **kwargs):
+    def interlude(self, *args, **kwargs) -> Entity:
         self.state += 1
+
+    def on_testing(self, entity: Entity, *args: tuple[Entity], **kwargs):
         self.witness["testing"] += 1
-        print("Dunk!!!")
 
     def on_elaborating(self, entity: Entity, *args: tuple[Entity], **kwargs):
-        self.state += 1
         self.witness["elaborating"] += 1
+        try:
+            ordinal = kwargs["ordinal"]
+            scene = kwargs["scene"]
+            blocks = kwargs.get("blocks", [])
+            n, block = blocks[ordinal]
+            table = scene.tables["_"][n]
+        except (IndexError, KeyError, ValueError):
+            return
+
+        print(table)
+        print(block)
 
     def do_ask(self, this, text, director):
         """
@@ -85,18 +96,19 @@ class ConversationTests(unittest.TestCase):
     type = "Conversation"
 
     [[_]]
-    if.CONVERSATION.state = 0
+    if.CONVERSATION.state = 1
     s='''
     <ALAN.testing> Let's practise our conversation skills.
     '''
 
     [[_]]
-    if.CONVERSATION.state = 0
+    if.CONVERSATION.state = 1
     s='''
     <ALAN.elaborating> Maybe now's a good time to ask {BETH.name} a question.
         1. Ask about the weather
         2. Ask about pets
         3. Ask about football
+
     '''
 
     [[_.1]]
@@ -127,7 +139,7 @@ class ConversationTests(unittest.TestCase):
     '''
 
     [[_]]
-    if.CONVERSATION.state = 1
+    if.CONVERSATION.state = 3
     s='''
     <ALAN> OK. Conversation over.
     '''
@@ -143,14 +155,16 @@ class ConversationTests(unittest.TestCase):
         self.assertIsInstance(self.story.context, Conversation)
 
     def test_directives(self):
-        for n in range(4):
+        n_turns = 4
+        for n in range(n_turns):
             with self.story.turn() as turn:
-                print(f"n: {n}")
-                print(*turn.blocks, sep="\n")
-                print(turn.roles)
-                print(*turn.notes.items(), sep="\n")
-                print()
+                # print(f"n: {n}")
+                # print(*turn.blocks, sep="\n")
+                # print(turn.roles)
+                # print(*turn.notes.items(), sep="\n")
+                # print()
+                pass
 
-        self.assertEqual(2, self.story.context.state)
+        self.assertEqual(n_turns, self.story.context.state)
         self.assertEqual(1, self.story.context.witness["testing"])
         self.assertEqual(1, self.story.context.witness["elaborating"])
