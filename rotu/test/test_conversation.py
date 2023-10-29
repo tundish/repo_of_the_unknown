@@ -57,32 +57,47 @@ class ConversationTests(unittest.TestCase):
 
     [[_]]
     s='''
+    <ALAN> Let's practise our conversation skills.
+    '''
+
+    [[_]]
+    s='''
     <ALAN.elaborating> Maybe now's a good time to ask {BETH.name} a question.
         1. Ask about the weather
         2. Ask about pets
         3. Ask about football
     '''
+
     [[_.1]]
     s='''
     <BETH> Well, you never know what's it's going to do next, do you?
     '''
+
     [[_.2]]
     s='''
     <BETH.elaborating> I've got two lovely cats.
         1. Ask about Charlie
         2. Ask about Doodles
     '''
+
     [[_.2.1]]
     s='''
     <BETH> Charlie is the elder cat. He's a Marmalade. Very laid back.
     '''
+
     [[_.3]]
     s='''
     <BETH> I don't know anything about football at all.
     '''
+
     [[_.2.2]]
     s='''
     <BETH> Oh my goodness, Doodles. Always up to mischief!
+    '''
+
+    [[_]]
+    s='''
+    <ALAN> OK. Conversation over.
     '''
     """)
 
