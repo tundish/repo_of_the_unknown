@@ -86,7 +86,7 @@ class Conversation(Drama):
         """
         try:
             key = self.tree.menu[option]
-            branch = self.tree.tables[key]
+            branch = self.tree.table[key]
         except KeyError:
             return
 
@@ -183,6 +183,7 @@ class ConversationTests(unittest.TestCase):
                 print(n)
                 print(self.story.context.state)
                 print(options)
+                self.story.action("1")
 
         self.assertEqual(n_turns, self.story.context.state)
         self.assertEqual(1, self.story.context.witness["testing"])
