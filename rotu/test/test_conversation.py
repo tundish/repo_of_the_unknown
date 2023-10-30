@@ -18,6 +18,7 @@
 
 from collections import Counter
 from collections import namedtuple
+import pprint
 import re
 import textwrap
 import tomllib
@@ -146,7 +147,7 @@ class ConversationTests(unittest.TestCase):
         2. Ask about Doodles
     '''
 
-    [[_.2._.1]]
+    [[_.2._.1._]]
     s='''
     <BETH> Charlie is the elder cat. He's a Marmalade. Very laid back.
     '''
@@ -156,7 +157,7 @@ class ConversationTests(unittest.TestCase):
     <BETH> I don't know anything about football at all.
     '''
 
-    [[_.2._.2]]
+    [[_.2._.2._]]
     s='''
     <BETH> Oh my goodness, Doodles. Always up to mischief!
     '''
@@ -171,6 +172,7 @@ class ConversationTests(unittest.TestCase):
 
     def setUp(self):
         scene_toml = Loader.read_toml(self.scene_toml_text)
+        pprint.pprint(scene_toml)
         assets = Grouping.typewise([Loader.Scene(self.scene_toml_text, scene_toml, None, None, None)])
         world = self.World()
         self.story = StoryBuilder(assets=assets, world=world)
