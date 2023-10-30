@@ -17,6 +17,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 from collections import Counter
+from collections import deque
 from collections import namedtuple
 import pprint
 import re
@@ -67,7 +68,7 @@ class Conversation(Drama):
             return None
 
         menu = self.option_map(block)
-        return self.Tree(block=block, menu=menu, table=table, roles=turn.roles, path=[])
+        return self.Tree(block=block, menu=menu, table=table, roles=turn.roles, path=deque([]))
 
     """
     def interlude(self, *args, **kwargs) -> Entity:
@@ -77,9 +78,9 @@ class Conversation(Drama):
     def on_testing(self, entity: Entity, *args: tuple[Entity], **kwargs):
         self.witness["testing"] += 1
 
-    def on_elaborating(self, entity: Entity, *args: tuple[Entity], **kwargs):
-        print("elaborating")
-        self.witness["elaborating"] += 1
+    def on_digressing(self, entity: Entity, *args: tuple[Entity], **kwargs):
+        print("digressing")
+        self.witness["digressing"] += 1
         ordinal = kwargs.pop("ordinal")
         self.tree = self.build_tree(StoryBuilder.Turn(**kwargs), ordinal)
 
@@ -138,7 +139,7 @@ class ConversationTests(unittest.TestCase):
     [[_]]
     if.CONVERSATION.state = 0
     s='''
-    <ALAN.elaborating> Maybe now's a good time to ask {BETH.name} a question.
+    <ALAN.digressing> Maybe now's a good time to ask {BETH.name} a question.
         1. Ask about the weather
         2. Ask about pets
         3. Ask about football
@@ -157,7 +158,7 @@ class ConversationTests(unittest.TestCase):
 
     [[_.2._]]
     s='''
-    <BETH.elaborating> I've got two lovely cats.
+    <BETH.digressing> I've got two lovely cats.
         1. Ask about Charlie
         2. Ask about Doodles
     '''
@@ -204,4 +205,4 @@ class ConversationTests(unittest.TestCase):
 
         self.assertEqual(n_turns, self.story.context.state)
         self.assertEqual(1, self.story.context.witness["testing"])
-        self.assertEqual(2, self.story.context.witness["elaborating"])
+        self.assertEqual(2, self.story.context.witness["digressing"])
