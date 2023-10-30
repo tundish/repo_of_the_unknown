@@ -81,6 +81,9 @@ class Conversation(Drama):
     def on_digressing(self, entity: Entity, *args: tuple[Entity], **kwargs):
         print("digressing")
         self.witness["digressing"] += 1
+        # Get block from tree tables and path
+        # If no tree, digression comes from scene, not tree.
+        # So construct a tree.
         ordinal = kwargs.pop("ordinal")
         self.tree = self.build_tree(StoryBuilder.Turn(**kwargs), ordinal)
 
