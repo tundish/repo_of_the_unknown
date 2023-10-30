@@ -38,7 +38,7 @@ from speechmark import SpeechMark
 class Conversation(Drama):
     # TODO: Make prompt a property which summarises option numbers
 
-    Tree = namedtuple("ConversationTree", ["block", "menu", "table", "roles"])
+    Tree = namedtuple("ConversationTree", ["block", "menu", "table", "roles", "path"])
 
     def __init__(self, *args, world=None, config=None, **kwargs):
         super().__init__(*args, config=config, world=world, **kwargs)
@@ -67,18 +67,26 @@ class Conversation(Drama):
             return None
 
         menu = self.option_map(block)
-        return self.Tree(block=block, menu=menu, table=table, roles=turn.roles)
+        return self.Tree(block=block, menu=menu, table=table, roles=turn.roles, path=[])
 
+    """
     def interlude(self, *args, **kwargs) -> Entity:
         self.state += 1
+    """
 
     def on_testing(self, entity: Entity, *args: tuple[Entity], **kwargs):
         self.witness["testing"] += 1
 
     def on_elaborating(self, entity: Entity, *args: tuple[Entity], **kwargs):
+        print("elaborating")
         self.witness["elaborating"] += 1
         ordinal = kwargs.pop("ordinal")
         self.tree = self.build_tree(StoryBuilder.Turn(**kwargs), ordinal)
+
+    def on_concluding(self, entity: Entity, *args: tuple[Entity], **kwargs):
+        print("concluding")
+        self.witness["concluding"] += 1
+        self.tree = None
 
     def do_menu_option(self, this, text, director, *args, option: "menu_options", **kwargs):
         """
@@ -87,8 +95,10 @@ class Conversation(Drama):
         """
         try:
             key = self.tree.menu[option]
+            print(f"key {key}")
             branch = self.tree.table[key]
-            # print(f"branch {branch}")
+            print(f"branch {branch}")
+            self.tree.path.append(key)
         except KeyError:
             return
 
@@ -120,13 +130,13 @@ class ConversationTests(unittest.TestCase):
     type = "Conversation"
 
     [[_]]
-    if.CONVERSATION.state = 1
+    if.CONVERSATION.state = 0
     s='''
     <ALAN.testing> Let's practise our conversation skills.
     '''
 
     [[_]]
-    if.CONVERSATION.state = 1
+    if.CONVERSATION.state = 0
     s='''
     <ALAN.elaborating> Maybe now's a good time to ask {BETH.name} a question.
         1. Ask about the weather
@@ -138,6 +148,11 @@ class ConversationTests(unittest.TestCase):
     [[_.1._]]
     s='''
     <BETH> Well, you never know what's it's going to do next, do you?
+    '''
+
+    [[_.1._]]
+    s='''
+    <BETH.concluding> I've never seen anything like it!
     '''
 
     [[_.2._]]
@@ -180,7 +195,7 @@ class ConversationTests(unittest.TestCase):
         self.assertIsInstance(self.story.context, Conversation)
 
     def test_directives(self):
-        n_turns = 5
+        n_turns = 4
         for n in range(n_turns):
             with self.story.turn() as turn:
                 options = self.story.context.options(self.story.context.ensemble)
