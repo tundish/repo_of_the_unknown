@@ -37,7 +37,7 @@ from speechmark import SpeechMark
 class Conversation(Drama):
     # TODO: Make prompt a property which summarises option numbers
 
-    Tree = namedtuple("ConversationTree", ["block", "menu", "table"])
+    Tree = namedtuple("ConversationTree", ["block", "menu", "table", "roles"])
 
     def __init__(self, *args, world=None, config=None, **kwargs):
         super().__init__(*args, config=config, world=world, **kwargs)
@@ -48,6 +48,10 @@ class Conversation(Drama):
         self.li_matcher = re.compile("<li id=\"(\\d+)\">", re.DOTALL | re.MULTILINE)
         self.pp_matcher = re.compile("<p[^>]*?>(.*?)<\\/p>", re.DOTALL)
 
+    @property
+    def menu_options(self):
+        return list(self.tree.menu.keys())
+
     def option_map(self, block: str):
         list_block = self.ol_matcher.search(block)
         list_items = list(self.li_matcher.findall(list_block.group()))
@@ -56,15 +60,13 @@ class Conversation(Drama):
 
     def build_tree(self, turn: StoryBuilder.Turn, ordinal=0):
         try:
-            scene = turn.scene
-            blocks = turn.blocks
-            n, block = blocks[ordinal]
-            table = scene.tables["_"][n]
+            n, block = turn.blocks[ordinal]
+            table = turn.scene.tables["_"][n]
         except (IndexError, KeyError, ValueError):
             return None
 
         menu = self.option_map(block)
-        return self.Tree(block=block, menu=menu, table=table)
+        return self.Tree(block=block, menu=menu, table=table, roles=turn.roles)
 
     def interlude(self, *args, **kwargs) -> Entity:
         self.state += 1
@@ -76,22 +78,23 @@ class Conversation(Drama):
         self.witness["elaborating"] += 1
         ordinal = kwargs.pop("ordinal")
         self.tree = self.build_tree(StoryBuilder.Turn(**kwargs), ordinal)
-        print(self.tree)
 
-    def do_ask(self, this, text, director):
+    def do_menu_option(self, this, text, director, *args, option: "menu_options", **kwargs):
         """
-        Ask {p.entity} about {p.topic}
-
-        """
-        yield Dialogue("Yes, this.")
-
-    def do_say(self, this, text, director):
-        """
-        Say {p.phrase}
-        Tell {p.entity} that {p.phrase}
+        {option}
 
         """
-        yield from [Dialogue("Yes."), dialogue("That.")]
+        try:
+            key = self.tree.menu[option]
+            branch = self.tree.tables[key]
+        except KeyError:
+            return
+
+        for shot in branch.get(director.shot_key, []):
+            conditions = dict(director.specify_conditions(shot))
+            if director.allows(conditions, self.tree.roles):
+                text = shot.get(director.dialogue_key, "")
+                yield Dialogue(text)
 
 
 class ConversationTests(unittest.TestCase):
@@ -176,12 +179,10 @@ class ConversationTests(unittest.TestCase):
         n_turns = 4
         for n in range(n_turns):
             with self.story.turn() as turn:
-                # print(f"n: {n}")
-                # print(*turn.blocks, sep="\n")
-                # print(turn.roles)
-                # print(*turn.notes.items(), sep="\n")
-                # print()
-                pass
+                options = self.story.context.options(self.story.context.ensemble)
+                print(n)
+                print(self.story.context.state)
+                print(options)
 
         self.assertEqual(n_turns, self.story.context.state)
         self.assertEqual(1, self.story.context.witness["testing"])
