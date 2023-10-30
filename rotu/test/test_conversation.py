@@ -17,6 +17,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 from collections import Counter
+from collections import namedtuple
 import re
 import textwrap
 import tomllib
@@ -36,13 +37,34 @@ from speechmark import SpeechMark
 class Conversation(Drama):
     # TODO: Make prompt a property which summarises option numbers
 
+    Tree = namedtuple("ConversationTree", ["block", "menu", "table"])
+
     def __init__(self, *args, world=None, config=None, **kwargs):
         super().__init__(*args, config=config, world=world, **kwargs)
         self.state = 0
+        self.tree = None
         self.witness = Counter()
         self.ol_matcher = re.compile("<ol>.*?<\\/ol>", re.DOTALL | re.MULTILINE)
         self.li_matcher = re.compile("<li id=\"(\\d+)\">", re.DOTALL | re.MULTILINE)
         self.pp_matcher = re.compile("<p[^>]*?>(.*?)<\\/p>", re.DOTALL)
+
+    def option_map(self, block: str):
+        list_block = self.ol_matcher.search(block)
+        list_items = list(self.li_matcher.findall(list_block.group()))
+        para_items = list(self.pp_matcher.findall(list_block.group()))
+        return dict({k: v for k, v in zip(para_items, list_items)}, **{v: v for k, v in zip(para_items, list_items)})
+
+    def build_tree(self, turn: StoryBuilder.Turn, ordinal=0):
+        try:
+            scene = turn.scene
+            blocks = turn.blocks
+            n, block = blocks[ordinal]
+            table = scene.tables["_"][n]
+        except (IndexError, KeyError, ValueError):
+            return None
+
+        menu = self.option_map(block)
+        return self.Tree(block=block, menu=menu, table=table)
 
     def interlude(self, *args, **kwargs) -> Entity:
         self.state += 1
@@ -52,22 +74,9 @@ class Conversation(Drama):
 
     def on_elaborating(self, entity: Entity, *args: tuple[Entity], **kwargs):
         self.witness["elaborating"] += 1
-        try:
-            ordinal = kwargs["ordinal"]
-            scene = kwargs["scene"]
-            blocks = kwargs.get("blocks", [])
-            n, block = blocks[ordinal]
-            table = scene.tables["_"][n]
-        except (IndexError, KeyError, ValueError):
-            return
-
-        list_block = self.ol_matcher.search(block)
-        list_items = list(self.li_matcher.findall(list_block.group()))
-        para_items = list(self.pp_matcher.findall(list_block.group()))
-        print(table)
-        print(block)
-        print(list_items)
-        print(para_items)
+        ordinal = kwargs.pop("ordinal")
+        self.tree = self.build_tree(StoryBuilder.Turn(**kwargs), ordinal)
+        print(self.tree)
 
     def do_ask(self, this, text, director):
         """
