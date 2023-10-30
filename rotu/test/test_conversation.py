@@ -50,7 +50,7 @@ class Conversation(Drama):
 
     @property
     def menu_options(self):
-        return list(self.tree.menu.keys())
+        return self.tree and list(self.tree.menu.keys())
 
     def option_map(self, block: str):
         list_block = self.ol_matcher.search(block)
@@ -87,10 +87,12 @@ class Conversation(Drama):
         try:
             key = self.tree.menu[option]
             branch = self.tree.table[key]
+            # print(f"branch {branch}")
         except KeyError:
             return
 
         for shot in branch.get(director.shot_key, []):
+            print(f"shot: {shot}")
             conditions = dict(director.specify_conditions(shot))
             if director.allows(conditions, self.tree.roles):
                 text = shot.get(director.dialogue_key, "")
@@ -132,35 +134,35 @@ class ConversationTests(unittest.TestCase):
 
     '''
 
-    [_.1]
+    [[_.1._]]
     s='''
     <BETH> Well, you never know what's it's going to do next, do you?
     '''
 
-    [_.2]
+    [[_.2._]]
     s='''
     <BETH.elaborating> I've got two lovely cats.
         1. Ask about Charlie
         2. Ask about Doodles
     '''
 
-    [_.2.1]
+    [[_.2._.1]]
     s='''
     <BETH> Charlie is the elder cat. He's a Marmalade. Very laid back.
     '''
 
-    [_.3]
+    [[_.3._]]
     s='''
     <BETH> I don't know anything about football at all.
     '''
 
-    [_.2.2]
+    [[_.2._.2]]
     s='''
     <BETH> Oh my goodness, Doodles. Always up to mischief!
     '''
 
     [[_]]
-    if.CONVERSATION.state = 3
+    if.CONVERSATION.state = 0
     s='''
     <ALAN> OK. Conversation over.
     '''
@@ -176,15 +178,13 @@ class ConversationTests(unittest.TestCase):
         self.assertIsInstance(self.story.context, Conversation)
 
     def test_directives(self):
-        n_turns = 4
+        n_turns = 5
         for n in range(n_turns):
             with self.story.turn() as turn:
                 options = self.story.context.options(self.story.context.ensemble)
-                print(n)
-                print(self.story.context.state)
-                print(options)
-                self.story.action("1")
+                print(*turn.blocks, sep="\n")
+                self.story.action("2")
 
         self.assertEqual(n_turns, self.story.context.state)
         self.assertEqual(1, self.story.context.witness["testing"])
-        self.assertEqual(1, self.story.context.witness["elaborating"])
+        self.assertEqual(2, self.story.context.witness["elaborating"])
