@@ -50,6 +50,13 @@ class Conversation(Drama):
         self.li_matcher = re.compile("<li id=\"(\\d+)\">", re.DOTALL | re.MULTILINE)
         self.pp_matcher = re.compile("<p[^>]*?>(.*?)<\\/p>", re.DOTALL)
 
+    @staticmethod
+    def follow_path(table, path: list):
+        node = table
+        for key in path:
+            node = node.get(key, {})
+            yield node
+
     @property
     def menu_options(self):
         return self.tree and list(self.tree.menu.keys())
@@ -81,11 +88,13 @@ class Conversation(Drama):
     def on_branching(self, entity: Entity, *args: tuple[Entity], **kwargs):
         print("branching")
         self.witness["branching"] += 1
-        # Get block from tree tables and path
-        # If no tree, branching comes from scene, not tree.
-        # So construct a tree.
-        ordinal = kwargs.pop("ordinal")
-        self.tree = self.build_tree(StoryBuilder.Turn(**kwargs), ordinal)
+        try:
+            node = list(self.follow_path(self.tree.table, self.tree.path))[-1]
+            block = node.get("s", "")
+            self.tree = self.tree._replace(menu = self.option_map(block))
+        except AttributeError:
+            identifier = kwargs.pop("ordinal")
+            self.tree = self.build_tree(StoryBuilder.Turn(**kwargs), ordinal)
 
     def on_returning(self, entity: Entity, *args: tuple[Entity], **kwargs):
         print("returning")
@@ -99,15 +108,15 @@ class Conversation(Drama):
         """
         try:
             key = self.tree.menu[option]
-            print(f"key {key}")
+            #print(f"key {key}")
             branch = self.tree.table[key]
-            print(f"branch {branch}")
+            #print(f"branch {branch}")
             self.tree.path.append(key)
         except KeyError:
             return
 
         for shot in branch.get(director.shot_key, []):
-            print(f"shot: {shot}")
+            #print(f"shot: {shot}")
             conditions = dict(director.specify_conditions(shot))
             if director.allows(conditions, self.tree.roles):
                 text = shot.get(director.dialogue_key, "")
