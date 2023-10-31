@@ -95,8 +95,8 @@ class Conversation(Drama):
             self.tree = self.tree._replace(menu = self.option_map(block))
         except AttributeError as e:
             print(f"error: {e}")
-            identifier = kwargs.pop("ordinal")
-            self.tree = self.build_tree(StoryBuilder.Turn(**kwargs), ordinal)
+            identifier = kwargs.pop("identifier")
+            self.tree = self.build_tree(StoryBuilder.Turn(**kwargs), identifier)
             print(f"tree: {self.tree}")
 
     def on_returning(self, entity: Entity, *args: tuple[Entity], **kwargs):
