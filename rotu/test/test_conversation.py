@@ -78,18 +78,18 @@ class Conversation(Drama):
     def on_testing(self, entity: Entity, *args: tuple[Entity], **kwargs):
         self.witness["testing"] += 1
 
-    def on_digressing(self, entity: Entity, *args: tuple[Entity], **kwargs):
-        print("digressing")
-        self.witness["digressing"] += 1
+    def on_branching(self, entity: Entity, *args: tuple[Entity], **kwargs):
+        print("branching")
+        self.witness["branching"] += 1
         # Get block from tree tables and path
-        # If no tree, digression comes from scene, not tree.
+        # If no tree, branching comes from scene, not tree.
         # So construct a tree.
         ordinal = kwargs.pop("ordinal")
         self.tree = self.build_tree(StoryBuilder.Turn(**kwargs), ordinal)
 
-    def on_concluding(self, entity: Entity, *args: tuple[Entity], **kwargs):
-        print("concluding")
-        self.witness["concluding"] += 1
+    def on_returning(self, entity: Entity, *args: tuple[Entity], **kwargs):
+        print("returning")
+        self.witness["returning"] += 1
         self.tree = None
 
     def do_menu_option(self, this, text, director, *args, option: "menu_options", **kwargs):
@@ -142,7 +142,7 @@ class ConversationTests(unittest.TestCase):
     [[_]]
     if.CONVERSATION.state = 0
     s='''
-    <ALAN.digressing> Maybe now's a good time to ask {BETH.name} a question.
+    <ALAN.branching> Maybe now's a good time to ask {BETH.name} a question.
         1. Ask about the weather
         2. Ask about pets
         3. Ask about football
@@ -156,12 +156,12 @@ class ConversationTests(unittest.TestCase):
 
     [[_.1._]]
     s='''
-    <BETH.concluding> I've never seen anything like it!
+    <BETH.returning> I've never seen anything like it!
     '''
 
     [[_.2._]]
     s='''
-    <BETH.digressing> I've got two lovely cats.
+    <BETH.branching> I've got two lovely cats.
         1. Ask about Charlie
         2. Ask about Doodles
     '''
@@ -208,4 +208,4 @@ class ConversationTests(unittest.TestCase):
 
         self.assertEqual(n_turns, self.story.context.state)
         self.assertEqual(1, self.story.context.witness["testing"])
-        self.assertEqual(2, self.story.context.witness["digressing"])
+        self.assertEqual(2, self.story.context.witness["branching"])
