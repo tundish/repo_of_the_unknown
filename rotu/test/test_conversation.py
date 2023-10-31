@@ -151,7 +151,7 @@ class ConversationTests(unittest.TestCase):
     '''
 
     [[_]]
-    if.CONVERSATION.state = 0
+    if.CONVERSATION.tree = false
     s='''
     <ALAN.branching> Maybe now's a good time to ask {BETH.name} a question.
         1. Ask about the weather
@@ -193,7 +193,7 @@ class ConversationTests(unittest.TestCase):
     '''
 
     [[_]]
-    if.CONVERSATION.state = 0
+    if.CONVERSATION.state = 1
     s='''
     <ALAN> OK. Conversation over.
     '''
