@@ -90,16 +90,18 @@ class Conversation(Drama):
         self.witness["branching"] += 1
         try:
             node = list(self.follow_path(self.tree.table, self.tree.path))[-1]
+            print(f"node: {node}")
             block = node.get("s", "")
             self.tree = self.tree._replace(menu = self.option_map(block))
-        except AttributeError:
+        except AttributeError as e:
+            print(f"error: {e}")
             identifier = kwargs.pop("ordinal")
             self.tree = self.build_tree(StoryBuilder.Turn(**kwargs), ordinal)
+            print(f"tree: {self.tree}")
 
     def on_returning(self, entity: Entity, *args: tuple[Entity], **kwargs):
         print("returning")
         self.witness["returning"] += 1
-        self.tree = None
 
     def do_menu_option(self, this, text, director, *args, option: "menu_options", **kwargs):
         """
