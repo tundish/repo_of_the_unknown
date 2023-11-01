@@ -92,6 +92,7 @@ class Conversation(Drama):
         except AttributeError:
             # Build root tree
             identifier = kwargs.pop("identifier")
+            print(f"identifier: {identifier}")
             self.tree = self.build_tree(StoryBuilder.Turn(**kwargs), identifier)
             # print(f"tree: {self.tree}")
 
@@ -120,10 +121,6 @@ class Conversation(Drama):
                 text = shot.get(director.dialogue_key, "")
                 yield Dialogue(text)
 
-    def on_testing(self, entity: Entity, *args: tuple[Entity], **kwargs):
-        self.witness["testing"] += 1
-        self.state += 1
-
 
 class ConversationTests(unittest.TestCase):
 
@@ -146,13 +143,9 @@ class ConversationTests(unittest.TestCase):
 
     [[_]]
     if.CONVERSATION.state = 0
-    s='''
-    <ALAN.testing> Let's practise our conversation skills.
-    '''
-
-    [[_]]
     if.CONVERSATION.tree = false
     s='''
+    <ALAN> Let's practise our conversation skills.
     <ALAN.branching> Maybe now's a good time to ask {BETH.name} a question.
         1. Ask about the weather
         2. Ask about pets
@@ -194,6 +187,7 @@ class ConversationTests(unittest.TestCase):
 
     [[_]]
     if.CONVERSATION.state = 1
+    if.CONVERSATION.tree = false
     s='''
     <ALAN> OK. Conversation over.
     '''
@@ -209,7 +203,7 @@ class ConversationTests(unittest.TestCase):
         self.story.drama = [Conversation(world=world)]
         self.assertIsInstance(self.story.context, Conversation)
 
-    def test_directives(self):
+    def test_no_command(self):
         n_turns = 4
         for n in range(n_turns):
             with self.story.turn() as turn:
@@ -217,17 +211,49 @@ class ConversationTests(unittest.TestCase):
                 action = self.story.action("2")
                 with self.subTest(n=n):
                     if n == 0:
-                        self.assertEqual(1, self.story.context.state)
+                        self.assertEqual(0, self.story.context.state)
+                        self.assertEqual(1, self.story.context.witness["branching"])
                         self.assertIsNone(self.story.context.tree)
                         self.assertIsNone(action)
+                        print(turn.blocks)
                     if n == 1:
-                        self.assertEqual(1, self.story.context.state)
+                        self.assertEqual(0, self.story.context.state)
+                        self.assertEqual(2, self.story.context.witness["branching"])
                         self.assertIsNone(self.story.context.tree)
                         self.assertIsNone(action)
                     elif n == 2:
+                        self.assertEqual(0, self.story.context.state)
+                        self.assertEqual(3, self.story.context.witness["branching"])
+                        self.assertTrue(self.story.context.tree)
+                        fn, args, kwargs = action
+                        self.assertEqual({"option": "2"}, kwargs)
+                    elif n == 3:
+                        self.assertEqual(0, self.story.context.state)
+                        self.assertEqual(4, self.story.context.witness["branching"])
                         self.assertTrue(self.story.context.tree)
                         fn, args, kwargs = action
                         self.assertEqual({"option": "2"}, kwargs)
 
-        self.assertEqual(1, self.story.context.witness["testing"])
+
+    def test_double_branch(self):
+        n_turns = 4
+        for n in range(n_turns):
+            with self.story.turn() as turn:
+                options = self.story.context.options(self.story.context.ensemble)
+                action = self.story.action("2")
+                with self.subTest(n=n):
+                    if n == 0:
+                        self.assertEqual(0, self.story.context.state)
+                        self.assertIsNone(self.story.context.tree)
+                        self.assertIsNone(action)
+                    if n == 1:
+                        self.assertEqual(0, self.story.context.state)
+                        self.assertIsNone(self.story.context.tree)
+                        self.assertIsNone(action)
+                    elif n == 2:
+                        self.assertEqual(0, self.story.context.state)
+                        self.assertTrue(self.story.context.tree)
+                        fn, args, kwargs = action
+                        self.assertEqual({"option": "2"}, kwargs)
+
         self.assertEqual(2, self.story.context.witness["branching"])
