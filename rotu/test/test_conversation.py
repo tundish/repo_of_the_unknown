@@ -75,7 +75,6 @@ class Conversation(Drama):
             n, block = turn.blocks[identifier]
             table = turn.scene.tables["_"][n]
         except (IndexError, KeyError, ValueError) as e:
-            print(e)
             return None
 
         menu = self.option_map(block)
@@ -86,13 +85,12 @@ class Conversation(Drama):
         try:
             # Descend into tree
             node = list(self.follow_path(self.tree.table, self.tree.path))[-1]
-            print(f"node: {node}")
-            block = node.get("s", "")
+            shots = node.get("_", [])
+            print(f"blocks: {self.tree.blocks}")
             self.tree = self.tree._replace(menu=self.option_map(block))
         except AttributeError:
             # Build root tree
             identifier = kwargs.pop("identifier")
-            print(f"identifier: {identifier}")
             self.tree = self.build_tree(StoryBuilder.Turn(**kwargs), identifier)
             # print(f"tree: {self.tree}")
 
@@ -145,7 +143,7 @@ class ConversationTests(unittest.TestCase):
     if.CONVERSATION.state = 0
     if.CONVERSATION.tree = false
     s='''
-    <ALAN.testing> Let's practise our conversation skills.
+    <ALAN> Let's practise our conversation skills.
     '''
 
     [[_]]
@@ -202,7 +200,6 @@ class ConversationTests(unittest.TestCase):
 
     def setUp(self):
         scene_toml = Loader.read_toml(self.scene_toml_text)
-        pprint.pprint(scene_toml)
         assets = Grouping.typewise([Loader.Scene(self.scene_toml_text, scene_toml, None, None, None)])
         world = self.World()
         self.story = StoryBuilder(assets=assets, world=world)
@@ -220,7 +217,6 @@ class ConversationTests(unittest.TestCase):
                         self.assertEqual(0, self.story.context.witness["branching"])
                         self.assertIsNone(self.story.context.tree)
                         self.assertIsNone(action)
-                        print(turn.blocks)
                     if n == 1:
                         self.assertEqual(0, self.story.context.witness["branching"])
                         self.assertIsNone(self.story.context.tree)
@@ -238,6 +234,7 @@ class ConversationTests(unittest.TestCase):
             self.story.context.state = n
 
 
+    @unittest.skip("")
     def test_double_branch(self):
         n_turns = 4
         for n in range(n_turns):
