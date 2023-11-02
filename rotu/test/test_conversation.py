@@ -54,8 +54,12 @@ class Conversation(Drama):
     def follow_path(table, path: list):
         node = table
         for key in path:
-            node = node.get(key, {})
-            yield node
+            try:
+                node = node[key]
+            except KeyError:
+                return
+        else:
+            return node
 
     @property
     def menu_options(self):
@@ -89,7 +93,7 @@ class Conversation(Drama):
             identifier = kwargs.pop("identifier")
             path, shot_id, cue_index = identifier
             turn = StoryBuilder.Turn(**kwargs)
-            table = turn.scene.tables.get("_", [])[shot_id]  # Branching only valid from scene file
+            table = turn.scene.tables.get("_", [])[shot_id]
             _, block = turn.blocks[cue_index]
         except (IndexError, TypeError):
             return
@@ -99,7 +103,7 @@ class Conversation(Drama):
             block=block,
             roles=turn.roles,
             tables=turn.scene.tables,
-            shot_path=deque(["_"]),
+            shot_path=deque(["_", shot_id]),  # Branching only valid from scene file
             menu=menu
         )
         print(f"menu: {menu}")
@@ -133,10 +137,8 @@ class Conversation(Drama):
         """
         try:
             key = self.tree.menu[option]
-            #print(f"key {key}")
-            branch = self.tree.table[key]
-            #print(f"branch {branch}")
-            self.tree.path.append(key)
+            shot = self.follow_path(self.tree.tables, self.tree.shot_path)
+            branch = shot[key]
         except KeyError:
             return
 
