@@ -241,6 +241,38 @@ class ConversationTests(unittest.TestCase):
         n_turns = 4
         for n in range(n_turns):
             with self.story.turn() as turn:
+                self.story.context.state = n
+                options = self.story.context.options(self.story.context.ensemble)
+                with self.subTest(n=n):
+                    if n == 0:
+                        shot_id, block = turn.blocks[0]
+                        self.assertIn("What shall we do?", block)
+                        self.assertEqual(0, self.story.context.witness["branching"])
+                        self.assertIsNone(self.story.context.tree)
+                    if n == 1:
+                        shot_id, block = turn.blocks[0]
+                        self.assertIn("What shall we do?", block)
+                        self.assertEqual(0, self.story.context.witness["branching"])
+                        self.assertIsNone(self.story.context.tree)
+                    elif n == 2:
+                        self.assertEqual(3, len(turn.blocks), turn.blocks)
+                        self.assertIn("Let's practise", turn.blocks[0][1])
+                        self.assertIn("I'll let you carry on", turn.blocks[2][1])
+                        shot_id, block = turn.blocks[1]
+                        self.assertIn("a good time to ask", block)
+
+                        self.assertEqual(1, self.story.context.witness["branching"])
+                        self.assertTrue(self.story.context.tree)
+                    elif n == 3:
+                        self.assertEqual(1, self.story.context.witness["branching"])
+                        self.assertIsNone(self.story.context.tree)
+
+
+
+    def test_double_branch(self):
+        n_turns = 4
+        for n in range(n_turns):
+            with self.story.turn() as turn:
                 options = self.story.context.options(self.story.context.ensemble)
                 action = self.story.action("2")
                 with self.subTest(n=n):
@@ -263,30 +295,3 @@ class ConversationTests(unittest.TestCase):
                         self.assertIsNone(action)
 
             self.story.context.state = n
-
-
-    @unittest.skip("")
-    def test_double_branch(self):
-        n_turns = 4
-        for n in range(n_turns):
-            with self.story.turn() as turn:
-                options = self.story.context.options(self.story.context.ensemble)
-                action = self.story.action("2")
-                with self.subTest(n=n):
-                    if n == 0:
-                        self.assertEqual(1, len(turn.blocks))
-                        self.assertEqual(0, self.story.context.state)
-                        self.assertIsNone(self.story.context.tree)
-                        self.assertIsNone(action)
-                    if n == 1:
-                        self.assertEqual(3, len(turn.blocks))
-                        self.assertEqual(0, self.story.context.state)
-                        self.assertIsNone(self.story.context.tree)
-                        self.assertIsNone(action)
-                    elif n == 2:
-                        self.assertEqual(0, self.story.context.state)
-                        self.assertTrue(self.story.context.tree)
-                        fn, args, kwargs = action
-                        self.assertEqual({"option": "2"}, kwargs)
-
-        self.assertEqual(2, self.story.context.witness["branching"])
