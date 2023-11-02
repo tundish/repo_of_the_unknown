@@ -39,7 +39,7 @@ from speechmark import SpeechMark
 class Conversation(Drama):
     # TODO: Make prompt a property which summarises option numbers
 
-    Tree = namedtuple("ConversationTree", ["block", "roles", "table", "path", "menu"])
+    Tree = namedtuple("ConversationTree", ["block", "roles", "tables", "shot_path", "menu"])
 
     def __init__(self, *args, world=None, config=None, **kwargs):
         super().__init__(*args, config=config, world=world, **kwargs)
@@ -70,29 +70,57 @@ class Conversation(Drama):
             **{v: v for k, v in zip(para_items, list_items)}
         )
 
-    def build_tree(self, turn: StoryBuilder.Turn, identifier=0):
+    def build_tree(self, turn: StoryBuilder.Turn, identifier):
+        path, shot_id, cue_index = identifier
         try:
+            print(f"blocks:")
+            print(*turn.blocks, sep="\n")
             n, block = turn.blocks[identifier]
             table = turn.scene.tables["_"][n]
         except (IndexError, KeyError, ValueError) as e:
             return None
 
         menu = self.option_map(block)
-        return self.Tree(block=block, menu=menu, table=table, roles=turn.roles, path=deque([]))
+        return self.Tree(block=block, menu=menu, table=turn.scene.tables, roles=turn.roles, path=deque([]))
 
     def on_branching(self, entity: Entity, *args: tuple[Entity], **kwargs):
         self.witness["branching"] += 1
         try:
+            identifier = kwargs.pop("identifier")
+            path, shot_id, cue_index = identifier
+            turn = StoryBuilder.Turn(**kwargs)
+            table = turn.scene.tables.get("_", [])[shot_id]  # Branching only valid from scene file
+            _, block = turn.blocks[cue_index]
+        except (IndexError, TypeError):
+            return
+
+        menu = self.option_map(block)
+        self.tree = self.Tree(
+            block=block,
+            roles=turn.roles,
+            tables=turn.scene.tables,
+            shot_path=deque(["_"]),
+            menu=menu
+        )
+        print(f"menu: {menu}")
+        print(f"table: {table}")
+        #print(f"blocks: {turn.blocks}")
+        #print(f"notes: {turn.notes}")
+        #print(f"identifier: {identifier}")
+
+        """
+        try:
             # Descend into tree
             node = list(self.follow_path(self.tree.table, self.tree.path))[-1]
             shots = node.get("_", [])
-            print(f"blocks: {self.tree.blocks}")
             self.tree = self.tree._replace(menu=self.option_map(block))
         except AttributeError:
             # Build root tree
+            print(f"blocks: {self.tree.blocks}")
             identifier = kwargs.pop("identifier")
             self.tree = self.build_tree(StoryBuilder.Turn(**kwargs), identifier)
             # print(f"tree: {self.tree}")
+        """
 
     def on_returning(self, entity: Entity, *args: tuple[Entity], **kwargs):
         print("returning")
@@ -143,18 +171,19 @@ class ConversationTests(unittest.TestCase):
     if.CONVERSATION.state = 0
     if.CONVERSATION.tree = false
     s='''
-    <ALAN> Let's practise our conversation skills.
+    <ALAN> What shall we do?
     '''
 
     [[_]]
     if.CONVERSATION.state = 1
     if.CONVERSATION.tree = false
     s='''
+    <ALAN> Let's practise our conversation skills.
     <ALAN.branching> Maybe now's a good time to ask {BETH.name} a question.
         1. Ask about the weather
         2. Ask about pets
         3. Ask about football
-
+    <ALAN> I'll let you carry on for a bit.
     '''
 
     [[_.1._]]
@@ -190,7 +219,7 @@ class ConversationTests(unittest.TestCase):
     '''
 
     [[_]]
-    if.CONVERSATION.state = 1
+    if.CONVERSATION.state = 2
     if.CONVERSATION.tree = false
     s='''
     <ALAN> OK. Conversation over.
@@ -243,10 +272,12 @@ class ConversationTests(unittest.TestCase):
                 action = self.story.action("2")
                 with self.subTest(n=n):
                     if n == 0:
+                        self.assertEqual(1, len(turn.blocks))
                         self.assertEqual(0, self.story.context.state)
                         self.assertIsNone(self.story.context.tree)
                         self.assertIsNone(action)
                     if n == 1:
+                        self.assertEqual(3, len(turn.blocks))
                         self.assertEqual(0, self.story.context.state)
                         self.assertIsNone(self.story.context.tree)
                         self.assertIsNone(action)
