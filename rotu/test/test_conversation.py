@@ -74,19 +74,6 @@ class Conversation(Drama):
             **{v: v for k, v in zip(para_items, list_items)}
         )
 
-    def build_tree(self, turn: StoryBuilder.Turn, identifier):
-        path, shot_id, cue_index = identifier
-        try:
-            print(f"blocks:")
-            print(*turn.blocks, sep="\n")
-            n, block = turn.blocks[identifier]
-            table = turn.scene.tables["_"][n]
-        except (IndexError, KeyError, ValueError) as e:
-            return None
-
-        menu = self.option_map(block)
-        return self.Tree(block=block, menu=menu, table=turn.scene.tables, roles=turn.roles, path=deque([]))
-
     def on_branching(self, entity: Entity, *args: tuple[Entity], **kwargs):
         self.witness["branching"] += 1
         try:
@@ -106,25 +93,6 @@ class Conversation(Drama):
             shot_path=deque(["_", shot_id]),  # Branching only valid from scene file
             menu=menu
         )
-        print(f"menu: {menu}")
-        print(f"table: {table}")
-        #print(f"blocks: {turn.blocks}")
-        #print(f"notes: {turn.notes}")
-        #print(f"identifier: {identifier}")
-
-        """
-        try:
-            # Descend into tree
-            node = list(self.follow_path(self.tree.table, self.tree.path))[-1]
-            shots = node.get("_", [])
-            self.tree = self.tree._replace(menu=self.option_map(block))
-        except AttributeError:
-            # Build root tree
-            print(f"blocks: {self.tree.blocks}")
-            identifier = kwargs.pop("identifier")
-            self.tree = self.build_tree(StoryBuilder.Turn(**kwargs), identifier)
-            # print(f"tree: {self.tree}")
-        """
 
     def on_returning(self, entity: Entity, *args: tuple[Entity], **kwargs):
         print("returning")
@@ -263,16 +231,19 @@ class ConversationTests(unittest.TestCase):
 
                         self.assertEqual(1, self.story.context.witness["branching"])
                         self.assertTrue(self.story.context.tree)
+                        menu = self.story.context.tree.menu
+                        self.assertTrue({str(i) for i in range(1, 4)}.issubset(set(menu.keys())))
+                        self.assertIn("Ask about football", menu)
                     elif n == 3:
                         self.assertEqual(1, self.story.context.witness["branching"])
-                        self.assertIsNone(self.story.context.tree)
-
-
+                        self.assertTrue(self.story.context.tree)
+                        self.assertFalse(turn.blocks)
 
     def test_double_branch(self):
         n_turns = 4
         for n in range(n_turns):
             with self.story.turn() as turn:
+                self.story.context.state = n
                 options = self.story.context.options(self.story.context.ensemble)
                 action = self.story.action("2")
                 with self.subTest(n=n):
@@ -294,4 +265,3 @@ class ConversationTests(unittest.TestCase):
                         self.assertIsNone(self.story.context.tree)
                         self.assertIsNone(action)
 
-            self.story.context.state = n
