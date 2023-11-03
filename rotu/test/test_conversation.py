@@ -256,12 +256,24 @@ class ConversationTests(unittest.TestCase):
                         self.assertIsNone(self.story.context.tree)
                         self.assertIsNone(action)
                     elif n == 2:
-                        self.assertEqual(1, self.story.context.witness["branching"])
-                        self.assertTrue(self.story.context.tree)
                         fn, args, kwargs = action
                         self.assertEqual({"option": "2"}, kwargs)
+                        self.assertEqual(1, self.story.context.witness["branching"])
+                        self.assertTrue(self.story.context.tree)
+                        self.assertEqual(3, len(turn.blocks), turn.blocks)
+                        self.assertIn("Let's practise", turn.blocks[0][1])
+                        self.assertIn("I'll let you carry on", turn.blocks[2][1])
+                        shot_id, block = turn.blocks[1]
+                        self.assertIn("a good time to ask", block)
+
+                        self.assertEqual(1, self.story.context.witness["branching"])
+                        self.assertTrue(self.story.context.tree)
+                        menu = self.story.context.tree.menu
+                        self.assertTrue({str(i) for i in range(1, 4)}.issubset(set(menu.keys())))
+                        self.assertIn("Ask about football", menu)
                     elif n == 3:
+                        fn, args, kwargs = action
+                        self.assertEqual({"option": "2"}, kwargs)
                         self.assertEqual(2, self.story.context.witness["branching"])
-                        self.assertIsNone(self.story.context.tree)
-                        self.assertIsNone(action)
+                        self.assertTrue(self.story.context.tree)
 
