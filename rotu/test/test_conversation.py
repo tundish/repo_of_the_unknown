@@ -17,7 +17,6 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 from collections import Counter
-from collections import deque
 from collections import namedtuple
 import pprint
 import re
@@ -90,11 +89,13 @@ class Conversation(Drama):
             shots = self.follow_path(self.tree.tables, self.tree.shot_path)
             print(f"shots: {shots}")
         except AttributeError:
+            # Branching is initiated from a scene file.
+            # So shot_id can be used as an index into the shot sequence.
             self.tree = self.Tree(
                 block=block,
                 roles=turn.roles,
                 tables=turn.scene.tables,
-                shot_path=deque(["_", shot_id]),  # Branching only valid from scene file
+                shot_path=["_", shot_id],
                 menu=menu
             )
 
@@ -110,14 +111,18 @@ class Conversation(Drama):
 
         """
         key = self.tree.menu[option]
-        self.tree.shot_path.append(key)
-        shot = self.follow_path(self.tree.tables, self.tree.shot_path)
+        shot = self.follow_path(
+            self.tree.tables,
+            self.tree.shot_path + [key]
+        )
 
         print(f"shot: {shot}")
-        conditions = dict(director.specify_conditions(shot))
-        if director.allows(conditions, self.tree.roles):
-            text = shot.get(director.dialogue_key, "")
-            yield Dialogue(text)
+        if shot:
+            conditions = dict(director.specify_conditions(shot))
+            if director.allows(conditions, self.tree.roles):
+                self.tree.shot_path.append(key)
+                text = shot.get(director.dialogue_key, "")
+                yield Dialogue(text)
 
 
 class ConversationTests(unittest.TestCase):
@@ -282,7 +287,7 @@ class ConversationTests(unittest.TestCase):
                     elif n == 4:
                         fn, args, kwargs = action
                         self.assertEqual({"option": "2"}, kwargs)
-                        self.assertEqual(3, self.story.context.witness["branching"])
+                        self.assertEqual(2, self.story.context.witness["branching"])
                         self.assertTrue(self.story.context.tree)
 
                         self.assertEqual(1, len(turn.blocks), turn.blocks)
