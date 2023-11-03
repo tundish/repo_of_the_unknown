@@ -51,14 +51,11 @@ class Conversation(Drama):
 
     @staticmethod
     def follow_path(table, path: list):
-        print(f"path: {path}")
         node = table
         for key in path:
             try:
                 node = node[key]
-                print(f"node: {node}")
             except KeyError:
-                print("...bad.")
                 return
         else:
             return node
@@ -104,6 +101,7 @@ class Conversation(Drama):
     def on_returning(self, entity: Entity, *args: tuple[Entity], **kwargs):
         print("returning")
         self.witness["returning"] += 1
+        self.tree.shot_path.pop(-1)
 
     def do_menu_option(self, this, text, director, *args, option: "menu_options", **kwargs):
         """
@@ -116,12 +114,12 @@ class Conversation(Drama):
             self.tree.shot_path + [key]
         )
 
-        print(f"shot: {shot}")
         if shot:
             conditions = dict(director.specify_conditions(shot))
             if director.allows(conditions, self.tree.roles):
                 self.tree.shot_path.append(key)
                 text = shot.get(director.dialogue_key, "")
+                print(f"text: {text}")
                 yield Dialogue(text)
 
 
