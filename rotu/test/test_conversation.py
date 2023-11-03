@@ -99,9 +99,11 @@ class Conversation(Drama):
 
 
     def on_returning(self, entity: Entity, *args: tuple[Entity], **kwargs):
-        print("returning")
         self.witness["returning"] += 1
-        self.tree.shot_path.pop(-1)
+        if self in args:
+            self.tree.shot_path.pop(-1)
+        else:
+            self.tree = None
 
     def do_menu_option(self, this, text, director, *args, option: "menu_options", **kwargs):
         """
