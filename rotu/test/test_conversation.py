@@ -52,6 +52,7 @@ class Conversation(Drama):
 
     @staticmethod
     def follow_path(table, path: list):
+        print(f"path: {path}")
         node = table
         for key in path:
             try:
@@ -76,23 +77,26 @@ class Conversation(Drama):
 
     def on_branching(self, entity: Entity, *args: tuple[Entity], **kwargs):
         self.witness["branching"] += 1
-        try:
-            identifier = kwargs.pop("identifier")
-            path, shot_id, cue_index = identifier
-            turn = StoryBuilder.Turn(**kwargs)
-            table = turn.scene.tables.get("_", [])[shot_id]
-            _, block = turn.blocks[cue_index]
-        except (IndexError, TypeError):
-            return
 
+        identifier = kwargs.pop("identifier")
+        path, shot_id, cue_index = identifier
+        turn = StoryBuilder.Turn(**kwargs)
+        _, block = turn.blocks[cue_index]
         menu = self.option_map(block)
-        self.tree = self.Tree(
-            block=block,
-            roles=turn.roles,
-            tables=turn.scene.tables,
-            shot_path=deque(["_", shot_id]),  # Branching only valid from scene file
-            menu=menu
-        )
+
+        try:
+            shots = self.follow_path(self.tree.tables, self.tree.shot_path)
+            print(f"shots: {shots}")
+        except AttributeError:
+            self.tree = self.Tree(
+                block=block,
+                roles=turn.roles,
+                tables=turn.scene.tables,
+                shot_path=deque(["_", shot_id]),  # Branching only valid from scene file
+                menu=menu
+            )
+
+
 
     def on_returning(self, entity: Entity, *args: tuple[Entity], **kwargs):
         print("returning")
@@ -103,14 +107,11 @@ class Conversation(Drama):
         {option}
 
         """
-        try:
-            key = self.tree.menu[option]
-            shot = self.follow_path(self.tree.tables, self.tree.shot_path)
-            branch = shot[key]
-        except KeyError:
-            return
+        key = self.tree.menu[option]
+        self.tree.shot_path.extend([key, director.shot_key])
+        shots = self.follow_path(self.tree.tables, self.tree.shot_path) or []
 
-        for shot in branch.get(director.shot_key, []):
+        for shot in shots:
             #print(f"shot: {shot}")
             conditions = dict(director.specify_conditions(shot))
             if director.allows(conditions, self.tree.roles):
@@ -240,13 +241,13 @@ class ConversationTests(unittest.TestCase):
                         self.assertFalse(turn.blocks)
 
     def test_double_branch(self):
-        n_turns = 4
+        n_turns = 5
         for n in range(n_turns):
             with self.story.turn() as turn:
-                self.story.context.state = n
-                options = self.story.context.options(self.story.context.ensemble)
-                action = self.story.action("2")
                 with self.subTest(n=n):
+                    self.story.context.state = n
+                    options = self.story.context.options(self.story.context.ensemble)
+                    action = self.story.action("2")
                     if n == 0:
                         self.assertEqual(0, self.story.context.witness["branching"])
                         self.assertIsNone(self.story.context.tree)
@@ -277,3 +278,15 @@ class ConversationTests(unittest.TestCase):
                         self.assertEqual(2, self.story.context.witness["branching"])
                         self.assertTrue(self.story.context.tree)
 
+                        self.assertEqual(1, len(turn.blocks), turn.blocks)
+                        shot_id, block = turn.blocks[0]
+                        self.assertIn("two lovely cats", block)
+                    elif n == 4:
+                        fn, args, kwargs = action
+                        self.assertEqual({"option": "2"}, kwargs)
+                        self.assertEqual(3, self.story.context.witness["branching"])
+                        self.assertTrue(self.story.context.tree)
+
+                        self.assertEqual(1, len(turn.blocks), turn.blocks)
+                        shot_id, block = turn.blocks[0]
+                        self.assertIn("Doodles. Always up to mischief!", block)
