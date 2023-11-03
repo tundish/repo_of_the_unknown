@@ -110,15 +110,14 @@ class Conversation(Drama):
 
         """
         key = self.tree.menu[option]
-        self.tree.shot_path.extend([key, director.shot_key])
-        shots = self.follow_path(self.tree.tables, self.tree.shot_path) or []
+        self.tree.shot_path.append(key)
+        shot = self.follow_path(self.tree.tables, self.tree.shot_path)
 
-        for shot in shots:
-            print(f"shot: {shot}")
-            conditions = dict(director.specify_conditions(shot))
-            if director.allows(conditions, self.tree.roles):
-                text = shot.get(director.dialogue_key, "")
-                yield Dialogue(text)
+        print(f"shot: {shot}")
+        conditions = dict(director.specify_conditions(shot))
+        if director.allows(conditions, self.tree.roles):
+            text = shot.get(director.dialogue_key, "")
+            yield Dialogue(text)
 
 
 class ConversationTests(unittest.TestCase):
@@ -159,34 +158,30 @@ class ConversationTests(unittest.TestCase):
     <ALAN> I'll let you carry on for a bit.
     '''
 
-    [[_.1]]
+    [_.1]
     s='''
     <BETH> Well, you never know what's it's going to do next, do you?
-    '''
-
-    [[_.1]]
-    s='''
     <BETH.returning> I've never seen anything like it!
     '''
 
-    [[_.2]]
+    [_.2]
     s='''
     <BETH.branching> I've got two lovely cats.
         1. Ask about Charlie
         2. Ask about Doodles
     '''
 
-    [[_.2.1]]
+    [_.2.1]
     s='''
     <BETH> Charlie is the elder cat. He's a Marmalade. Very laid back.
     '''
 
-    [[_.3]]
+    [_.3]
     s='''
     <BETH> I don't know anything about football at all.
     '''
 
-    [[_.2.2]]
+    [_.2.2]
     s='''
     <BETH> Oh my goodness, Doodles. Always up to mischief!
     '''
