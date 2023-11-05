@@ -1,4 +1,4 @@
-This project began as an entry to a `Python Game Jam <https://itch.io/jam/python-game-jam-8>`_
+This project began as an entry to a `Python Game Jam <https://itch.io/jam/python-game-jam-8>`_.
 
 In the spirit of that Jam, the theme for the work is `The Unknown`. I began to have ideas for a story,
 and quickly realised I would need a `Dialogue Tree <https://en.wikipedia.org/wiki/Dialogue_tree>`_.
