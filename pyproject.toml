@@ -19,7 +19,7 @@ classifiers = [
     "Programming Language :: Python"
 ]
 dependencies = [
-    "balladeer >= 0.42.0"
+    "balladeer >= 0.43.0"
 ]
 
 [project.scripts]
