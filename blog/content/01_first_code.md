@@ -3,7 +3,7 @@ date: 2023-10-28 08:15
 author: tundish
 tags: python, balladeer, game jam
 category: Blog
-status: draft
+status: published
 summary: Some initial thoughts on the first full day of the Jam
 
 I haven't written any code yet

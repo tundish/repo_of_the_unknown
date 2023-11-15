@@ -3,7 +3,7 @@ date: 2023-10-28 09:00
 author: tundish
 tags: python, balladeer, game jam
 category: Blog
-status: draft
+status: published
 summary: In which we spring into action
 
 Copy an Example
