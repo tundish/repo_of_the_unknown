@@ -22,6 +22,11 @@ dependencies = [
     "balladeer >= 0.43.0"
 ]
 
+[project.optional-dependencies]
+blog = [
+    "pelican[markdown]",
+]
+
 [project.scripts]
 rotu-server = "rotu.main:run"
 
