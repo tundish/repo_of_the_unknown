@@ -25,6 +25,8 @@ dependencies = [
 [project.optional-dependencies]
 blog = [
     "pelican[markdown]",
+    "pelican-neighbors",
+    "pelican-readtime",
 ]
 
 [project.scripts]
