@@ -6,7 +6,6 @@
 DEFAULT_LANG = "en"
 
 # SEE
-# https://github.com/hansliu/pelican-stirring#settings
 # https://github.com/aleylara/Peli-Kiera
 THEME = "Peli-Kiera"
 #THEME = "pelican-stirring"
@@ -38,7 +37,7 @@ RSS_FEED_SUMMARY_ONLY = True
 
 # Social widget
 SOCIAL = (
-    ("tumblr", "https://tumblr.com/"),
+    ("tumblr", "https://junkdlc.tumblr.com/"),
     ("github", "https://github.com/tundish"),
     ("youtube", "https://youtube.com"),
 )
