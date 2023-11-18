@@ -1,4 +1,4 @@
-title: Starting points
+title: 1. Starting points
 date: 2023-10-28 09:00
 author: tundish
 tags: python, balladeer, game jam
