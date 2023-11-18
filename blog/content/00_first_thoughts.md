@@ -18,6 +18,10 @@ There's a slight possibility of including images, but not a priority right now.
 
 * Walk the dog.
 
-https://github.com/getpelican/pelican-themes/tree/master/graymill
+A
+: also knowm as a.
+: the first.
 
-https://github.com/hansliu/pelican-stirring
+B
+: comes after a.
+: needed for words like bum.

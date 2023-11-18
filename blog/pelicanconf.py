@@ -11,11 +11,11 @@ DEFAULT_LANG = "en"
 THEME = "Peli-Kiera"
 #THEME = "pelican-stirring"
 
-AUTHOR = "JunkDLC"
+AUTHOR = "D. E. Haynes"
 SITENAME = "Repo of the Unknown"
 SITEURL = "https://tundish.github.io/repo_of_the_unknown"
-COPYRIGHT = "2019"
-SITESUBTITLE = "Step by step towards Interactive Fiction"
+COPYRIGHT = "2023"
+SITESUBTITLE = "Step-by-step IF with Python"
 PATH = "content"
 TIMEZONE = "Europe/London"
 DEFAULT_LANG = "en"
@@ -26,7 +26,7 @@ STATIC_PATHS = ["images"]
 # Article summary length on main index page
 SUMMARY_MAX_LENGTH = 100
 DEFAULT_PAGINATION = 10
-GITHUB_URL = "https://github.com/"
+GITHUB_URL = "https://github.com/tundish/repo_of_the_unknown"
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = "feeds/all.atom.xml"
@@ -39,10 +39,6 @@ RSS_FEED_SUMMARY_ONLY = True
 # Social widget
 SOCIAL = (
     ("tumblr", "https://tumblr.com/"),
-    ("twitter", "https://twitter.com/"),
-    ("linkedin", "https://www.linkedin.com"),
-    ("github", "https://github.com/"),
-    ("gitlab", "https://gitlab.com/"),
-    ("facebook", "https://facebook.com"),
-    ("instagram", "https://instagram.com"),
+    ("github", "https://github.com/tundish"),
+    ("youtube", "https://youtube.com"),
 )
