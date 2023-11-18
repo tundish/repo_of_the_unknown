@@ -12,10 +12,10 @@ THEME = "Peli-Kiera"
 #THEME = "pelican-stirring"
 
 AUTHOR = "JunkDLC"
-SITENAME = "Incremental Authorship"
-SITEURL = ""
+SITENAME = "Repo of the Unknown"
+SITEURL = "https://tundish.github.io/repo_of_the_unknown"
 COPYRIGHT = "2019"
-SITESUBTITLE = "Site Subtitle"
+SITESUBTITLE = "Step by step towards Interactive Fiction"
 PATH = "content"
 TIMEZONE = "Europe/London"
 DEFAULT_LANG = "en"
@@ -30,7 +30,7 @@ GITHUB_URL = "https://github.com/"
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = "feeds/all.atom.xml"
-CATEGORY_FEED_ATOM = None
+CATEGORY_FEED_ATOM = "feeds/{slug}.atom.xml"
 TRANSLATION_FEED_ATOM = None
 AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
