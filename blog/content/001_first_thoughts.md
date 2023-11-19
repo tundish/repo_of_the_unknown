@@ -7,17 +7,24 @@ status: published
 summary: In which we get ourselves into a Jam.
 
 An opportunity arises
-=====================
+---------------------
 
 It's the end of October. I've been fixing a couple of bugs in [Balladeer](https://tundish.github.io/balladeer).
 I'm happy with it. The code feels pretty solid now.
 
-Maybe it's time to build another project as a teaching example. No ideas yet though.
+Maybe it could use just one more teaching example though. No ideas yet however.
 
 In any case, it's going to be a big weekend. England are playing South Africa in the semi-final of the Rugby World Cup.
+Probably not the right time to begin a new writing project. Too many distractions right now.
 
+For some reason I visit Itch.io, the game hosting portal. And guess what? Today is the start of the
+[eighth Python Game Jam](https://itch.io/jam/python-game-jam-8). An invitation to spend the next ten days in a race
+to build a game and submit it for judgement by strangers.
 
-[Game Jam](https://itch.io/jam/python-game-jam-8)
+So I sign up.
+
+Don't panic
+-----------
 
 Theme: The Unknown.
 
