@@ -6,8 +6,25 @@ category: Blog
 status: published
 summary: Some initial thoughts on the first full day of the Jam
 
+Ideas
+-----
+
+We begin in the cab of a van. Player is young. just starting to help in a company of repo men.
+No phone coverage.
+
+Story will be mostly on rails, with some parse exploration.
+
+Missions/Tasks nee questions/answers ans Ask/Say syntax.
+
+Populate list data for input text.
+
+500 cues of SpeechMark?
+
+Too early to know how to structure scene files, so start with Dialogue in Python modules.
+Starting point: Balladeer example 12.
+
 Copy an Example
-===============
+---------------
 
 Example 12 is about styles and procedural dialogue.
 There's a slight possibility of including images, but not a priority right now.

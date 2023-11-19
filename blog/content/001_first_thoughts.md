@@ -23,32 +23,15 @@ to build a game and submit it for judgement by strangers.
 
 So I sign up.
 
-Don't panic
------------
+Set up to fail
+--------------
 
-Theme: The Unknown.
+I'm not stupid. I know this is a tall order. The competition is ten days long but I calculate I'll be lucky
+if I can average 2 hours a day amidst the other demands on my time. It's unlikely I'll be able to make anything
+very compelling. But it might provide another example demo for Balladeer.
 
-Some ideas (see below)
+The competition theme is announced. It's *The Unknown*.
 
-Watching the Rugby was the right thing to do.
+So I log in to Github, and I create a new public repository. I call it *Repo Of The Unknown*.
 
-Planning the next 10 days XXxxxxxXX
-
-Priority is CSS layout while I have access to a large screen.
-
-Ideas
------
-
-We begin in the cab of a van. Player is young. just starting to help in a company of repo men.
-No phone coverage.
-
-Story will be mostly on rails, with some parse exploration.
-
-Missions/Tasks nee questions/answers ans Ask/Say syntax.
-
-Populate list data for input text.
-
-500 cues of SpeechMark?
-
-Too early to know how to structure scene files, so start with Dialogue in Python modules.
-Starting point: Balladeer example 12.
+That will have to be all for now. The Rugby is on.
