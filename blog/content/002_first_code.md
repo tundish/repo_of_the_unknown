@@ -1,10 +1,10 @@
-title: #1: Starting point
-date: 2023-10-28 08:15
+title: #2: The Game Jam is On
+date: 2023-10-28 09:00
 author: tundish
 tags: python, balladeer, game jam
 category: Blog
 status: published
-summary: In which we get ourselves into a Jam.
+summary: Some initial thoughts on the first full day of the Jam
 
 Copy an Example
 ===============
