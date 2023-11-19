@@ -1,5 +1,5 @@
 title: #1: October
-date: 2023-10-28 08:15
+date: 2023-10-27
 author: tundish
 tags: python, balladeer, game jam
 category: Blog
@@ -14,7 +14,8 @@ I'm happy with it. The code feels pretty solid now.
 
 Maybe it could use just one more teaching example though. No ideas yet however.
 
-In any case, it's going to be a big weekend. England are playing South Africa in the semi-final of the Rugby World Cup.
+In any case, it's going to be a big weekend.
+New Zealand are playing South Africa in the final of the Rugby World Cup.
 Probably not the right time to begin a new writing project. Too many distractions right now.
 
 For some reason I visit Itch.io, the game hosting portal. And guess what? Today is the start of the
