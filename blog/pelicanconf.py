@@ -22,6 +22,8 @@ DEFAULT_LANG = "en"
 #PLUGIN_PATHS = ["pelican-plugins"]
 PLUGINS = ["readtime", "neighbors"]
 STATIC_PATHS = ["images"]
+
+ARTICLE_ORDER_BY = "date"
 # Article summary length on main index page
 SUMMARY_MAX_LENGTH = 100
 DEFAULT_PAGINATION = 10
