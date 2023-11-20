@@ -4,41 +4,18 @@ author: tundish
 tags: python, balladeer, game jam
 category: Blog
 status: published
-summary: Some initial thoughts on the first full day of the Jam
+summary: This is going to take a whole new program.
 
-Ideas
------
-
-We begin in the cab of a van. Player is young. just starting to help in a company of repo men.
-No phone coverage.
-
-Story will be mostly on rails, with some parse exploration.
-
-Missions/Tasks nee questions/answers ans Ask/Say syntax.
-
-Populate list data for input text.
-
-500 cues of SpeechMark?
+Repository
+----------
 
 Too early to know how to structure scene files, so start with Dialogue in Python modules.
 Starting point: Balladeer example 12.
 
-Copy an Example
----------------
-
 Example 12 is about styles and procedural dialogue.
 There's a slight possibility of including images, but not a priority right now.
 
-
 * Check PyPI for package name availability.
 * Use hatchling  https://pypi.org/project/hatchling/ as build backend.
-
+* [Conversation Trees](https://balladeer.readthedocs.io/en/latest/conversation.html)
 * Walk the dog.
-
-A
-: also knowm as a.
-: the first.
-
-B
-: comes after a.
-: neede for words like bum.
