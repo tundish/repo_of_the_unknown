@@ -1,4 +1,4 @@
-title: #3: Plotting
+title: #4: Plotting
 date: 2023-10-30 09:00
 author: tundish
 tags: python, balladeer, game jam
