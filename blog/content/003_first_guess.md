@@ -1,4 +1,4 @@
-title: #3: Panicking
+title: #3: Planning
 date: 2023-10-30 09:00
 author: tundish
 tags: python, balladeer, game jam
@@ -6,16 +6,22 @@ category: Blog
 status: published
 summary: There"s a lot needs doing.
 
-Conversation
-------------
+Dialogue
+--------
 
-We begin in the cab of a van. Player is young. just starting to help in a company of repo men.
-No phone coverage.
+Not much time. I want to be able to jot down scraps of dialogue whenever they occur to me during my working day.
+Organise and edit them in the evening.
+
+Clever coding will cost me. No time to debug.
+
+So mostly linear story, with some variations driven by player choices.
 
 Story will be mostly on rails, with some parse exploration.
 
-Missions/Tasks nee questions/answers ans Ask/Say syntax.
+I want to signpost two or three explicit missions for the player to tackle.
+I can use Balladeer's parser to implement questions/answers and an Ask/Say syntax.
 
+There's a trick I discovered a while ago that will come in useful.
 Populate list data for input text.
 
 500 cues of SpeechMark?
