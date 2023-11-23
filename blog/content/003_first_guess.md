@@ -4,13 +4,14 @@ author: tundish
 tags: python, balladeer, game jam
 category: Blog
 status: published
-summary: There"s a lot needs doing.
+summary: Pushed for time. In need of a strategy.
 
-Dialogue
---------
+Brevity
+-------
 
-Not much time. I want to be able to jot down scraps of dialogue whenever they occur to me during my working day.
-Organise and edit them in the evening.
+OK, a ten-day Jam will give me about 24 hours of working time. Not very much, so I need to be organised.
+I want to be able to jot down scraps of dialogue whenever they occur to me during my working day.
+I'll arrange and edit them in the evenings.
 
 Clever coding will cost me. No time to debug.
 
