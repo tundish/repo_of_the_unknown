@@ -1,14 +1,10 @@
-# ~/py3.11-blog/bin/pelican -t pelican-stirring content/
-
-
-
-
-DEFAULT_LANG = "en"
+import pelican
+from pelican.plugins import neighbors
+import readtime
 
 # SEE
 # https://github.com/aleylara/Peli-Kiera
 THEME = "Peli-Kiera"
-#THEME = "pelican-stirring"
 
 AUTHOR = "D. E. Haynes"
 SITENAME = "Repo of the Unknown"
@@ -19,8 +15,8 @@ PATH = "content"
 TIMEZONE = "Europe/London"
 DEFAULT_LANG = "en"
 
-#PLUGIN_PATHS = ["pelican-plugins"]
-PLUGINS = ["readtime", "neighbors"]
+# PLUGINS = ["pelican.plugins.neighbors", "readtime"]
+PLUGINS = [pelican.plugins.neighbors, readtime]
 STATIC_PATHS = ["images"]
 
 ARTICLE_ORDER_BY = "date"
@@ -43,3 +39,20 @@ SOCIAL = (
     ("github", "https://github.com/tundish"),
     ("youtube", "https://youtube.com"),
 )
+
+READTIME_WPM = {
+    "default": {
+        "wpm": 200,
+        "min_singular": "minute",
+        "min_plural": "minutes",
+        "sec_singular": "second",
+        "sec_plural": "seconds"
+    },
+    "en": {
+        "wpm": 220,
+        "min_singular": "minute",
+        "min_plural": "minutes",
+        "sec_singular": "second",
+        "sec_plural": "seconds"
+    }
+}
