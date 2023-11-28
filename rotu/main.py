@@ -22,6 +22,7 @@ from balladeer import Dialogue
 from balladeer import Page
 from balladeer import Session
 from balladeer import StoryBuilder
+from balladeer import Turn
 from balladeer.lite.app import About
 from balladeer.utils.themes import theme_page
 
@@ -132,7 +133,7 @@ class Narrative(Session):
     """
 
     def compose(
-        self, request, page: Page, story: StoryBuilder = None, turn: StoryBuilder.Turn = None
+        self, request, page: Page, story: StoryBuilder = None, turn: Turn = None
     ) -> Page:
         page = super().compose(request, page, story, turn)
 
