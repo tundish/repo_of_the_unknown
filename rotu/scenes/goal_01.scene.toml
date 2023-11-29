@@ -1,2 +1,10 @@
-#
+[GOAL]
+name = "goal_01"
+
+[DRAMA]
+type = "Conversation"
+
 [[_]]
+s='''
+<GOAL> I'm a Goal!
+'''

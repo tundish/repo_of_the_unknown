@@ -19,10 +19,14 @@
 import balladeer
 from balladeer import quick_start
 from balladeer import Dialogue
+from balladeer import Entity
+from balladeer import Grouping
+from balladeer import Loader
 from balladeer import Page
 from balladeer import Session
 from balladeer import StoryBuilder
 from balladeer import Turn
+from balladeer import WorldBuilder
 from balladeer.lite.app import About
 from balladeer.utils.themes import theme_page
 
@@ -86,35 +90,29 @@ Page.themes["blue"] = {
     },
 }
 
-story = StoryBuilder(
-    Dialogue("""
-    <DOUGAL?style=01&theme=grey> The voices were coming from that old factory on the hill.
-    You know, the one where they used to make treacle.
 
-    It's been empty for years but now it had lights on.
+class World(WorldBuilder):
 
-    """
-    ),
-    Dialogue("""
-    <DOUGAL?style=02&theme=grey> Well being as you know, a brave spirit, I thought I'd get a better
-    look at it all.
+    specs = set()
 
-    So, moving backwards so as to confuse anyone with evil intents into thinking
-    I was going forwards, I got myself with some cunning into a position of vantage.
+    def discover_spec_params(self, assets):
+        for item in assets.all:
+            if isinstance(item, Loader.Scene):
+                for role, table in item.tables.items():
+                    if isinstance(table, dict):
+                        yield frozenset(table.items())
 
-    """
-    ),
-    Dialogue("""
-    <DOUGAL?style=03&theme=blue> "What did I see?", you will ask.  "Not very much", I answer.
+    def build_to_spec(self, specs):
+        for params in specs:
+            yield Entity(**dict(params))
 
-    The old factory was there on top of the hill, but everything seemed
-    craggy and very sinister, and very _blue_.
+    def build(self):
+        if not self.specs:
+            self.assets = Grouping.typewise(Loader.discover(rotu))
+            self.specs.update(set(self.discover_spec_params(self.assets)))
 
-    And then I heard the voice again.
-
-    """
-    ),
-)
+        yield from []
+        yield from self.build_to_spec(self.specs)
 
 
 class Narrative(Session):
@@ -148,8 +146,10 @@ class Narrative(Session):
 
 
 def run():
-    print(theme_page().html)
-    quick_start(rotu, builder=story)
+    world = World()
+    story_builder = StoryBuilder(assets=world.assets, world=world)
+    #print(theme_page().html)
+    quick_start(rotu, builder=story_builder)
 
 
 if __name__ == "__main__":
