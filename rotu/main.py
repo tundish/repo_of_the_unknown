@@ -149,7 +149,7 @@ def run():
     world = World()
     story_builder = StoryBuilder(assets=world.assets, world=world)
     #print(theme_page().html)
-    quick_start(rotu, builder=story_builder)
+    quick_start(rotu, story_builder=story_builder)
 
 
 if __name__ == "__main__":
