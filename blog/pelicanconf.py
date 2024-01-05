@@ -1,6 +1,6 @@
 # SEE
 # https://github.com/aleylara/Peli-Kiera
-THEME = "Peli-Kiera"
+THEME = "themes/peli_kiera"
 
 AUTHOR = "D. E. Haynes"
 SITENAME = "Repo of the Unknown"

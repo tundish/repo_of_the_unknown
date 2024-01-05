@@ -1,4 +1,4 @@
-title: #2: The Game Jam is On
+title: #2: The Game Jam begins
 date: 2023-10-28 09:00
 author: tundish
 tags: python, balladeer, game jam
