@@ -1,5 +1,9 @@
-# SEE
+# TODO:
+# https://github.com/marketplace/actions/pelican-to-github-pages
+
+# Thanks to SamiE for Pelican's best-looking blog theme:
 # https://github.com/aleylara/Peli-Kiera
+
 THEME = "themes/peli_kiera"
 
 AUTHOR = "D. E. Haynes"
