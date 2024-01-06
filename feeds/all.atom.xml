@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Repo of the Unknown</title><link href="https://tundish.github.io/repo_of_the_unknown/" rel="alternate"></link><link href="https://tundish.github.io/repo_of_the_unknown/feeds/all.atom.xml" rel="self"></link><id>https://tundish.github.io/repo_of_the_unknown/</id><updated>2023-10-30T09:00:00+00:00</updated><subtitle>Interactive Fiction step-by-step in Python</subtitle><entry><title>#1: October</title><link href="https://tundish.github.io/repo_of_the_unknown/1-october.html" rel="alternate"></link><published>2023-10-27T00:00:00+01:00</published><updated>2023-10-27T00:00:00+01:00</updated><author><name>tundish</name></author><id>tag:tundish.github.io,2023-10-27:/repo_of_the_unknown/1-october.html</id><summary type="html">&lt;p&gt;In which we get ourselves into a Jam.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;An opportunity arises&lt;/h2&gt;
+&lt;p&gt;It's the end of October. I've been fixing a couple of bugs in &lt;a href="https://tundish.github.io/balladeer"&gt;Balladeer&lt;/a&gt;.
+I'm happy with it. The code feels pretty solid now.&lt;/p&gt;
+&lt;p&gt;Maybe it could use just one more teaching example though. No ideas yet however.&lt;/p&gt;
+&lt;p&gt;In any case, it's going to be a big weekend.
+New Zealand are playing South Africa in the final of the Rugby World Cup.
+Probably not the right time to begin a new writing project. Too many distractions right now.&lt;/p&gt;
+&lt;p&gt;For some reason I visit Itch.io, the game hosting portal. And guess what? Today is the start of the
+&lt;a href="https://itch.io/jam/python-game-jam-8"&gt;eighth Python Game Jam&lt;/a&gt;. An invitation to spend the next ten days in a race
+to build a game and submit it for judgement by strangers.&lt;/p&gt;
+&lt;p&gt;So I sign up.&lt;/p&gt;
+&lt;h2&gt;Set up to fail&lt;/h2&gt;
+&lt;p&gt;I'm not stupid. I know this is a tall order. The competition is ten days long but I calculate I'll be lucky
+if I can average 2 hours a day amidst the other demands on my time. It's unlikely I'll be able to make anything
+very compelling. But it might provide another example demo for Balladeer.&lt;/p&gt;
+&lt;p&gt;The competition theme is announced. It's &lt;em&gt;The Unknown&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;So I log in to Github, and I create a new public repository. I call it &lt;em&gt;Repo Of The Unknown&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;That will have to be all for now. The Rugby is on.&lt;/p&gt;</content><category term="Blog"></category><category term="python"></category><category term="balladeer"></category><category term="game jam"></category></entry><entry><title>#2: The Game Jam begins</title><link href="https://tundish.github.io/repo_of_the_unknown/2-the-game-jam-begins.html" rel="alternate"></link><published>2023-10-28T09:00:00+01:00</published><updated>2023-10-28T09:00:00+01:00</updated><author><name>tundish</name></author><id>tag:tundish.github.io,2023-10-28:/repo_of_the_unknown/2-the-game-jam-begins.html</id><summary type="html">&lt;p&gt;This is going to take a whole new program.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Repository&lt;/h2&gt;
+&lt;p&gt;Too early to know how to structure scene files, so start with Dialogue in Python modules.
+Starting point: Balladeer example 12.&lt;/p&gt;
+&lt;p&gt;Example 12 is about styles and procedural dialogue.
+There's a slight possibility of including images, but not a priority right now.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Check PyPI for package name availability.&lt;/li&gt;
+&lt;li&gt;Use hatchling  https://pypi.org/project/hatchling/ as build backend.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://balladeer.readthedocs.io/en/latest/conversation.html"&gt;Conversation Trees&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Walk the dog.&lt;/li&gt;
+&lt;/ul&gt;</content><category term="Blog"></category><category term="python"></category><category term="balladeer"></category><category term="game jam"></category></entry><entry><title>#3: Planning</title><link href="https://tundish.github.io/repo_of_the_unknown/3-planning.html" rel="alternate"></link><published>2023-10-30T09:00:00+00:00</published><updated>2023-10-30T09:00:00+00:00</updated><author><name>tundish</name></author><id>tag:tundish.github.io,2023-10-30:/repo_of_the_unknown/3-planning.html</id><summary type="html">&lt;p&gt;Pushed for time. In need of a strategy.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Brevity&lt;/h2&gt;
+&lt;p&gt;OK, a ten-day Jam will give me about 24 hours of working time. Not very much, so I need to be organised.
+I want to be able to jot down scraps of dialogue whenever they occur to me during my working day.
+I'll arrange and edit them in the evenings.&lt;/p&gt;
+&lt;p&gt;Clever coding will cost me. No time to debug.&lt;/p&gt;
+&lt;p&gt;So mostly linear story, with some variations driven by player choices.&lt;/p&gt;
+&lt;p&gt;Story will be mostly on rails, with some parse exploration.&lt;/p&gt;
+&lt;p&gt;I want to signpost two or three explicit missions for the player to tackle.
+I can use Balladeer's parser to implement questions/answers and an Ask/Say syntax.&lt;/p&gt;
+&lt;p&gt;There's a trick I discovered a while ago that will come in useful.
+Populate list data for input text.&lt;/p&gt;
+&lt;p&gt;500 cues of SpeechMark?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://balladeer.readthedocs.io/en/latest/conversation.html"&gt;Conversation Trees&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;tghing&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[ALAN]&lt;/span&gt;
+&lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Narrator&amp;quot;&lt;/span&gt;
+
+&lt;span class="k"&gt;[BETH]&lt;/span&gt;
+&lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;CatOwner&amp;quot;&lt;/span&gt;
+
+&lt;span class="k"&gt;[CONVERSATION]&lt;/span&gt;
+&lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Conversation&amp;quot;&lt;/span&gt;
+
+&lt;span class="k"&gt;[[_]]&lt;/span&gt;
+&lt;span class="n"&gt;if&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;CONVERSATION&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;state&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;
+&lt;span class="n"&gt;if&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;CONVERSATION&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tree&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kc"&gt;false&lt;/span&gt;
+&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;lt;ALAN&amp;gt; What shall we do?&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+
+&lt;span class="k"&gt;[[_]]&lt;/span&gt;
+&lt;span class="n"&gt;if&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;CONVERSATION&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;state&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;
+&lt;span class="n"&gt;if&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;CONVERSATION&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tree&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kc"&gt;false&lt;/span&gt;
+&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;lt;ALAN&amp;gt; Let&amp;quot;s practise our conversation skills.&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;lt;ALAN.branching&amp;gt; Maybe now&amp;quot;s a good time to ask {BETH.name} a question.&lt;/span&gt;
+&lt;span class="s2"&gt;    1. Ask about the weather&lt;/span&gt;
+&lt;span class="s2"&gt;    2. Ask about pets&lt;/span&gt;
+&lt;span class="s2"&gt;    3. Ask about football&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;lt;ALAN&amp;gt; I&amp;quot;ll let you carry on for a bit.&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+
+&lt;span class="k"&gt;[_.1]&lt;/span&gt;
+&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;lt;BETH&amp;gt; Well, you never know what&amp;quot;s it&amp;quot;s going to do next, do you?&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;lt;BETH.returning&amp;gt; I&amp;quot;ve never seen anything like it!&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+
+&lt;span class="k"&gt;[_.2]&lt;/span&gt;
+&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;lt;BETH.branching&amp;gt; I&amp;quot;ve got two lovely cats.&lt;/span&gt;
+&lt;span class="s2"&gt;    1. Ask about Charlie&lt;/span&gt;
+&lt;span class="s2"&gt;    2. Ask about Doodles&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+
+&lt;span class="k"&gt;[_.2.1]&lt;/span&gt;
+&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;lt;BETH&amp;gt; Charlie is the elder cat. He&amp;quot;s a Marmalade. Very laid back.&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+
+&lt;span class="k"&gt;[_.2.2]&lt;/span&gt;
+&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;lt;BETH.returning@CONVERSATION&amp;gt; Oh my goodness, Doodles. Always up to mischief!&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+
+&lt;span class="k"&gt;[_.3]&lt;/span&gt;
+&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;lt;BETH&amp;gt; I don&amp;quot;t know anything about football at all.&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+
+&lt;span class="k"&gt;[[_]]&lt;/span&gt;
+&lt;span class="n"&gt;if&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;CONVERSATION&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;state&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;
+&lt;span class="n"&gt;if&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;CONVERSATION&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tree&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kc"&gt;false&lt;/span&gt;
+&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;lt;ALAN&amp;gt; OK. Conversation over.&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Blog"></category><category term="python"></category><category term="balladeer"></category><category term="game jam"></category></entry></feed>
