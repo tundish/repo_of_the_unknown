@@ -7,7 +7,7 @@ status: published
 summary: In which we get ourselves into a Jam.
 
 An opportunity arises
----------------------
+=====================
 
 It's the end of October. I've been fixing a couple of bugs in [Balladeer](https://tundish.github.io/balladeer).
 I'm happy with it. The code feels pretty solid now.
