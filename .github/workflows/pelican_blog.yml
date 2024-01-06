@@ -3,8 +3,7 @@ name: build-pelican-pages
 on:
   # Trigger the workflow on push on main branch,
   push:
-    branches:
-      - main
+    branches: [ master ]
 
 jobs:
   build:
