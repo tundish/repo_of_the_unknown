@@ -1,4 +1,4 @@
-ROTU
+RotU
 ====
 
 History
@@ -13,8 +13,8 @@ So I parked the story ideas and went back to work on [Balladeer](https://tundish
 add the functionality I needed. The good news is that Balladeer now supports
 [Conversation Trees](https://balladeer.readthedocs.io/en/latest/conversation.html)!
 
-The downside was that I ran out of time to submit my Jam entry. I still have the notes I made, so this
-repository will remain a work-in-progress for a while.
+I ran out of time to submit my Jam entry. Nevertheless it was a worthwhile exercise, and I propmised
+myself that I wouldn't let all my hard work go to waste.
 
 Today
 -----
