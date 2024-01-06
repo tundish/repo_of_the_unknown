@@ -6,3 +6,5 @@ markdown-it-py
 MarkupSafe
 mdurl
 pelican
+pelican-neighbors
+pelican-readtime
