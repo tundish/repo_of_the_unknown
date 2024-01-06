@@ -13,7 +13,7 @@ So I parked the story ideas and went back to work on [Balladeer](https://tundish
 add the functionality I needed. The good news is that Balladeer now supports
 [Conversation Trees](https://balladeer.readthedocs.io/en/latest/conversation.html)!
 
-I ran out of time to submit my Jam entry. Nevertheless it was a worthwhile exercise, and I propmised
+I ran out of time to submit my Jam entry. Nevertheless it was a worthwhile exercise, and I promised
 myself that I wouldn't let all my hard work go to waste.
 
 Today
