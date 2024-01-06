@@ -2,6 +2,7 @@ name: build-pelican-pages
 
 on:
   release:
+    types: [published]
 
 jobs:
   build:
