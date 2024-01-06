@@ -3,7 +3,7 @@ date: 2023-11-01 09:00
 author: tundish
 tags: python, balladeer, game jam
 category: Blog
-status: published
+status: draft
 summary: Starting to imagine plotlines.
 
 Ideas
