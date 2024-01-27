@@ -102,17 +102,21 @@ class World(WorldBuilder):
                     if isinstance(table, dict):
                         yield frozenset(table.items())
 
-    def build_to_spec(self, specs):
+    def build_to_spec(self, specs, *types):
         for params in specs:
-            yield Entity(**dict(params))
+            kwargs = dict(params)
+            if kwargs.get("type") in types:
+                yield Entity(**kwargs)
 
     def build(self):
         if not self.specs:
             self.assets = Grouping.typewise(Loader.discover(rotu))
             self.specs.update(set(self.discover_spec_params(self.assets)))
 
-        yield from []
-        yield from self.build_to_spec(self.specs)
+        yield from [
+            Entity(names=["Thackaray"], type="NPC"),
+        ]
+        yield from self.build_to_spec(self.specs, "Goal")
 
 
 class Narrative(Session):
@@ -148,6 +152,7 @@ class Narrative(Session):
 def run():
     world = World()
     story_builder = StoryBuilder(assets=world.assets, world=world)
+    print(story_builder.context.ensemble)
     #print(theme_page().html)
     quick_start(rotu, story_builder=story_builder)
 
