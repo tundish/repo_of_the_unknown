@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf8
 
-# Copyright 2023 D E Haynes
+# Copyright 2024 D E Haynes
 
 # This file is part of rotu.
 # 
@@ -16,7 +16,10 @@
 # You should have received a copy of the GNU Affero General Public License along with Rotu.
 # If not, see <https://www.gnu.org/licenses/>.
 
+import sys
+
 import balladeer
+from balladeer import discover_assets
 from balladeer import quick_start
 from balladeer import Dialogue
 from balladeer import Entity
@@ -28,7 +31,7 @@ from balladeer import StoryBuilder
 from balladeer import Turn
 from balladeer import WorldBuilder
 from balladeer.lite.app import About
-from balladeer.utils.themes import theme_page
+from balladeer.utils.themes import static_page
 
 from starlette.responses import PlainTextResponse
 
@@ -92,31 +95,7 @@ Page.themes["blue"] = {
 
 
 class World(WorldBuilder):
-
-    specs = set()
-
-    def discover_spec_params(self, assets):
-        for item in assets.all:
-            if isinstance(item, Loader.Scene):
-                for role, table in item.tables.items():
-                    if isinstance(table, dict):
-                        yield frozenset(table.items())
-
-    def build_to_spec(self, specs, *types):
-        for params in specs:
-            kwargs = dict(params)
-            if kwargs.get("type") in types:
-                yield Entity(**kwargs)
-
-    def build(self):
-        if not self.specs:
-            self.assets = Grouping.typewise(Loader.discover(rotu))
-            self.specs.update(set(self.discover_spec_params(self.assets)))
-
-        yield from [
-            Entity(names=["Thackaray"], type="NPC"),
-        ]
-        yield from self.build_to_spec(self.specs, "Goal")
+    pass
 
 
 class Narrative(Session):
@@ -150,10 +129,12 @@ class Narrative(Session):
 
 
 def run():
-    world = World()
-    story_builder = StoryBuilder(assets=world.assets, world=world)
-    print(story_builder.context.ensemble)
-    #print(theme_page().html)
+    assets = discover_assets(rotu, "")
+    world = World(assets=assets)
+    story_builder = StoryBuilder(assets=assets, world=world)
+    print(world.specs, file=sys.stderr)
+    #print(static_page().html)
+
     quick_start(rotu, story_builder=story_builder)
 
 
