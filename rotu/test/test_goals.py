@@ -18,8 +18,17 @@
 
 import unittest
 
+from balladeer import discover_assets
+
+import rotu
+from rotu.main import World
+
 
 class GoalTests(unittest.TestCase):
 
+    def setUp(self):
+        self.assets = discover_assets(rotu, "")
+        self.world = World(assets=self.assets)
+
     def test_build_story(self):
-        self.fail()
+        self.fail(self.world.specs)
