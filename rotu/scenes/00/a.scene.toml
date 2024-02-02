@@ -1,11 +1,12 @@
 [GOAL]
-name = "goal_01"
+name = "goal_00a"
 type = "Goal"
+sketch = "Figure out where you are."
 
 [DRAMA]
-type = "Conversation"
+type = "Interaction"
 
 [[_]]
 s="""
-<GOAL> I'm a Goal called {GOAL.name}!
+<GOAL> I am {GOAL.name}. {GOAL.sketch}
 """
