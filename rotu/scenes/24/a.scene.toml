@@ -1,0 +1,6 @@
+[GOAL]
+name = "goal_24a"
+type = "Goal"
+sketch "Drive the van back home."
+
+
