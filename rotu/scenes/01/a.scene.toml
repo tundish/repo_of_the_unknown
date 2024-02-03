@@ -1,5 +1,9 @@
 [GOAL]
 name = "goal_01a"
-type = "Goal"
+types = ["Goal", "01", "a"]
 sketch = "Think about how to get paid."
 
+[[_]]
+s="""
+<GOAL> I am {GOAL.name}. {GOAL.sketch}
+"""
