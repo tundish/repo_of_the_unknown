@@ -98,6 +98,10 @@ class World(WorldBuilder):
     pass
 
 
+class Story(StoryBuilder):
+    pass
+
+
 class Narrative(Session):
     # TODO for options=list(story.context.options(ensemble).keys())) eg:
     """
@@ -131,7 +135,7 @@ class Narrative(Session):
 def run():
     assets = discover_assets(rotu, "")
     world = World(assets=assets)
-    story_builder = StoryBuilder(assets=assets, world=world)
+    story = Story(assets=assets, world=world)
     print(world.typewise, file=sys.stderr)
     #print(static_page().html)
 

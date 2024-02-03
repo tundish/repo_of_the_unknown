@@ -3,4 +3,7 @@ name = "goal_24a"
 type = "Goal"
 sketch "Drive the van back home."
 
-
+[[_]]
+s="""
+<GOAL> I am {GOAL.name}. {GOAL.sketch}
+"""

@@ -16,19 +16,38 @@
 # You should have received a copy of the GNU Affero General Public License along with Rotu.
 # If not, see <https://www.gnu.org/licenses/>.
 
+from collections import Counter
+from types import SimpleNamespace
 import unittest
 
 from balladeer import discover_assets
 
 import rotu
+from rotu.main import Story
 from rotu.main import World
 
 
 class GoalTests(unittest.TestCase):
 
+    inputs = SimpleNamespace(
+        a=[""] * 5,
+    )
+
     def setUp(self):
         assets = discover_assets(rotu, "")
         self.world = World(assets=assets)
+        self.assertEqual(len(self.world.specs), 4)
 
     def test_build_story(self):
-        self.fail(self.world.specs)
+        witness = Counter()
+        story = Story(assets=self.world.assets, world=self.world)
+        for n, i in enumerate(self.inputs.a):
+            with self.subTest(i=i, n=n):
+                with story.turn() as turn:
+                    witness[tuple(turn.blocks)] += 1
+                    ensemble = story.context.ensemble
+                    options = story.context.options(ensemble)
+                    print(options)
+                    story.action(i)
+
+        self.assertEqual(len(witness), n)
