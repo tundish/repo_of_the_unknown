@@ -7,6 +7,7 @@ sketch = "figure out where you are"
 type = "Interaction"
 
 [[_]]
+if.DRAMA.tree = false
 s="""
 <GOAL> I am {GOAL.name}.
 <GOAL.branching> Do you want to {GOAL.sketch}?
@@ -15,7 +16,7 @@ s="""
 """
 [_.1]
 s="""
-<GOAL> Good.
+<GOAL.returning.declaring@GOAL> Good.
 """
 [_.2]
 s="""

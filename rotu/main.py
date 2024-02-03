@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU Affero General Public License along with Rotu.
 # If not, see <https://www.gnu.org/licenses/>.
 
+from collections.abc import Generator
 import sys
 import textwrap
 
@@ -76,7 +77,10 @@ class Interaction(SpeechTables, Drama):
 
 
 class World(WorldBuilder):
-    pass
+    def build(self) -> Generator[Entity]:
+        for entity in self.build_to_spec(self.specs):
+            if "Goal" in entity.types:
+                yield entity
 
 
 class Story(StoryBuilder):
