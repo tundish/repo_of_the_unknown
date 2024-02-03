@@ -20,5 +20,5 @@ s="""
 """
 [_.2]
 s="""
-<GOAL> Suit yourself.
+<GOAL.returning> Suit yourself.
 """
