@@ -17,16 +17,17 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 import sys
+import textwrap
 
 import balladeer
 from balladeer import discover_assets
 from balladeer import quick_start
 from balladeer import Dialogue
+from balladeer import Drama
 from balladeer import Entity
-from balladeer import Grouping
-from balladeer import Loader
 from balladeer import Page
 from balladeer import Session
+from balladeer import SpeechTables
 from balladeer import StoryBuilder
 from balladeer import Turn
 from balladeer import WorldBuilder
@@ -43,30 +44,6 @@ Usage:
     python -m rotu.main > themes.html
 
 """
-
-ex = (
-Dialogue("""
-<NARRATOR.elaborating@ACTOR> Maybe now's a good time to ask {ACTOR.name} a question.
-    1. Ask about LAAR
-    2. Ask about Thackaray
-    3. Ask about Lewis
-"""),
-[
-]
-)
-
-
-class AboutThisProject(About):
-    async def get(self, request):
-        return PlainTextResponse(
-            "\n".join(
-                (
-                    "©2023 D E Haynes",
-                    f"Balladeer version {balladeer.__version__}",
-                    f"Rotu version {rotu.__version__}",
-                )
-            )
-        )
 
 
 Page.themes["grey"] = {
@@ -94,7 +71,15 @@ Page.themes["blue"] = {
 }
 
 
+class Interaction(SpeechTables, Drama):
+    pass
+
+
 class World(WorldBuilder):
+    pass
+
+
+class Story(StoryBuilder):
     pass
 
 
@@ -131,11 +116,15 @@ class Narrative(Session):
 def run():
     assets = discover_assets(rotu, "")
     world = World(assets=assets)
-    story_builder = StoryBuilder(assets=assets, world=world)
-    print(world.specs, file=sys.stderr)
-    #print(static_page().html)
+    story = Story(assets=assets, world=world)
+    print(static_page().html)
 
-    quick_start(rotu, story_builder=story_builder)
+    about = textwrap.dedent(f"""
+    ©2024 D E Haynes
+    Balladeer version {balladeer.__version__}
+    Rotu version {rotu.__version__}
+    """)
+    quick_start(rotu, story_builder=story, about=about)
 
 
 if __name__ == "__main__":

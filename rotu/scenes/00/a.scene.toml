@@ -1,6 +1,6 @@
 [GOAL]
 name = "goal_00a"
-type = "Goal"
+types = ["Goal", "00", "a"]
 sketch = "Figure out where you are."
 
 [DRAMA]
