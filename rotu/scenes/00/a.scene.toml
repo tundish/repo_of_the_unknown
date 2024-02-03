@@ -1,12 +1,23 @@
 [GOAL]
 name = "goal_00a"
 types = ["Goal", "00", "a"]
-sketch = "Figure out where you are."
+sketch = "figure out where you are"
 
 [DRAMA]
 type = "Interaction"
 
 [[_]]
 s="""
-<GOAL> I am {GOAL.name}. {GOAL.sketch}
+<GOAL> I am {GOAL.name}.
+<GOAL.branching> Do you want to {GOAL.sketch}?
+    1. Yes
+    2. No
+"""
+[_.1]
+s="""
+<GOAL> Good.
+"""
+[_.2]
+s="""
+<GOAL> Suit yourself.
 """

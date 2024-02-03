@@ -1,7 +1,7 @@
 [GOAL]
 name = "goal_01a"
 types = ["Goal", "01", "a"]
-sketch = "Think about how to get paid."
+sketch = "think about how to get paid"
 
 [[_]]
 s="""
