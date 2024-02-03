@@ -30,7 +30,12 @@ from rotu.main import World
 class GoalTests(unittest.TestCase):
 
     inputs = SimpleNamespace(
-        a=[""] * 5,
+        a=(
+            ("goal_00a", ""),
+            ("goal_01a", ""),
+            ("goal_02a", ""),
+            ("goal_24a", ""),
+        ),
     )
 
     def setUp(self):
@@ -41,13 +46,14 @@ class GoalTests(unittest.TestCase):
     def test_build_story(self):
         witness = Counter()
         story = Story(assets=self.world.assets, world=self.world)
-        for n, i in enumerate(self.inputs.a):
+        for n, (g, i) in enumerate(self.inputs.a):
             with self.subTest(i=i, n=n):
                 with story.turn() as turn:
                     witness[tuple(turn.blocks)] += 1
                     ensemble = story.context.ensemble
                     options = story.context.options(ensemble)
-                    print(options)
+                    self.assertEqual(turn.roles["GOAL"].name, g)
+                    self.assertIn(i, options)
                     story.action(i)
 
         self.assertEqual(len(witness), n)
