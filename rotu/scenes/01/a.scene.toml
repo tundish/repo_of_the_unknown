@@ -3,7 +3,26 @@ name = "goal_01a"
 types = ["Goal", "01", "a"]
 sketch = "think about how to get paid"
 
+[GOAL_00A]
+types = ["Goal", "00", "a"]
+state = "Fruition.completion"
+
+[DRAMA]
+type = "Interaction"
+
 [[_]]
+if.DRAMA.tree = false
 s="""
-<GOAL> I am {GOAL.name}. {GOAL.sketch}
+<GOAL> I am {GOAL.name}.
+<GOAL.branching> Do you want to {GOAL.sketch}?
+    1. Yes
+    2. No
+"""
+[_.1]
+s="""
+<.returning.declaring@GOAL> Good.
+"""
+[_.2]
+s="""
+<GOAL.returning> Suit yourself.
 """

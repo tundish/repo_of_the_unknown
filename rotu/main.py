@@ -69,13 +69,13 @@ Page.themes["blue"] = {
 
 class Interaction(SpeechTables, Drama):
     def on_declaring(self, entity: Entity, *args: tuple[Entity], **kwargs):
-        print("Declaring!", file=sys.stderr)
+        entity.set_state(Fruition.completion)
 
 
 class World(WorldBuilder):
     def build(self) -> Generator[Entity]:
         for entity in self.build_to_spec(self.specs):
-            if "Goal" in entity.types:
+            if entity.names and "Goal" in entity.types:
                 yield entity.set_state(Fruition.inception)
 
 

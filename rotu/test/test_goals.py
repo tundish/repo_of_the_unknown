@@ -21,6 +21,7 @@ from types import SimpleNamespace
 import unittest
 
 from balladeer import discover_assets
+from balladeer import Entity
 
 import rotu
 from rotu.main import Story
@@ -32,7 +33,7 @@ class GoalTests(unittest.TestCase):
     inputs = SimpleNamespace(
         a=(
             ("goal_00a", "yes"),
-            ("goal_01a", ""),
+            ("goal_01a", "yes"),
             ("goal_02a", ""),
             ("goal_24a", ""),
         ),
@@ -41,7 +42,6 @@ class GoalTests(unittest.TestCase):
     def setUp(self):
         assets = discover_assets(rotu, "")
         self.world = World(assets=assets)
-        self.assertEqual(len(self.world.specs), 4)
         self.assertEqual(len(self.world.typewise["Goal"]), 4, self.world.typewise["Goal"])
 
     def test_build_story(self):

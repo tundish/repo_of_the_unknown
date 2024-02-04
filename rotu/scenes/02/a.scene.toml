@@ -3,6 +3,10 @@ name = "goal_02a"
 types = ["Goal", "02", "a"]
 sketch = "drop off in Archenfield"
 
+[GOAL_01A]
+types = ["Goal", "01", "a"]
+state = "Fruition.completion"
+
 [[_]]
 s="""
 <GOAL> I am {GOAL.name}. {GOAL.sketch}

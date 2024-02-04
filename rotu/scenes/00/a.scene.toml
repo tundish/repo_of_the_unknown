@@ -16,7 +16,7 @@ s="""
 """
 [_.1]
 s="""
-<GOAL.returning.declaring@GOAL> Good.
+<.returning.declaring@GOAL> Good.
 """
 [_.2]
 s="""
