@@ -2,6 +2,7 @@
 name = "goal_01a"
 types = ["Goal", "01", "a"]
 sketch = "think about how to get paid"
+state = "Fruition.inception"
 
 [GOAL_00A]
 types = ["Goal", "00", "a"]
@@ -20,7 +21,7 @@ s="""
 """
 [_.1]
 s="""
-<.returning.declaring@GOAL> Good.
+<GOAL.returning.declaring@GOAL> Good.
 """
 [_.2]
 s="""

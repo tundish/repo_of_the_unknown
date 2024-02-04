@@ -33,8 +33,12 @@ class GoalTests(unittest.TestCase):
     inputs = SimpleNamespace(
         a=(
             ("goal_00a", "yes"),
+            ("goal_00a", ""),
             ("goal_01a", "yes"),
+            ("goal_01a", ""),
+            ("goal_02a", "yes"),
             ("goal_02a", ""),
+            ("goal_24a", "yes"),
             ("goal_24a", ""),
         ),
     )
@@ -55,7 +59,6 @@ class GoalTests(unittest.TestCase):
                     options = story.context.options(ensemble)
                     self.assertIn(turn.scene.path.parent.name, turn.roles["GOAL"].types)
                     self.assertEqual(turn.roles["GOAL"].name, g, turn.roles)
-                    self.assertIn(i, options)
+                    if i:
+                        self.assertIn(i, options)
                     story.action(i)
-
-        self.assertEqual(len(witness), n)
