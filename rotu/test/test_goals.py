@@ -31,7 +31,7 @@ class GoalTests(unittest.TestCase):
 
     inputs = SimpleNamespace(
         a=(
-            ("goal_00a", ""),
+            ("goal_00a", "yes"),
             ("goal_01a", ""),
             ("goal_02a", ""),
             ("goal_24a", ""),
@@ -42,6 +42,7 @@ class GoalTests(unittest.TestCase):
         assets = discover_assets(rotu, "")
         self.world = World(assets=assets)
         self.assertEqual(len(self.world.specs), 4)
+        self.assertEqual(len(self.world.typewise["Goal"]), 4, self.world.typewise["Goal"])
 
     def test_build_story(self):
         witness = Counter()

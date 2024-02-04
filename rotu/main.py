@@ -29,6 +29,7 @@ from balladeer import Page
 from balladeer import SpeechTables
 from balladeer import StoryBuilder
 from balladeer import WorldBuilder
+from balladeer.lite.types import Fruition
 from balladeer.utils.themes import static_page
 
 import rotu
@@ -75,7 +76,7 @@ class World(WorldBuilder):
     def build(self) -> Generator[Entity]:
         for entity in self.build_to_spec(self.specs):
             if "Goal" in entity.types:
-                yield entity
+                yield entity.set_state(Fruition.inception)
 
 
 class Story(StoryBuilder):
