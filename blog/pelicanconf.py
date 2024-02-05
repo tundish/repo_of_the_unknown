@@ -1,6 +1,3 @@
-# TODO:
-# https://github.com/marketplace/actions/pelican-to-github-pages
-
 # Thanks to SamiE for Pelican's best-looking blog theme:
 # https://github.com/aleylara/Peli-Kiera
 
@@ -9,7 +6,7 @@ THEME = "themes/peli_kiera"
 AUTHOR = "D. E. Haynes"
 SITENAME = "Repo of the Unknown"
 SITEURL = "https://tundish.github.io/repo_of_the_unknown"
-COPYRIGHT = "2023"
+COPYRIGHT = "2024"
 SITESUBTITLE = "Interactive Fiction step-by-step in Python"
 PATH = "content"
 TIMEZONE = "Europe/London"
