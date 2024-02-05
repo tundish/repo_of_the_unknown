@@ -11,7 +11,7 @@ and quickly realised I would need a [Dialogue Tree](https://en.wikipedia.org/wik
 
 So I parked the story ideas and went back to work on [Balladeer](https://tundish.github.io/balladeer/) to
 add the functionality I needed. The good news is that Balladeer now supports
-[Conversation Trees](https://balladeer.readthedocs.io/en/latest/conversation.html)!
+[Interaction Trees](https://balladeer.readthedocs.io/en/latest/interaction.html)!
 
 I ran out of time to submit my Jam entry. Nevertheless it was a worthwhile exercise, and I promised
 myself that I wouldn't let all my hard work go to waste.
