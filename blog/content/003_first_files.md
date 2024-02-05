@@ -3,7 +3,7 @@ date: 2023-10-30 09:00
 author: tundish
 tags: python, balladeer, game jam
 category: Blog
-status: published
+status: draft
 summary: Pushed for time. In need of a strategy.
 
 Brevity
