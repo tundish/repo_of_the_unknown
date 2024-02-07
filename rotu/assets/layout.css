@@ -8,12 +8,10 @@ text-align: center;
 max-width: 42rem;
 }
 
-main {
-flex: 1;
-}
-
 blockquote {
-font-family: cursive;
+color: var(--ballad-ink-lolight, silver);
+font-family: "open sans", sans-serif;
+list-style-position: inside;
 margin: 0 1.6rem 0 1.6rem;
 padding: 1.4rem 0 2rem 0;
 }
@@ -22,14 +20,29 @@ p {
 padding: inherit;
 }
 
+blockquote ol{
+margin-left: auto;
+margin-right: auto;
+text-align: left;
+width: 85%;
+}
+
+blockquote ol li {
+margin-bottom: 0.6rem;
+}
+
+blockquote ol li p {
+display: inline-block;
+}
+
 button {
-font-family: cursive;
+font-family: "open sans", sans-serif;
 padding: 1.2rem 3rem 1.2rem 3rem;
 width: 50%;
 }
 
 input {
-font-family: cursive;
+font-family: "open sans", sans-serif;
 margin-bottom: 12rem;
 margin-top: 0.5rem;
 padding: 1.2rem 3rem 1.2rem 3rem;
