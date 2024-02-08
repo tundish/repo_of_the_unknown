@@ -26,6 +26,6 @@ That's when I realised the benefit of a [dialogue tree](https://en.wikipedia.org
 And since at the time Balladeer didn't offer such a feature, I spent the rest of the week building one.
 
 It was the best thing that could have happened. I'm very pleased with the new
-[Interactions](https://balladeer.readthedocs.io/en/latest/interaction.html) system. So
+[Interaction](https://balladeer.readthedocs.io/en/latest/interaction.html) system. So
 [thankyou](https://itch.io/jam/python-game-jam-8/topic/3266238/thanks-for-hosting-the-jam-and-good-luck-to-those-hoping-to-finish)
 to the Python Game Jam.
