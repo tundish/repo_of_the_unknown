@@ -24,6 +24,7 @@ import balladeer
 from balladeer import discover_assets
 from balladeer import quick_start
 from balladeer import Drama
+from balladeer import Detail
 from balladeer import Entity
 from balladeer import Page
 from balladeer import SpeechTables
@@ -70,6 +71,13 @@ Page.themes["blue"] = {
 class Interaction(SpeechTables, Drama):
     def on_declaring(self, entity: Entity, *args: tuple[Entity], **kwargs):
         entity.set_state(Fruition.completion)
+
+    def do_info(self, this, text, director, *args, **kwargs):
+        """
+        info | i
+
+        """
+        self.set_state(Detail.info)
 
 
 class World(WorldBuilder):

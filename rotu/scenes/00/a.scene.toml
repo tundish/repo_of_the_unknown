@@ -8,6 +8,12 @@ state = "Fruition.inception"
 type = "Interaction"
 
 [[_]]
+if.DRAMA.states.Detail = ["goal", "info"]
+s="""
+<> You should {GOAL.description}.
+"""
+
+[[_]]
 if.DRAMA.tree = false
 s="""
 <GOAL> I am {GOAL.name}.
