@@ -8,7 +8,7 @@ state = "Fruition.inception"
 type = "Interaction"
 
 [[_]]
-if.DRAMA.states.Detail = ["goal", "info"]
+if.DRAMA.states.Detail = ["goal"]
 s="""
 <> You should {GOAL.description}.
 """

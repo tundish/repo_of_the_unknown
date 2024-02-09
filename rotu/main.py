@@ -27,6 +27,7 @@ from balladeer import Drama
 from balladeer import Detail
 from balladeer import Entity
 from balladeer import Page
+from balladeer import Prologue
 from balladeer import SpeechTables
 from balladeer import StoryBuilder
 from balladeer import WorldBuilder
@@ -77,8 +78,14 @@ class Interaction(SpeechTables, Drama):
         info | i
 
         """
+        self.tree = None
         self.set_state(Detail.info)
-
+        elaboration = self.world.statewise[str(Fruition.elaboration)]
+        discussion = self.world.statewise[str(Fruition.discussion)]
+        construction = self.world.statewise[str(Fruition.construction)]
+        if elaboration:
+            items = "\n".join(f"+ {i.description}." for i in elaboration)
+            yield Prologue(f"<> You should maybe:\n{items}")
 
 class World(WorldBuilder):
     def build(self) -> Generator[Entity]:
