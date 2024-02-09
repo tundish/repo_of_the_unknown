@@ -1,5 +1,5 @@
-title: #4: Plotting
-date: 2023-11-01 09:00
+title: #3: Plotting
+date: 2024-02-09 18:00
 author: tundish
 tags: python, balladeer, game jam
 category: Blog
