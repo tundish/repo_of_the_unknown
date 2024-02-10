@@ -2,7 +2,7 @@
 name = "goal_02a"
 types = ["Goal", "02", "a"]
 sketch = "drop off in Archenfield"
-state = "Fruition.inception"
+state = "Fruition.elaboration"
 
 [GOAL_01A]
 types = ["Goal", "01", "a"]

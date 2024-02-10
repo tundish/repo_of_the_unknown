@@ -26,6 +26,7 @@ from balladeer import quick_start
 from balladeer import Drama
 from balladeer import Detail
 from balladeer import Entity
+from balladeer import Epilogue
 from balladeer import Page
 from balladeer import Prologue
 from balladeer import SpeechTables
@@ -84,14 +85,17 @@ class Interaction(SpeechTables, Drama):
         discussion = self.world.statewise[str(Fruition.discussion)]
         construction = self.world.statewise[str(Fruition.construction)]
         if elaboration:
-            items = "\n".join(f"+ {i.description}." for i in elaboration)
-            yield Prologue(f"<> You should maybe:\n{items}")
+            items = "\n".join(f"+ {i.description.capitalize()}." for i in elaboration)
+            yield Epilogue(f"<> You should maybe:\n{items}")
 
 class World(WorldBuilder):
     def build(self) -> Generator[Entity]:
         for entity in self.build_to_spec(self.specs):
             if entity.names and "Goal" in entity.types:
-                yield entity.set_state(Fruition.inception)
+                if "goal_00a" in entity.names:
+                    yield entity.set_state(Fruition.elaboration)
+                else:
+                    yield entity.set_state(Fruition.inception)
 
 
 class Story(StoryBuilder):

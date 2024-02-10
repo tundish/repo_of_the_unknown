@@ -2,16 +2,10 @@
 name = "goal_00a"
 types = ["Goal", "00", "a"]
 sketch = "figure out where you are"
-state = "Fruition.inception"
+state = "Fruition.elaboration"
 
 [DRAMA]
 type = "Interaction"
-
-[[_]]
-if.DRAMA.states.Detail = ["goal"]
-s="""
-<> You should {GOAL.description}.
-"""
 
 [[_]]
 if.DRAMA.tree = false

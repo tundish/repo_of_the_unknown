@@ -1,0 +1,11 @@
+# Responses to Drama detail
+
+[DRAMA]
+type = "Interaction"
+states.Detail = ["goal", "info"]
+
+[[_]]
+s="""
+<> General Information
+"""
+
