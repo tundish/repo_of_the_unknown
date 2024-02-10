@@ -109,6 +109,7 @@ class Interaction(SpeechTables, Drama):
             )
             yield Epilogue(f"<> You should maybe:\n{items}")
 
+
 class World(WorldBuilder):
     def build(self) -> Generator[Entity]:
         for entity in self.build_to_spec(self.specs):
