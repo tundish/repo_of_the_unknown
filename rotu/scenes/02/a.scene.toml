@@ -4,9 +4,8 @@ types = ["Goal", "02", "a"]
 sketch = "drop off in Archenfield"
 state = "Fruition.elaboration"
 
-[GOAL_01A]
-types = ["Goal", "01", "a"]
-state = "Fruition.completion"
+[GOAL_24A]
+types = ["Goal", "24", "a"]
 
 [DRAMA]
 type = "Interaction"
@@ -22,6 +21,7 @@ s="""
 [_.1]
 s="""
 <GOAL.returning.declaring@GOAL> Good.
+<GOAL.proposing@GOAL_24A> On to the next, then.
 """
 [_.2]
 s="""

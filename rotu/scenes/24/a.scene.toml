@@ -4,10 +4,6 @@ types = ["Goal", "24", "a"]
 sketch = "drive the van back home"
 state = "Fruition.elaboration"
 
-[GOAL_02A]
-types = ["Goal", "02", "a"]
-state = "Fruition.completion"
-
 [DRAMA]
 type = "Interaction"
 
