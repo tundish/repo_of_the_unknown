@@ -27,9 +27,9 @@ So I sign up.
 Set up to fail
 --------------
 
-I know this is a tall order. The competition is ten days long but I calculate I'll be lucky
+I know this is a tall order. The competition is only ten days long. I calculate I'll be lucky
 if I can average 2 hours a day amidst the other demands on my time. It's unlikely I'll be able to make anything
-very compelling. But it might provide another example demo for Balladeer.
+very compelling. But it might generate that missing demo for Balladeer.
 
 The competition theme is announced. It's *The Unknown*.
 
