@@ -12,7 +12,7 @@ An opportunity arises
 It's the end of October. I've been fixing a couple of bugs in [Balladeer](https://tundish.github.io/balladeer).
 I'm happy with it. The code feels pretty solid now.
 
-Maybe it could use just one more teaching example though. No ideas yet however.
+Maybe it could use just one more teaching example? No ideas yet, however.
 
 In any case, it's going to be a big weekend.
 New Zealand are playing South Africa in the final of the Rugby World Cup.
