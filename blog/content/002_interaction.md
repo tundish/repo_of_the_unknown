@@ -19,7 +19,8 @@ inside of a speeding vehicle.
 A new possibility for the word *repo*. Two characters in a van on the way to a job. I began to imagine
 some dialogue. Which is the player; the driver or the mate?
 
-Our player needs a few moments to settle in. We want some workmanlike banter to reveal the initial premise.
+We have to give the player a few moments to settle in.
+We want some workmanlike banter to reveal the initial premise.
 Some low-stakes decisions to kick off the adventure.
 
 That's when I realised the benefit of a [dialogue tree](https://en.wikipedia.org/wiki/Dialogue_tree).
