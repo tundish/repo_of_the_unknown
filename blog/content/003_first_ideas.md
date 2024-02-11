@@ -4,7 +4,7 @@ author: tundish
 tags: balladeer, rotu, releases
 category: Blog
 status: published
-summary: Starting to imagine plotlines.
+summary: Establishing a prototype.
 
 Features
 ========
@@ -25,19 +25,8 @@ Nevertheless, here are the basic elements.
 Assets
 ------
 
-Balladeer works as a Web stack. The design of your interface will be captured in CSS files.
+Balladeer works as a Web stack. The design of your interface will be implemented in CSS files.
 Alongside that styling, you may need other assets like images and fonts.
-
-Scenes
-------
-
-25 in total
-
-Code
-----
-
-Single module. Rely on World build from spec.
-
 
 ~~~
 rotu
@@ -62,6 +51,19 @@ rotu
 │       ├── style_01.css
 │       ├── style_02.css
 │       └── style_03.css
+~~~
+
+Scenes
+------
+
+A full-length story will need between 20 and 25 scene folders, each with at least one scene file inside.
+Why this number? That will be the topic of future posts.
+
+Just imagine these folders like the vertebrae along the spine of your story. And since we don't yet
+have a full story, our initial prototype will consist of a title card, opening sequence, and then straight
+to end credits.
+
+~~~
 ├── scenes
 │   ├── 00
 │   │   ├── 0.scene.toml
@@ -72,7 +74,16 @@ rotu
 │   │   └── a.scene.toml
 │   └── 24
 │       └── a.scene.toml
-├── main.py
-└── __init__.py
 ~~~
 
+Code
+----
+
+To begin with you won't need much code; just a single *main* module.
+I'll explain the contents in a future post.
+
+~~~
+└── main.py
+~~~
+
+Next time, I think, we'll talk about how the scene files link together.
