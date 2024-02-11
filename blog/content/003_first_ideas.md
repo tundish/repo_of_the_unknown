@@ -7,18 +7,36 @@ status: published
 summary: Starting to imagine plotlines.
 
 Features
---------
+========
 
-We begin in the cab of a van. Player is young. just starting to help in a company of repo men.
-No phone coverage.
+[Balladeer](https://github.com/tundish/balladeer) is a very flexible library.
+You can use it to create all sorts of web multimedia.
+In the realm of Interactive Fiction, it enables:
 
-Story will be mostly on rails, with some parse exploration.
++ point-and-click, like [Ren'Py](https://www.renpy.org/).
++ hyperlink text, like [Twine](https://twinery.org/).
++ parser-based adventures, like [Inform](https://ganelson.github.io/inform-website/).
 
-Missions/Tasks nee questions/answers ans Ask/Say syntax.
+In return for that flexibility, there's a little work to do up front to establish
+a project. The exact structure of a project will vary from author to author depending
+on their preferred workflow.
 
-Populate list data for input text.
 
-500 cues of SpeechMark?
+Assets
+------
+
+CSS3 and fonts
+
+Scenes
+------
+
+25 in total
+
+Code
+----
+
+Single module. Rely on World build from spec.
+
 
 ~~~
 rotu
