@@ -1,4 +1,4 @@
-title: #2: The Game Jam begins
+title: #2: Ten days later
 date: 2023-11-05 09:00
 author: tundish
 tags: python, balladeer, game jam
