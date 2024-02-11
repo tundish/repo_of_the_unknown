@@ -18,8 +18,8 @@ In the realm of Interactive Fiction, it enables:
 + parser-based adventures, which otherwise might require [Inform](https://ganelson.github.io/inform-website/).
 
 In return for that flexibility, there's a little work to do up front to establish
-a project. The exact structure of a project will vary from author to author depending
-on their preferred workflow.
+a project. The exact structure will vary according to need.
+Nevertheless, here are the basic elements.
 
 
 Assets
