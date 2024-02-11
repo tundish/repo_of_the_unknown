@@ -13,9 +13,9 @@ Features
 You can use it to create all sorts of web multimedia.
 In the realm of Interactive Fiction, it enables:
 
-+ point-and-click, like [Ren'Py](https://www.renpy.org/).
-+ hyperlink text, like [Twine](https://twinery.org/).
-+ parser-based adventures, like [Inform](https://ganelson.github.io/inform-website/).
++ point-and-click games, of the [Ren'Py](https://www.renpy.org/) kind.
++ hyperlink text, similar to [Twine](https://twinery.org/) pieces.
++ parser-based adventures, which otherwise might require [Inform](https://ganelson.github.io/inform-website/).
 
 In return for that flexibility, there's a little work to do up front to establish
 a project. The exact structure of a project will vary from author to author depending
@@ -25,7 +25,8 @@ on their preferred workflow.
 Assets
 ------
 
-CSS3 and fonts
+Balladeer works as a Web stack. The design of your interface will be captured in CSS files.
+Alongside that styling, you may need other assets like images and fonts.
 
 Scenes
 ------
