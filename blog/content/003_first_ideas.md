@@ -60,8 +60,8 @@ A full-length story will need between 20 and 25 scene folders, each with at leas
 Why this number? That will be the topic of future posts.
 
 Just imagine these folders like the vertebrae along the spine of your story. And since we don't yet
-have a full story, our initial prototype will consist of a title card, opening sequence, and then straight
-to end credits.
+have a full story, our initial prototype will consist of a title card, opening sequence, and not much
+else until the end credits.
 
 ~~~
 ├── scenes
@@ -86,4 +86,10 @@ I'll explain the contents in a future post.
 └── main.py
 ~~~
 
-Next time, I think, we'll talk about how the scene files link together.
+If you'd like to establish a project of your own from this early baseline
+you can check out the exact structure of
+[rotu 0.8.0](https://github.com/tundish/repo_of_the_unknown/tree/0.8.0).
+
+I'll continue the blog from here.
+Next time we'll talk about how the scene files link together.
+
