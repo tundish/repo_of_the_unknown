@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Repo of the Unknown - Blog</title><link href="https://tundish.github.io/repo_of_the_unknown/" rel="alternate"></link><link href="https://tundish.github.io/repo_of_the_unknown/feeds/blog.atom.xml" rel="self"></link><id>https://tundish.github.io/repo_of_the_unknown/</id><updated>2024-02-09T18:00:00+00:00</updated><subtitle>Interactive Fiction step-by-step in Python</subtitle><entry><title>#3: The fundamentals of a framework</title><link href="https://tundish.github.io/repo_of_the_unknown/3-the-fundamentals-of-a-framework.html" rel="alternate"></link><published>2024-02-09T18:00:00+00:00</published><updated>2024-02-09T18:00:00+00:00</updated><author><name>tundish</name></author><id>tag:tundish.github.io,2024-02-09:/repo_of_the_unknown/3-the-fundamentals-of-a-framework.html</id><summary type="html">&lt;p&gt;Establishing a prototype.&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Features&lt;/h1&gt;
+&lt;p&gt;&lt;a href="https://github.com/tundish/balladeer"&gt;Balladeer&lt;/a&gt; is a very flexible library.
+You can use it to create all sorts of web multimedia.
+In the realm of Interactive Fiction, it enables:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;point-and-click games, of the &lt;a href="https://www.renpy.org/"&gt;Ren'Py&lt;/a&gt; kind.&lt;/li&gt;
+&lt;li&gt;hyperlink text, similar to &lt;a href="https://twinery.org/"&gt;Twine&lt;/a&gt; pieces.&lt;/li&gt;
+&lt;li&gt;parser-based adventures, which otherwise might require &lt;a href="https://ganelson.github.io/inform-website/"&gt;Inform&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In return for that flexibility, there's a little work to do up front to establish
+a project. The exact structure will vary according to need.
+Nevertheless, here are the basic elements.&lt;/p&gt;
+&lt;h2&gt;Assets&lt;/h2&gt;
+&lt;p&gt;Balladeer works as a Web stack. The design of your interface will be implemented in CSS files.
+Alongside that styling, you may need other assets like images and fonts.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;rotu
+├── assets
+│   ├── fonts
+│   │   ├── Lora-Bold.woff2
+│   │   ├── Lora-Regular.woff2
+│   │   ├── OpenSans-BoldItalic.woff2
+│   │   ├── OpenSans-Bold.woff2
+│   │   ├── OpenSans-ExtraBoldItalic.woff2
+│   │   ├── OpenSans-ExtraBold.woff2
+│   │   ├── OpenSans-Italic.woff2
+│   │   ├── OpenSans-LightItalic.woff2
+│   │   ├── OpenSans-Light.woff2
+│   │   ├── OpenSans-Regular.woff2
+│   │   ├── OpenSans-SemiBoldItalic.woff2
+│   │   └── OpenSans-SemiBold.woff2
+│   ├── basics.css
+│   ├── layout.css
+│   ├── object.css
+│   └── styles
+│       ├── style_01.css
+│       ├── style_02.css
+│       └── style_03.css
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Scenes&lt;/h2&gt;
+&lt;p&gt;A full-length story will need between 20 and 25 scene folders, each with at least one scene file inside.
+Why this number? That will be the topic of future posts.&lt;/p&gt;
+&lt;p&gt;Just imagine these folders like the vertebrae along the spine of your story. And since we don't yet
+have a full story, our initial prototype will consist of a title card, opening sequence, and not much
+else until the end credits.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;├── scenes
+│   ├── 00
+│   │   ├── 0.scene.toml
+│   │   └── a.scene.toml
+│   ├── 01
+│   │   └── a.scene.toml
+│   ├── 02
+│   │   └── a.scene.toml
+│   └── 24
+│       └── a.scene.toml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Code&lt;/h2&gt;
+&lt;p&gt;To begin with you won't need much code; just a single &lt;em&gt;main&lt;/em&gt; module.
+I'll explain the contents in a future post.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;└── main.py
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If you'd like to establish a project of your own from this early baseline
+you can check out the exact structure of
+&lt;a href="https://github.com/tundish/repo_of_the_unknown/tree/0.8.0"&gt;rotu 0.8.0&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I'll continue the blog from here.
+Next time we'll talk about how the scene files link together.&lt;/p&gt;</content><category term="Blog"></category><category term="balladeer"></category><category term="rotu"></category><category term="releases"></category></entry><entry><title>#2: Ten days later</title><link href="https://tundish.github.io/repo_of_the_unknown/2-ten-days-later.html" rel="alternate"></link><published>2023-11-05T09:00:00+00:00</published><updated>2023-11-05T09:00:00+00:00</updated><author><name>tundish</name></author><id>tag:tundish.github.io,2023-11-05:/repo_of_the_unknown/2-ten-days-later.html</id><summary type="html">&lt;p&gt;For a moment, nothing happened.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Hesitation&lt;/h2&gt;
+&lt;p&gt;It was Wednesday before I wrote any code.&lt;/p&gt;
+&lt;p&gt;There had been scant opportunity to do so, and in any case, I did not know where to start.
+Instead, over the first few days there started to form in my mind's eye a flicker of an opening
+sequence. Rhythmic, like a scene from a road movie. The darkened profile of a passenger from the
+inside of a speeding vehicle.&lt;/p&gt;
+&lt;p&gt;A new possibility for the word &lt;em&gt;repo&lt;/em&gt;. Two characters in a van on the way to a job. I began to imagine
+some dialogue. Which is the player; the driver or the mate?&lt;/p&gt;
+&lt;p&gt;We have to give the player a few moments to settle in.
+We want some workmanlike banter to reveal the initial premise.
+Some low-stakes decisions to kick off the adventure.&lt;/p&gt;
+&lt;p&gt;That's when I realised the benefit of a &lt;a href="https://en.wikipedia.org/wiki/Dialogue_tree"&gt;dialogue tree&lt;/a&gt;.
+And since at the time Balladeer didn't offer such a feature, I spent the rest of the week building one.&lt;/p&gt;
+&lt;p&gt;It was the best thing that could have happened. I'm very pleased with the new
+&lt;a href="https://balladeer.readthedocs.io/en/latest/interaction.html"&gt;Interaction&lt;/a&gt; system. So
+&lt;a href="https://itch.io/jam/python-game-jam-8/topic/3266238/thanks-for-hosting-the-jam-and-good-luck-to-those-hoping-to-finish"&gt;thankyou&lt;/a&gt;
+to the Python Game Jam.&lt;/p&gt;</content><category term="Blog"></category><category term="python"></category><category term="balladeer"></category><category term="game jam"></category></entry><entry><title>#1: October</title><link href="https://tundish.github.io/repo_of_the_unknown/1-october.html" rel="alternate"></link><published>2023-10-27T00:00:00+01:00</published><updated>2023-10-27T00:00:00+01:00</updated><author><name>tundish</name></author><id>tag:tundish.github.io,2023-10-27:/repo_of_the_unknown/1-october.html</id><summary type="html">&lt;p&gt;In which we get ourselves into a Jam.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;An opportunity arises&lt;/h2&gt;
+&lt;p&gt;It's the end of October. I've been fixing a couple of bugs in &lt;a href="https://tundish.github.io/balladeer"&gt;Balladeer&lt;/a&gt;.
+I'm happy with it. The code feels pretty solid now.&lt;/p&gt;
+&lt;p&gt;Maybe it could use just one more teaching example? No ideas yet, however.&lt;/p&gt;
+&lt;p&gt;In any case, it's going to be a big weekend.
+New Zealand are playing South Africa in the final of the Rugby World Cup.
+Probably not the right time to begin a new writing project. Too many distractions right now.&lt;/p&gt;
+&lt;p&gt;For some reason I visit Itch.io, the game hosting portal. And guess what? Today is the start of the
+&lt;a href="https://itch.io/jam/python-game-jam-8"&gt;eighth Python Game Jam&lt;/a&gt;. An invitation to spend the next ten days in a race
+to build a game and submit it for judgement by strangers.&lt;/p&gt;
+&lt;p&gt;So I sign up.&lt;/p&gt;
+&lt;h2&gt;Set up to fail&lt;/h2&gt;
+&lt;p&gt;I know this is a tall order. The competition is only ten days long. I calculate I'll be lucky
+if I can average 2 hours a day amidst the other demands on my time. It's unlikely I'll be able to make anything
+very compelling. But it might generate that missing demo for Balladeer.&lt;/p&gt;
+&lt;p&gt;The competition theme is announced. It's &lt;em&gt;The Unknown&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;So I log in to Github, and I create a new public repository. I call it &lt;em&gt;Repo Of The Unknown&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;That will have to be all for now. The Rugby is on.&lt;/p&gt;</content><category term="Blog"></category><category term="python"></category><category term="balladeer"></category><category term="game jam"></category></entry></feed>
