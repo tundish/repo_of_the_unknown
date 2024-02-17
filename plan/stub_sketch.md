@@ -31,8 +31,8 @@ Left phone at girlfriend's.
 + Needed to get away
 + Not comfortable in relationship
 
-Travelling is like watching television. It goes on for fifteen minutes.
-Then there is something you have to read. And it goes round and round like that.
+Driving is like watching television. It goes on for fifteen minutes.
+Then there is something you have to read. And it goes on and on like that.
 
 I am leaving last night and this morning behind. I just hope something
 happens before I have to go back there to this evening and tomorrow.
