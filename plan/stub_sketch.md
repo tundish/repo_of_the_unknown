@@ -25,3 +25,18 @@ in turns to say, "ray", "ray". Like an echo.
 
 Player
 ------
+
+Left phone at girlfriend's.
+
++ Needed to get away
++ Not comfortable in relationship
+
+Travelling is like watching television. It goes on for fifteen minutes.
+Then there is something you have to read. And it goes round and round like that.
+
+I am leaving last night and this morning behind. I just hope something
+happens before I have to go back there to this evening and tomorrow.
+
+I'm working for this guy Ray for a day. We're going to pick up
+some stuff and drive it back.
+
