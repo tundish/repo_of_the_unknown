@@ -87,3 +87,21 @@ Ray goes in first, then me. I can't close the door behind me, it sticks.
 Inside it was bigger than I thought. It was actually part of a house which was tucked away behind.
 
 There was this guy cooking bacon and a few people in there eating.
+
+So I said I'll have a can of 7Up but he didn't have any only Coke.
+And it wasn't even from the fridge they were just cans from a pack on the floor.
+
+So I said fuck it, just give me my money for this morning and I'm out of here. Ray goes, "whatever you think I owe you,
+you're wrong, buddy."
+
+So I said no, you're wrong, give me twenty quid.
+
+So he gives me twenty quid and I ask about the buses, because there's a bus stop outside and the guy
+behind the counter says you're out of luck there's no buses today, they don't come every day.
+
+So I say how the fuck do I get out of here and he says you'll have to walk. But you can't go on the main
+road because there's no pavement you have to go out the back and cross the river if you want to get to Ross.
+
+So I did and it took me fucking ages to get there and all day to get back home.
+And I got mud all up my legs, and I had to put my trainers in the washing machine.
+
