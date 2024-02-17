@@ -64,3 +64,26 @@ We'd get there faster for sure. I'd put my foot down. This van goes faster than 
 back."
 
 "Can I drive back?", I say. He looks at me. The guy doesn't like me, does he.
+"I don't know yet", he says. "We'll see."
+
+They've got a Whitchurch. My uncle lives in Whitchurch. Not this Whitchurch, another Whitchurch.
+
+I forget to pay attention. I don't know where we are now. Some Welsh names.
+
+"Are we going to Wales?"
+"Not if I can help it. Right, I'm going to drop you off soon. I don't have a s[are phone so I'll give you this
+number and maybe you can ring me from the garage. The shop[ or the garage has a phone.
+
+He checks his phone [description of Nokia].
+"Can you get me a pen out of the glovebox?" He takes a bit of card and writes a phone number on it.
+
+"It should be up there ahead." All I can see is like a car park alongside the road and a
+sort of cabin with a sign on it.
+
+The car park is muddy and I get my laces dirty going across to the door.
+
+Ray goes in first, then me. I can't close the door behind me, it sticks.
+
+Inside it was bigger than I thought. It was actually part of a house which was tucked away behind.
+
+There was this guy cooking bacon and a few people in there eating.
