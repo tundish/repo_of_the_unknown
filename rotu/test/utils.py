@@ -18,6 +18,7 @@
 
 import asyncio
 import contextlib
+import functools
 import os
 import pathlib
 import sqlite3
@@ -67,6 +68,15 @@ class DBAdaptor:
             loop=loop
         )
 
+    def get_connector(dsn, loop=None):
+        return functools.partial(
+            aiosqlite.connect,
+            dsn,
+            detect_types=sqlite3.PARSE_COLNAMES | sqlite3.PARSE_DECLTYPES,
+            uri=True,
+            loop=loop
+        )
+
 # TODO: ATTACH DATABASE '{db_file_path!s}' AS {db_file_path.name}
 
 @contextlib.asynccontextmanager
@@ -85,8 +95,8 @@ class Root(HTTPEndpoint):
         try:
             name = body["name"]
             print(f"{request.app.state.connector=}", file=sys.stderr)
-            async with request.app.state.connector as connection:
-                await connection.execute(sql.insert.format(db="main"), name)
+            async with request.app.state.connector() as connection:
+                await connection.execute(sql.insert.format(db="main"), (name,))
             return JSONResponse({"name": name})
 
         except KeyError:
@@ -143,7 +153,7 @@ class LifecycleTests(unittest.IsolatedAsyncioTestCase):
     async def test_endpoint_get(self):
         print(self.id(), file=sys.stderr)
 
-        async with self.db_connector as connection:
+        async with self.db_connector() as connection:
             rows = await self.create_db_fixture(connection)
 
         app = build_app()
@@ -161,7 +171,7 @@ class LifecycleTests(unittest.IsolatedAsyncioTestCase):
     async def test_endpoint_post(self):
         print(self.id(), file=sys.stderr)
 
-        async with self.db_connector as connection:
+        async with self.db_connector() as connection:
             rows = await self.create_db_fixture(connection)
 
         print(f"rows=", file=sys.stderr)
