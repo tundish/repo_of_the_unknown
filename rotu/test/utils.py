@@ -23,6 +23,9 @@ import unittest
 
 import asgi_lifespan
 from starlette.applications import Starlette
+from starlette.endpoints import HTTPEndpoint
+from starlette.responses import PlainTextResponse
+from starlette.routing import Route
 
 # Example lifespan-capable ASGI app. Any ASGI app that supports
 # the lifespan protocol will do, e.g. FastAPI, Quart, Responder, ...
@@ -33,7 +36,16 @@ async def lifespan(app):
     yield
     print("Shutting down!")
 
-app = Starlette(lifespan=lifespan)
+class Root(HTTPEndpoint):
+    async def get(self, request):
+        text = getattr(self, "metadata", {}).get("about", f"Balladeer {balladeer.__version__}\n")
+        return PlainTextResponse(text)
+
+routes = [
+    Route("/", Root, name="root"),
+]
+app = Starlette(routes=routes)
+#app = Starlette(lifespan=lifespan)
 
 async def main():
     async with asgi_lifespan.LifespanManager(app) as manager:
