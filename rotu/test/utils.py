@@ -22,10 +22,15 @@ from types import SimpleNamespace
 import unittest
 
 import asgi_lifespan
+import httpx
+import hypercorn
+from hypercorn.asyncio import serve
 from starlette.applications import Starlette
 from starlette.endpoints import HTTPEndpoint
 from starlette.responses import PlainTextResponse
 from starlette.routing import Route
+
+import rotu
 
 # Example lifespan-capable ASGI app. Any ASGI app that supports
 # the lifespan protocol will do, e.g. FastAPI, Quart, Responder, ...
@@ -38,7 +43,7 @@ async def lifespan(app):
 
 class Root(HTTPEndpoint):
     async def get(self, request):
-        text = getattr(self, "metadata", {}).get("about", f"Balladeer {balladeer.__version__}\n")
+        text = f"RotU {rotu.__version__}\n"
         return PlainTextResponse(text)
 
 routes = [
@@ -80,7 +85,12 @@ class LifecycleTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_response(self):
         events.append("test_response")
-        response = await self._async_connection.get("https://example.com")
+
+        async with asgi_lifespan.LifespanManager(app) as manager:
+            async with httpx.AsyncClient() as client:
+                response = await client.get("https://localhost/")
+
+        # response = await self._async_connection.get("https://localhost")
         self.assertEqual(response.status_code, 200)
         self.addAsyncCleanup(self.on_cleanup)
 
@@ -98,5 +108,10 @@ class LifecycleTests(unittest.IsolatedAsyncioTestCase):
 
 if __name__ == "__main__":
 
-    asyncio.run(main())
-    unittest.main()
+    # asyncio.run(main())
+    # unittest.main()
+    host="localhost"
+    port=8080
+    settings = hypercorn.Config.from_mapping({"bind": f"{host}:{port}", "errorlog": "-"})
+
+    asyncio.run(serve(app, settings))
