@@ -18,9 +18,11 @@
 
 import asyncio
 import contextlib
+import sqlite3
 from types import SimpleNamespace
 import unittest
 
+import aiosqlite
 import asgi_lifespan
 import httpx
 import hypercorn
@@ -86,12 +88,15 @@ class LifecycleTests(unittest.IsolatedAsyncioTestCase):
     async def test_response(self):
         events.append("test_response")
 
+        transport = httpx.ASGITransport(app=app)
         async with asgi_lifespan.LifespanManager(app) as manager:
-            async with httpx.AsyncClient() as client:
-                response = await client.get("https://localhost/")
+            async with httpx.AsyncClient(base_url="http://localhost", transport=transport) as client:
+                response = await client.get("/")
+                print(response.text)
 
         # response = await self._async_connection.get("https://localhost")
         self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.text.startswith("RotU"), response.text)
         self.addAsyncCleanup(self.on_cleanup)
 
     def tearDown(self):
@@ -109,9 +114,9 @@ class LifecycleTests(unittest.IsolatedAsyncioTestCase):
 if __name__ == "__main__":
 
     # asyncio.run(main())
-    # unittest.main()
+    unittest.main()
     host="localhost"
     port=8080
     settings = hypercorn.Config.from_mapping({"bind": f"{host}:{port}", "errorlog": "-"})
 
-    asyncio.run(serve(app, settings))
+    # asyncio.run(serve(app, settings))
