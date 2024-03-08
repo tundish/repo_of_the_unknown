@@ -28,6 +28,9 @@ blog = [
     "pelican-neighbors",
     "pelican-readtime",
 ]
+test = [
+    "asgi-lifespan>=2.1.0",
+]
 
 [project.scripts]
 rotu-server = "rotu.main:run"

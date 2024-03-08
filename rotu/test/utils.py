@@ -17,9 +17,27 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 import asyncio
+import contextlib
 from types import SimpleNamespace
 import unittest
 
+import asgi_lifespan
+from starlette.applications import Starlette
+
+# Example lifespan-capable ASGI app. Any ASGI app that supports
+# the lifespan protocol will do, e.g. FastAPI, Quart, Responder, ...
+
+@contextlib.asynccontextmanager
+async def lifespan(app):
+    print("Starting up!")
+    yield
+    print("Shutting down!")
+
+app = Starlette(lifespan=lifespan)
+
+async def main():
+    async with asgi_lifespan.LifespanManager(app) as manager:
+        print("We're in!")
 
 events = []
 
@@ -63,7 +81,10 @@ class LifecycleTests(unittest.IsolatedAsyncioTestCase):
 
     async def on_cleanup(self):
         events.append("cleanup")
+        print(*events, sep="\n")
 
 
 if __name__ == "__main__":
+
+    asyncio.run(main())
     unittest.main()
