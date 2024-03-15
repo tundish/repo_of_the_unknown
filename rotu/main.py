@@ -29,8 +29,10 @@ from balladeer import Entity
 from balladeer import Epilogue
 from balladeer import Page
 from balladeer import Prologue
+from balladeer import Session
 from balladeer import SpeechTables
 from balladeer import StoryBuilder
+from balladeer import Turn
 from balladeer import WorldBuilder
 from balladeer.lite.types import Fruition
 from balladeer.utils.themes import static_page
@@ -68,6 +70,23 @@ Page.themes["blue"] = {
         "glamour": "hsl(46.77, 76.92%, 72.75%)",
     },
 }
+
+
+class StorySession(Session):
+    def compose(
+        self, request, page: Page, story: StoryBuilder = None, turn: Turn = None
+    ) -> Page:
+
+        chapter = int(turn.scene.path.parent.name) + 1
+        try:
+            section = int(turn.scene.path.with_suffix("").with_suffix("").name)
+        except ValueError:
+            section = turn.scene.path.with_suffix("").with_suffix("").name.upper()
+
+        page = super().compose(request, page, story, turn)
+        page.structure[page.zone.title].clear()
+        page.paste(f"<title>RotU section {chapter:02d}-{section}</title>", zone=page.zone.title)
+        return page
 
 
 class Interaction(SpeechTables, Drama):
