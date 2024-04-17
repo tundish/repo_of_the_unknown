@@ -16,16 +16,39 @@
 --ballad-ink-washout: hsl(50.00, 0%, 100%);
 --ballad-ink-glamour: hsl(66.77, 96.92%, 72.75%);
 }
+
+@keyframes withdraw
+{
+from { transform: rotateY(0deg) }
+to { transform: rotateY(40deg) }
+}
+
+aside {
+perspective: 200px;
+}
+
+video {
+height: 16rem;
+animation-name: withdraw;
+animation-delay: 2s;
+animation-duration: 6s;
+animation-fill-mode: forwards;
+animation-timing-function: ease-in;
+opacity: 60%;
+}
+
 </style>
 </head>
 <body>
-<iframe src="https://commons.wikimedia.org/wiki/File:01_TimeLapse_-_Ex_Ospedale_Sant%27Agostino_-_Modena.webm?embedplayer=yes" width="256" height="144" frameborder="0" ></iframe>
+
 <aside>
-</aside>
-<video autoplay="autoplay" playsinline="playsinline">
+<video preload="auto" autoplay="autoplay" playsinline="playsinline" loop="loop">
 <source src="/video/01-TimeLapse-Ex-Ospedale-Sant-Agostino-Modena.webm" type="video/webm"/>
 </video>
+</aside>
+
 <main>
+
 <div class="ballad cue">
 <blockquote cite="&lt;GOAL&gt;">
 <cite data-role="GOAL" data-entity="goal_00a"
@@ -33,6 +56,7 @@ style="animation-delay: 1.00s; animation-duration: 0.10s">goal_00a</cite>
 <p style="animation-delay: 1.00s; animation-duration: 0.30s">I am goal_00a.</p>
 </blockquote>
 </div>
+
 <div class="ballad cue">
 <blockquote cite="&lt;GOAL.branching&gt;">
 <cite data-role="GOAL" data-entity="goal_00a"
