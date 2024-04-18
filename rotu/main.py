@@ -77,11 +77,14 @@ class StorySession(Session):
         self, request, page: Page, story: StoryBuilder = None, turn: Turn = None
     ) -> Page:
 
-        chapter = int(turn.scene.path.parent.name) + 1
         try:
+            chapter = int(turn.scene.path.parent.name) + 1
             section = int(turn.scene.path.with_suffix("").with_suffix("").name)
         except ValueError:
             section = turn.scene.path.with_suffix("").with_suffix("").name.upper()
+        except Exception:
+            chapter = 0
+            section = "??"
 
         page = super().compose(request, page, story, turn)
         page.structure[page.zone.title].clear()
