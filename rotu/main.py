@@ -151,7 +151,8 @@ class Representer(Presenter):
 
     @staticmethod
     def turn_link_into_button(match: re.Match):
-        return ""
+        target = match[3].removeprefix("#")
+        return f'<button popovertarget="{target}">{match[5]}</button>'
 
     def sanitize(self, html5: str) -> str:
         html5 = self.href_matcher.sub(self.turn_link_into_button, html5)
