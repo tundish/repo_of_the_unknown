@@ -72,12 +72,15 @@ class PopoverTests(unittest.TestCase):
             page = endpoint.compose(request, page, story, turn)
 
         self.assertNotIn(
-            '<a href="#more-info" target="_blank" rel="noopener noreferrer">know more</a>',
+            '<a href="#more-info">know more</a>?',
+            page.html
+        )
+        self.assertNotIn(
+            '<a href="#more-info" target="_blank" rel="noopener noreferrer">know more</a>?',
             page.html
         )
 
-        lines = page.html.splitlines()
         self.assertIn(
-            '<button popovertarget="more-info">', lines
+            '<button popovertarget="more-info">know more</button>',
+            page.html
         )
-        self.assertIn('</button>', lines)
