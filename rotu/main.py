@@ -147,9 +147,15 @@ class World(WorldBuilder):
 
 class Representer(Presenter):
 
+    href_matcher = re.compile('(<a\\s+)(href\\s*=\\s*")([^"]*?)("[^>]*?)>([^<]*?)(</a>)')
+
+    @staticmethod
+    def turn_link_into_button(match: re.Match):
+        return ""
+
     def sanitize(self, html5: str) -> str:
-        rv = super().sanitize(html5)
-        return rv.replace("<blockquote id=", "<blockquote popover id=")
+        html5 = self.href_matcher.sub(self.turn_link_into_button, html5)
+        return html5.replace("<blockquote id=", "<blockquote popover id=")
 
 
 class Story(StoryBuilder):
