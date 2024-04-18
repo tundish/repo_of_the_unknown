@@ -17,6 +17,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 from collections.abc import Generator
+import re
 import sys
 import textwrap
 
@@ -28,6 +29,7 @@ from balladeer import Detail
 from balladeer import Entity
 from balladeer import Epilogue
 from balladeer import Page
+from balladeer import Presenter
 from balladeer import Prologue
 from balladeer import Session
 from balladeer import SpeechTables
@@ -73,6 +75,7 @@ Page.themes["blue"] = {
 
 
 class StorySession(Session):
+
     def compose(
         self, request, page: Page, story: StoryBuilder = None, turn: Turn = None
     ) -> Page:
@@ -140,6 +143,13 @@ class World(WorldBuilder):
                     yield entity.set_state(Fruition.elaboration)
                 else:
                     yield entity.set_state(Fruition.inception)
+
+
+class Representer(Presenter):
+
+    def sanitize(self, html5: str) -> str:
+        rv = super().sanitize(html5)
+        return rv.replace("<blockquote id=", "<blockquote popover id=")
 
 
 class Story(StoryBuilder):

@@ -22,13 +22,14 @@ from unittest.mock import Mock
 
 from balladeer import Dialogue
 from balladeer import Page
-from balladeer import Presenter
 from starlette.applications import Starlette
 from starlette.datastructures import State
 from starlette.requests import Request
 
+from rotu.main import Representer
 from rotu.main import Story
 from rotu.main import StorySession
+
 
 
 class PopoverTests(unittest.TestCase):
@@ -39,7 +40,7 @@ class PopoverTests(unittest.TestCase):
         request.app = Mock(spec=Starlette)
         request.app.state = Mock(spec=State)
         request.app.state.static = pathlib.Path(".")
-        request.app.state.presenter = Presenter()
+        request.app.state.presenter = Representer()
         return request
 
     def test_label_implies_popover(self):
@@ -57,3 +58,26 @@ class PopoverTests(unittest.TestCase):
         self.assertIn(
             '<blockquote popover id="test-01" cite="&lt;?label=test-01&gt;">', lines
         )
+
+    def test_href_to_id_becomes_popovertarget(self):
+
+        story = Story(
+            Dialogue("<> Want to [know more](#more-info)?"),
+        )
+
+        page = Page()
+        request = self.mock_request()
+        endpoint = StorySession(dict(type="http"), None, None)
+        with story.turn() as turn:
+            page = endpoint.compose(request, page, story, turn)
+
+        self.assertNotIn(
+            '<a href="#more-info" target="_blank" rel="noopener noreferrer">know more</a>',
+            page.html
+        )
+
+        lines = page.html.splitlines()
+        self.assertIn(
+            '<button popovertarget="more-info">', lines
+        )
+        self.assertIn('</button>', lines)
