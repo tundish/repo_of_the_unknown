@@ -17,6 +17,7 @@ s="""
 <GOAL.branching> Do you want to {GOAL.sketch}?
     1. Yes
     2. No
+<GOAL> Or you can ask for `info`.
 """
 [_.1]
 s="""
