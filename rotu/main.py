@@ -17,6 +17,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 from collections.abc import Generator
+import functools
 import re
 import sys
 import textwrap
@@ -76,10 +77,22 @@ Page.themes["blue"] = {
 
 class StorySession(Session):
 
-    def compose(
-        self, request, page: Page, story: StoryBuilder = None, turn: Turn = None
-    ) -> Page:
+    code_matcher = re.compile(f"(<code.*?>)(.*?)(<\\/code>)", re.DOTALL)
 
+    @staticmethod
+    def convert_code_into_action(match: re.Match, page: Page):
+        rv = match[0]
+        print(f"{rv=}")
+        return rv
+
+    def render_cues(
+        self, request, story: StoryBuilder = None, turn: Turn = None, page: Page = None
+    ) -> Generator[str]:
+        for cue_block in super().render_cues(request, story, turn):
+            func = functools.partial(self.convert_code_into_action, page=page)
+            yield self.code_matcher.sub(func, cue_block)
+
+    def render_title(self, request, story, turn):
         try:
             chapter = int(turn.scene.path.parent.name) + 1
             section = int(turn.scene.path.with_suffix("").with_suffix("").name)
@@ -89,10 +102,7 @@ class StorySession(Session):
             chapter = 0
             section = "??"
 
-        page = super().compose(request, page, story, turn)
-        page.structure[page.zone.title].clear()
-        page.paste(f"<title>RotU section {chapter:02d}-{section}</title>", zone=page.zone.title)
-        return page
+        return f"<title>RotU section {chapter:02d}-{section}</title>"
 
 
 class Interaction(SpeechTables, Drama):
@@ -150,12 +160,12 @@ class Representer(Presenter):
     href_matcher = re.compile('(<a\\s+)(href\\s*=\\s*")([^"]*?)("[^>]*?)>([^<]*?)(</a>)')
 
     @staticmethod
-    def turn_link_into_button(match: re.Match):
+    def convert_link_into_button(match: re.Match):
         target = match[3].removeprefix("#")
         return f'<button popovertarget="{target}">{match[5]}</button>'
 
     def sanitize(self, html5: str) -> str:
-        html5 = self.href_matcher.sub(self.turn_link_into_button, html5)
+        html5 = self.href_matcher.sub(self.convert_link_into_button, html5)
         return html5.replace("<blockquote id=", "<blockquote popover id=")
 
 

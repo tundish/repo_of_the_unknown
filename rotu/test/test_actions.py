@@ -50,7 +50,7 @@ class ActionTests(unittest.TestCase):
     def test_code_implies_action(self):
 
         story = Story(
-            Dialogue("<> Perhaps it's time to _go to bed_?"),
+            Dialogue("<> Perhaps it's time to `go to bed`?"),
         )
 
         page = Page()
