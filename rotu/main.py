@@ -81,9 +81,9 @@ class StorySession(Session):
 
     @staticmethod
     def convert_code_into_action(match: re.Match, page: Page):
-        rv = match[0]
-        print(f"{rv=}")
-        return rv
+        text = f"{match[2]}".replace(" ", "-")
+        print(f"{text=}")
+        return f'<button form="balladeer-action-form-{text}">{match[2]}</button>'
 
     def render_cues(
         self, request, story: StoryBuilder = None, turn: Turn = None, page: Page = None
