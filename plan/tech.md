@@ -14,3 +14,8 @@ Video
 + [Progress bar](https://css-tricks.com/some-innocent-fun-with-html-video-and-progress/)
 + [Embedding Video](https://www.twicpics.com/blog/the-optimal-ways-to-embed-video-according-to-use-cases)
 + [Background Video](https://alvarotrigo.com/blog/background-video-css/)
+
+Popovers
+--------
+
++ [Popover examples](https://mdn.github.io/dom-examples/popover-api/)

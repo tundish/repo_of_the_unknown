@@ -16,70 +16,63 @@
 # You should have received a copy of the GNU Affero General Public License along with Rotu.
 # If not, see <https://www.gnu.org/licenses/>.
 
-import pathlib
 import unittest
-from unittest.mock import Mock
 
 from balladeer import Dialogue
 from balladeer import Page
-from starlette.applications import Starlette
-from starlette.datastructures import State
-from starlette.requests import Request
 
-from rotu.main import Representer
 from rotu.main import Story
 from rotu.main import StorySession
+from rotu.test.test_popover import PopoverTests
 
 
-class PopoverTests(unittest.TestCase):
+class ActionTests(unittest.TestCase):
 
-    @staticmethod
-    def mock_request():
-        request = Mock(spec=Request)
-        request.app = Mock(spec=Starlette)
-        request.app.state = Mock(spec=State)
-        request.app.state.static = pathlib.Path(".")
-        request.app.state.presenter = Representer()
-        return request
-
-    def test_label_implies_popover(self):
+    def test_command_form(self):
 
         story = Story(
-            Dialogue("<?label=test-01> Knock, knock."),
+            Dialogue("<> Perhaps it's time to go to bed?"),
         )
 
         page = Page()
-        request = self.mock_request()
+        request = PopoverTests.mock_request()
         endpoint = StorySession(dict(type="http"), None, None)
         with story.turn() as turn:
             page = endpoint.compose(request, page, story, turn)
         lines = page.html.splitlines()
-        self.assertIn(
-            '<blockquote popover id="test-01" cite="&lt;?label=test-01&gt;">', lines
-        )
 
-    def test_href_to_id_becomes_popovertarget(self):
+        command_form = next(
+            (i for i in lines if i.startswith("<form") and 'name="ballad-command-form"' in i),
+            None
+        )
+        self.assertTrue(command_form, lines)
+
+    def test_code_implies_action(self):
 
         story = Story(
-            Dialogue("<> Want to [know more](#more-info)?"),
+            Dialogue("<> Perhaps it's time to _go to bed_?"),
         )
 
         page = Page()
-        request = self.mock_request()
+        request = PopoverTests.mock_request()
         endpoint = StorySession(dict(type="http"), None, None)
         with story.turn() as turn:
             page = endpoint.compose(request, page, story, turn)
+        lines = page.html.splitlines()
 
-        self.assertNotIn(
-            '<a href="#more-info">know more</a>?',
-            page.html
+        command_form = next(
+            (i for i in lines if i.startswith("<form") and 'name="ballad-command-form"' in i),
+            None
         )
-        self.assertNotIn(
-            '<a href="#more-info" target="_blank" rel="noopener noreferrer">know more</a>?',
-            page.html
-        )
+        self.assertTrue(command_form, lines)
 
-        self.assertIn(
-            '<button popovertarget="more-info">know more</button>',
-            page.html
+        action_button = next(
+            (i for i in lines if i.startswith("<button") and 'form="ballad-action-form-go-to-bed"' in i),
+            None
         )
+        self.assertTrue(action_button, lines)
+        action_form = next(
+            (i for i in lines if i.startswith("<form") and 'id="ballad-action-form-go-to-bed"' in i),
+            None
+        )
+        self.assertTrue(action_form, lines)

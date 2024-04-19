@@ -25,5 +25,6 @@ s="""
 """
 [_.2]
 s="""
-<GOAL.returning> Suit yourself.
+<GOAL.returning> [Suit yourself](#punchline).
+<?label=punchline> And I know you will!
 """
