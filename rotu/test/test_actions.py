@@ -67,7 +67,7 @@ class ActionTests(unittest.TestCase):
         self.assertTrue(command_form, lines)
 
         action_button = next(
-            (i for i in lines if i.startswith("<button") and 'form="ballad-action-form-go-to-bed"' in i),
+            (i for i in lines if "<button" in i and 'form="ballad-action-form-go-to-bed"' in i),
             None
         )
         self.assertTrue(action_button, lines)
