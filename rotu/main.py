@@ -80,15 +80,18 @@ class StorySession(Session):
     code_matcher = re.compile(f"(<code.*?>)(.*?)(<\\/code>)", re.DOTALL)
 
     @staticmethod
-    def convert_code_into_action(match: re.Match, request=None, story=None, turn=None, page: Page = None):
+    def convert_code_into_action(match: re.Match, request=None, story=None, turn=None, page = None):
         text = f"{match[2]}".replace(" ", "-")
-        url = request.url_for("command", session_id=story.uid)
-        print(f"{text=} {url=}")
-        form = textwrap.dedent(f"""
-        <form role="form" action="{url}" method="post" id="ballad-action-form-{text}" class="ballad action">
-        <input type="hidden" name="ballad-command-form-input-text" value="{match[2]}" />
-        </form>
-        """)
+        try:
+            url = request.url_for("command", session_id=story.uid)
+            form = textwrap.dedent(f"""
+            <form role="form" action="{url}" method="post" id="ballad-action-form-{text}" class="ballad action">
+            <input type="hidden" name="ballad-command-form-input-text" value="{match[2]}" />
+            </form>
+            """)
+            page.paste(form, zone=page.zone.inputs)
+        except AttributeError:
+            pass
         return f'<button form="ballad-action-form-{text}" class="ballad action" type="submit">{match[2]}</button>'
 
     def render_cues(
