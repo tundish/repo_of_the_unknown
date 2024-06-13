@@ -38,11 +38,18 @@ test = [
 rotu-server = "rotu.main:run"
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["flit_core >=3.9,<4"]
+build-backend = "flit_core.buildapi"
 
-[tool.hatch.build]
+[tool.flit.sdist]
 include = [
 ]
 exclude = [
+".github",
+".gitignore",
+"blog",
+"output",
+"plan",
+"requirements.txt",
+"*.html",
 ]
