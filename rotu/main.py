@@ -29,12 +29,15 @@ from balladeer import Drama
 from balladeer import Detail
 from balladeer import Entity
 from balladeer import Epilogue
+from balladeer import MapBuilder
 from balladeer import Page
 from balladeer import Presenter
 from balladeer import Prologue
 from balladeer import Session
 from balladeer import SpeechTables
 from balladeer import StoryBuilder
+from balladeer import Traffic
+from balladeer import Transit
 from balladeer import Turn
 from balladeer import WorldBuilder
 from balladeer.lite.types import Fruition
@@ -73,6 +76,33 @@ Page.themes["blue"] = {
         "glamour": "hsl(46.77, 76.92%, 72.75%)",
     },
 }
+
+
+class Map(MapBuilder):
+    spots = {
+        "van_f_ext": ["in front of the van"],
+        "van_f_in": ["into the van"],
+        "van_b_ext": ["behind the van"],
+        "van_b_in": ["back of the van"],
+        "car_park": ["car park"],
+        "cafe_f_ext": ["in front of the cafe"],
+        "shed_f_int": ["inside the shed"],
+        "shed_b_int": ["back of the shed"],
+        "roadside": ["by the roadside"],
+    }
+
+    def build(self):
+        yield from [
+            Transit().set_state(self.exit.cafe_f_ext, self.into.car_park, Traffic.flowing),
+            Transit().set_state(self.exit.car_park, self.into.shed_f_ext, Traffic.flowing),
+            Transit().set_state(self.exit.shed_f_ext, self.into.shed_f_int, Traffic.flowing),
+            Transit().set_state(self.exit.shed_f_int, self.into.shed_b_int, Traffic.flowing),
+            Transit().set_state(self.exit.car_park, self.into.van_f_ext, Traffic.flowing),
+            Transit().set_state(self.exit.van_f_ext, self.into.van_f_int, Traffic.flowing),
+            Transit().set_state(self.exit.car_park, self.into.van_b_ext, Traffic.flowing),
+            Transit().set_state(self.exit.van_b_ext, self.into.van_b_int, Traffic.flowing),
+            Transit().set_state(self.exit.van_b_ext, self.into.roadside, Traffic.flowing),
+        ]
 
 
 class StorySession(Session):
