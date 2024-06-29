@@ -81,11 +81,12 @@ Page.themes["blue"] = {
 class Map(MapBuilder):
     spots = {
         "van_f_ext": ["in front of the van"],
-        "van_f_in": ["into the van"],
+        "van_f_int": ["in the van"],
         "van_b_ext": ["behind the van"],
-        "van_b_in": ["back of the van"],
+        "van_b_int": ["in the back of the van"],
         "car_park": ["car park"],
         "cafe_f_ext": ["in front of the cafe"],
+        "shed_f_ext": ["in front of the shed"],
         "shed_f_int": ["inside the shed"],
         "shed_b_int": ["back of the shed"],
         "roadside": ["by the roadside"],
@@ -209,12 +210,17 @@ class Representer(Presenter):
 
 
 class Story(StoryBuilder):
-    pass
+
+    def build(self, *args):
+        yield Interaction(
+            *self.speech,
+            world=self.world, config=self.config
+        ).set_state(self.world.map.spot.van_f_int)
 
 
 def run():
     assets = discover_assets(rotu, "")
-    world = World(assets=assets)
+    world = World(map=Map(Map.spots), assets=assets)
     story = Story(assets=assets, world=world)
     print(static_page().html)
 
