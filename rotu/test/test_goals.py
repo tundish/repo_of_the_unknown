@@ -24,7 +24,7 @@ from balladeer import discover_assets
 from balladeer import Entity
 
 import rotu
-from rotu.main import Story
+from rotu.main import factory
 from rotu.main import World
 
 
@@ -44,13 +44,11 @@ class GoalTests(unittest.TestCase):
     )
 
     def setUp(self):
-        assets = discover_assets(rotu, "")
-        self.world = World(assets=assets)
-        self.assertEqual(len(self.world.typewise["Goal"]), 4, self.world.typewise["Goal"])
+        self.assets = discover_assets(rotu, "")
 
     def test_build_story(self):
         witness = Counter()
-        story = Story(assets=self.world.assets, world=self.world)
+        story = factory(assets=self.assets)
         for n, (g, i) in enumerate(self.inputs.a):
             with self.subTest(i=i, n=n):
                 with story.turn() as turn:

@@ -27,7 +27,7 @@ from starlette.datastructures import State
 from starlette.requests import Request
 
 from rotu.main import Representer
-from rotu.main import Story
+from rotu.main import factory
 from rotu.main import StorySession
 
 
@@ -44,7 +44,7 @@ class PopoverTests(unittest.TestCase):
 
     def test_label_implies_popover(self):
 
-        story = Story(
+        story = factory(
             Dialogue("<?label=test-01> Knock, knock."),
         )
 
@@ -60,7 +60,7 @@ class PopoverTests(unittest.TestCase):
 
     def test_href_to_id_becomes_popovertarget(self):
 
-        story = Story(
+        story = factory(
             Dialogue("<> Want to [know more](#more-info)?"),
         )
 

@@ -218,10 +218,14 @@ class Story(StoryBuilder):
         ).set_state(self.world.map.spot.van_f_int)
 
 
+def factory(*args, assets={}):
+    world = World(map=Map(Map.spots), assets=assets)
+    return Story(*args, assets=assets, world=world)
+
+
 def run():
     assets = discover_assets(rotu, "")
-    world = World(map=Map(Map.spots), assets=assets)
-    story = Story(assets=assets, world=world)
+    story = factory(assets=assets)
     print(static_page().html)
 
     about = textwrap.dedent(f"""
