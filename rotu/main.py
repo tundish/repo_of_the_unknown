@@ -187,7 +187,7 @@ class Interaction(SpeechTables, Drama):
 
 class World(WorldBuilder):
     def build(self) -> Generator[Entity]:
-        yield Entity(type="Focus")
+        yield Entity(type="Focus").set_state(self.map.spot.van_f_int)
         for entity in self.build_to_spec(self.specs):
             if entity.names and "Goal" in entity.types:
                 if "goal_00a" in entity.names:
@@ -216,7 +216,7 @@ class Story(StoryBuilder):
         yield Interaction(
             *self.speech,
             world=self.world, config=self.config
-        ).set_state(self.world.map.spot.van_f_int)
+        )
 
 
 def factory(*args, assets={}):
