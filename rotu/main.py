@@ -187,6 +187,7 @@ class Interaction(SpeechTables, Drama):
 
 class World(WorldBuilder):
     def build(self) -> Generator[Entity]:
+        yield Entity(type="Focus")
         for entity in self.build_to_spec(self.specs):
             if entity.names and "Goal" in entity.types:
                 if "goal_00a" in entity.names:
