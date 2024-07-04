@@ -212,6 +212,11 @@ class Representer(Presenter):
 
 class Story(StoryBuilder):
 
+    def make(self):
+        # TODO: drama stored by location
+        self.drama = list(self.build())
+        return self
+
     def build(self, *args):
         yield Interaction(
             *self.speech,
