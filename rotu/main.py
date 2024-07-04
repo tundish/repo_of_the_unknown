@@ -23,19 +23,13 @@ import textwrap
 import balladeer
 from balladeer import discover_assets
 from balladeer import quick_start
-from balladeer import Drama
-from balladeer import Detail
-from balladeer import Entity
-from balladeer import Epilogue
 from balladeer import Page
 from balladeer import Presenter
-from balladeer import Prologue
-from balladeer import SpeechTables
 from balladeer import StoryBuilder
-from balladeer.lite.types import Fruition
 from balladeer.utils.themes import static_page
 
 import rotu
+from rotu.drama import Interaction
 from rotu.frames.session import StorySession
 from rotu.world import Map
 from rotu.world import World
@@ -72,46 +66,6 @@ Page.themes["blue"] = {
         "glamour": "hsl(46.77, 76.92%, 72.75%)",
     },
 }
-
-
-class Interaction(SpeechTables, Drama):
-    def on_proposing(self, entity: Entity, *args: tuple[Entity], **kwargs):
-        for ent in args:
-            ent.set_state(Fruition.elaboration)
-
-    def on_suggesting(self, entity: Entity, *args: tuple[Entity], **kwargs):
-        for ent in args:
-            ent.set_state(Fruition.discussion)
-
-    def on_confirming(self, entity: Entity, *args: tuple[Entity], **kwargs):
-        for ent in args:
-            ent.set_state(Fruition.construction)
-
-    def on_delivering(self, entity: Entity, *args: tuple[Entity], **kwargs):
-        for ent in args:
-            ent.set_state(Fruition.transition)
-
-    def on_declaring(self, entity: Entity, *args: tuple[Entity], **kwargs):
-        for ent in args:
-            ent.set_state(Fruition.completion)
-
-    def do_info(self, this, text, director, *args, **kwargs):
-        """
-        info | i
-
-        """
-        self.tree = None
-        self.set_state(Detail.info)
-        elaboration = self.world.statewise[str(Fruition.elaboration)]
-        discussion = self.world.statewise[str(Fruition.discussion)]
-        construction = self.world.statewise[str(Fruition.construction)]
-        if elaboration:
-            items = "\n".join(
-                f"+ {i.description[0].upper() + i.description[1:]}"
-                for i in elaboration
-                if i.description
-            )
-            yield Epilogue(f"<> You should maybe:\n{items}")
 
 
 class Representer(Presenter):
