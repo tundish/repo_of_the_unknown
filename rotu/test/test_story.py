@@ -18,6 +18,8 @@
 
 import unittest
 
+from balladeer import Entity
+
 from rotu.main import factory
 
 
@@ -27,7 +29,9 @@ class StoryTests(unittest.TestCase):
         self.story = factory()
 
     def test_focus(self):
-        print(f"{self.story=}")
+        focus = self.story.world.focus
+        self.assertIsInstance(focus, Entity)
+        print(f"{focus=}")
         print(f"{self.story.world=}")
         print(f"{self.story.world.map=}")
         print(f"{self.story.context=}")

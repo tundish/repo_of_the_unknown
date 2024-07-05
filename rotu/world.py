@@ -1,4 +1,5 @@
 from collections.abc import Generator
+import operator
 
 from balladeer import Entity
 from balladeer.lite.types import Fruition
@@ -37,6 +38,11 @@ class Map(MapBuilder):
 
 
 class World(WorldBuilder):
+
+    @property
+    def focus(self):
+        return next((reversed(sorted(self.typewise["Focus"], key=operator.attrgetter("state")))), None)
+
     def build(self) -> Generator[Entity]:
         yield Entity(type="Focus").set_state(self.map.spot.van_f_int)
         for entity in self.build_to_spec(self.specs):

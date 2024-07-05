@@ -7,6 +7,15 @@ from balladeer import Prologue
 from balladeer import SpeechTables
 
 
+class Exploration(Drama):
+
+    def interlude(self, *args, **kwargs) -> Entity:
+        self.speech.append(
+            Epilogue("<> Guidance")
+        )
+        return super().interlude(*args, **kwargs)
+
+
 class Interaction(SpeechTables, Drama):
     def on_proposing(self, entity: Entity, *args: tuple[Entity], **kwargs):
         for ent in args:
