@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU Affero General Public License along with Rotu.
 # If not, see <https://www.gnu.org/licenses/>.
 
+import operator
 import re
 import sys
 import textwrap
@@ -88,6 +89,10 @@ class Story(StoryBuilder):
         # TODO: drama stored by location
         self.drama = list(self.build())
         return self
+
+    @property
+    def context(self):
+        return next((reversed(sorted(self.drama, key=operator.attrgetter("state")))), None)
 
     def build(self, *args):
         yield Interaction(

@@ -30,7 +30,9 @@ class Map(MapBuilder):
             Transit().set_state(self.exit.shed_f_ext, self.into.shed_f_int, Traffic.flowing),
             Transit().set_state(self.exit.shed_f_int, self.into.shed_b_int, Traffic.flowing),
             Transit().set_state(self.exit.car_park, self.into.van_f_ext, Traffic.flowing),
-            Transit().set_state(self.exit.van_f_ext, self.into.van_f_int, Traffic.flowing),
+            Transit(
+                names=["Door", "Van door"], type="Door", aspect="unlocked", sketch="The {0.name} is {aspect}"
+            ).set_state(self.exit.van_f_ext, self.into.van_f_int, Traffic.flowing),
             Transit().set_state(self.exit.car_park, self.into.van_b_ext, Traffic.flowing),
             Transit().set_state(self.exit.van_b_ext, self.into.van_b_int, Traffic.flowing),
             Transit().set_state(self.exit.van_b_ext, self.into.roadside, Traffic.flowing),
