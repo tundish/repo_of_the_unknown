@@ -1,3 +1,6 @@
+[FOCUS]
+type = "Focus"
+
 [GOAL]
 name = "goal_00a"
 types = ["Goal", "00", "a"]

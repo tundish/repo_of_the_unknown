@@ -1,5 +1,8 @@
 # Responses to Drama detail
 
+[FOCUS]
+type = "Focus"
+
 [DRAMA]
 type = "Interaction"
 states.Detail = ["goal", "info"]
