@@ -7,11 +7,11 @@ types = ["Goal", "24", "a"]
 sketch = "drive the van back home"
 state = "Fruition.elaboration"
 
-[DRAMA]
+[CONTEXT]
 type = "Interaction"
 
 [[_]]
-if.DRAMA.tree = false
+if.CONTEXT.tree = false
 s="""
 <GOAL> I am {GOAL.name}.
 <GOAL.branching> Do you want to {GOAL.sketch}?

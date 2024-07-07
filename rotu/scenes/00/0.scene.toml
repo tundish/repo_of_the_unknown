@@ -3,7 +3,7 @@
 [FOCUS]
 type = "Focus"
 
-[DRAMA]
+[CONTEXT]
 type = "Interaction"
 states.Detail = ["goal", "info"]
 
