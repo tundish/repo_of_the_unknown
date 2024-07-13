@@ -16,18 +16,18 @@ class Strand(dict):
 strands = [
     Strand(
         label="Get Gigging",
-        spots = {
-            "van_f_ext": ["in front of the van"],
-            "van_f_int": ["in the van"],
-            "van_b_ext": ["behind the van"],
-            "van_b_int": ["in the back of the van"],
-            "car_park": ["car park"],
-            "cafe_f_ext": ["in front of the cafe"],
-            "shed_f_ext": ["in front of the shed"],
-            "shed_f_int": ["inside the shed"],
-            "shed_b_int": ["back of the shed"],
-            "roadside": ["by the roadside"],
-        },
+        spots = [
+            dict(name="van_f_ext", terms=["in front of the van"], drama=[]),
+            dict(name="van_f_int", terms=["in the van"], drama=[]),
+            dict(name="van_b_ext", terms=["behind the van"], drama=[]),
+            dict(name="van_b_int", terms=["in the back of the van"], drama=[]),
+            dict(name="car_park", terms=["car park"], drama=[]),
+            dict(name="cafe_f_ext", terms=["in front of the cafe"], drama=[]),
+            dict(name="shed_f_ext", terms=["in front of the shed"], drama=[]),
+            dict(name="shed_f_int", terms=["inside the shed"], drama=[]),
+            dict(name="shed_b_int", terms=["back of the shed"], drama=[]),
+            dict(name="roadside", terms=["by the roadside"], drama=[]),
+        ],
         graph={},
         items = [
             dict(type="Void", states=["exit.cafe_f_ext", "into.car_park", Traffic.flowing]),
