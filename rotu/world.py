@@ -25,7 +25,7 @@ strands = [
             dict(
                 label="tracker manual page 1",
                 prior=[],
-                spots = [
+                rules = [
                     dict(name="van_f_ext", terms=["in front of the van"], drama=[dict(type=Exploration, states=[0])]),
                     dict(name="van_f_int", terms=["in the van"], drama=[dict(type=Exploration, states=[0])]),
                     dict(name="van_b_ext", terms=["behind the van"], drama=[dict(type=Exploration, states=[0])]),
@@ -37,7 +37,7 @@ strands = [
                     dict(name="shed_b_int", terms=["back of the shed"], drama=[dict(type=Exploration, states=[0])]),
                     dict(name="roadside", terms=["by the roadside"], drama=[dict(type=Exploration, states=[0])]),
                 ],
-                items = [
+                stage = [
                     dict(type="Void", states=["exit.cafe_f_ext", "into.car_park", Traffic.flowing]),
                     dict(type="Void", states=["exit.car_park", "into.shed_f_ext", Traffic.flowing]),
                     dict(type="Void", states=["exit.shed_f_ext", "into.shed_f_int", Traffic.flowing]),
@@ -55,8 +55,8 @@ strands = [
             dict(
                 label="collect tracker samples",
                 prior=["tracker manual page 1"],
-                spots = [],
-                items = [
+                rules = [],
+                stage = [
                 ],
             ),
         ],
