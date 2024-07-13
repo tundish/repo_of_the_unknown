@@ -46,7 +46,8 @@ strands = [
                     dict(type="View", states=["exit.van_f_int", "into.van_b_int", Traffic.blocked]),
                     dict(
                         names=["Door", "Van door"], type="Door", aspect="unlocked", sketch="The {0.name} is {aspect}",
-                        states=["exit.van_f_ext", "into.van_f_int", Traffic.flowing]),
+                        states=["exit.van_f_ext", "into.van_f_int", Traffic.flowing]
+                    ),
                     dict(type="Void", states=["exit.car_park", "into.van_b_ext", Traffic.flowing]),
                     dict(type="Void", states=["exit.van_b_ext", "into.van_b_int", Traffic.flowing]),
                     dict(type="Void", states=["exit.van_b_ext", "into.roadside", Traffic.flowing]),

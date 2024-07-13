@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU Affero General Public License along with Rotu.
 # If not, see <https://www.gnu.org/licenses/>.
 
+from collections import defaultdict
 import operator
 import re
 import sys
@@ -33,6 +34,7 @@ import rotu
 from rotu.drama import Interaction
 from rotu.frames.session import StorySession
 from rotu.world import Map
+from rotu.world import strands
 from rotu.world import World
 
 
@@ -103,7 +105,18 @@ class Story(StoryBuilder):
 
 
 def factory(*args, assets={}):
-    spots = Map.spots
+    spots = defaultdict(list)
+    for strand in strands:
+        for task in strand.get("tasks", []):
+            for rule in task.get("rules", []):
+                for term in rule.get("terms", []):
+                    try:
+                        if term not in spots[rule["name"]]:
+                            spots[rule["name"]].append(term)
+                    except KeyError:
+                        # TODO: warn
+                        pass
+
     world = World(map=Map(spots), assets=assets)
     return Story(*args, assets=assets, world=world)
 
