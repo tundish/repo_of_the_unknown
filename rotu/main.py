@@ -102,7 +102,8 @@ class Story(StoryBuilder):
 
 
 def factory(*args, assets={}):
-    world = World(map=Map(Map.spots), assets=assets)
+    spots = Map.spots
+    world = World(map=Map(spots), assets=assets)
     return Story(*args, assets=assets, world=world)
 
 

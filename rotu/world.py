@@ -9,6 +9,44 @@ from balladeer import Transit
 from balladeer import WorldBuilder
 
 
+class Strand(dict):
+    pass
+
+
+strands = [
+    Strand(
+        label="Get Gigging",
+        spots = {
+            "van_f_ext": ["in front of the van"],
+            "van_f_int": ["in the van"],
+            "van_b_ext": ["behind the van"],
+            "van_b_int": ["in the back of the van"],
+            "car_park": ["car park"],
+            "cafe_f_ext": ["in front of the cafe"],
+            "shed_f_ext": ["in front of the shed"],
+            "shed_f_int": ["inside the shed"],
+            "shed_b_int": ["back of the shed"],
+            "roadside": ["by the roadside"],
+        },
+        graph={},
+        items = [
+            dict(type="Void", states=["exit.cafe_f_ext", "into.car_park", Traffic.flowing]),
+            dict(type="Void", states=["exit.car_park", "into.shed_f_ext", Traffic.flowing]),
+            dict(type="Void", states=["exit.shed_f_ext", "into.shed_f_int", Traffic.flowing]),
+            dict(type="Void", states=["exit.shed_f_int", "into.shed_b_int", Traffic.flowing]),
+            dict(type="Void", states=["exit.car_park", "into.van_f_ext", Traffic.flowing]),
+            dict(type="View", states=["exit.van_f_int", "into.van_b_int", Traffic.blocked]),
+            dict(
+                names=["Door", "Van door"], type="Door", aspect="unlocked", sketch="The {0.name} is {aspect}",
+                states=["exit.van_f_ext", "into.van_f_int", Traffic.flowing]),
+            dict(type="Void", states=["exit.car_park", "into.van_b_ext", Traffic.flowing]),
+            dict(type="Void", states=["exit.van_b_ext", "into.van_b_int", Traffic.flowing]),
+            dict(type="Void", states=["exit.van_b_ext", "into.roadside", Traffic.flowing]),
+        ]
+    )
+]
+
+
 class Map(MapBuilder):
     spots = {
         "van_f_ext": ["in front of the van"],
