@@ -95,6 +95,7 @@ class Story(StoryBuilder):
         return next((reversed(sorted(self.drama, key=operator.attrgetter("state")))), None)
 
     def build(self, *args):
+        # TODO: Store drama objects by strand/task/spot
         yield Interaction(
             *self.speech,
             world=self.world, config=self.config
