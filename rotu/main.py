@@ -117,7 +117,7 @@ def factory(*args, assets={}):
                         # TODO: warn
                         pass
 
-    world = World(map=Map(spots), assets=assets)
+    world = World(map=Map(spots, strands=strands), assets=assets)
     return Story(*args, assets=assets, world=world)
 
 

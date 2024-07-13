@@ -11,11 +11,7 @@ from balladeer import WorldBuilder
 
 from rotu.drama import Exploration
 from rotu.drama import Interaction
-
-
-class Strand(dict):
-    # TODO: override __new__ for reference?
-    pass
+from rotu.strand import Strand
 
 
 strands = [
@@ -66,20 +62,9 @@ strands = [
 
 
 class Map(MapBuilder):
-    spots = {
-        "van_f_ext": ["in front of the van"],
-        "van_f_int": ["in the van"],
-        "van_b_ext": ["behind the van"],
-        "van_b_int": ["in the back of the van"],
-        "car_park": ["car park"],
-        "cafe_f_ext": ["in front of the cafe"],
-        "shed_f_ext": ["in front of the shed"],
-        "shed_f_int": ["inside the shed"],
-        "shed_b_int": ["back of the shed"],
-        "roadside": ["by the roadside"],
-    }
 
-    def build(self):
+    def build(self, base=[]):
+        yield from base
         yield from [
             Transit(type="Void").set_state(self.exit.cafe_f_ext, self.into.car_park, Traffic.flowing),
             Transit(type="Void").set_state(self.exit.car_park, self.into.shed_f_ext, Traffic.flowing),
