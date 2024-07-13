@@ -9,6 +9,10 @@ from balladeer import Transit
 from balladeer import WorldBuilder
 
 
+from rotu.drama import Exploration
+from rotu.drama import Interaction
+
+
 class Strand(dict):
     pass
 
@@ -17,7 +21,7 @@ strands = [
     Strand(
         label="Get Gigging",
         spots = [
-            dict(name="van_f_ext", terms=["in front of the van"], drama=[]),
+            dict(name="van_f_ext", terms=["in front of the van"], drama=[dict(type=Exploration, states=[0])]),
             dict(name="van_f_int", terms=["in the van"], drama=[]),
             dict(name="van_b_ext", terms=["behind the van"], drama=[]),
             dict(name="van_b_int", terms=["in the back of the van"], drama=[]),
