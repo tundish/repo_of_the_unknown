@@ -14,39 +14,52 @@ from rotu.drama import Interaction
 
 
 class Strand(dict):
+    # TODO: override __new__ for reference?
     pass
 
 
 strands = [
     Strand(
         label="Get Gigging",
-        spots = [
-            dict(name="van_f_ext", terms=["in front of the van"], drama=[dict(type=Exploration, states=[0])]),
-            dict(name="van_f_int", terms=["in the van"], drama=[]),
-            dict(name="van_b_ext", terms=["behind the van"], drama=[]),
-            dict(name="van_b_int", terms=["in the back of the van"], drama=[]),
-            dict(name="car_park", terms=["car park"], drama=[]),
-            dict(name="cafe_f_ext", terms=["in front of the cafe"], drama=[]),
-            dict(name="shed_f_ext", terms=["in front of the shed"], drama=[]),
-            dict(name="shed_f_int", terms=["inside the shed"], drama=[]),
-            dict(name="shed_b_int", terms=["back of the shed"], drama=[]),
-            dict(name="roadside", terms=["by the roadside"], drama=[]),
-        ],
-        graph={},
-        items = [
-            dict(type="Void", states=["exit.cafe_f_ext", "into.car_park", Traffic.flowing]),
-            dict(type="Void", states=["exit.car_park", "into.shed_f_ext", Traffic.flowing]),
-            dict(type="Void", states=["exit.shed_f_ext", "into.shed_f_int", Traffic.flowing]),
-            dict(type="Void", states=["exit.shed_f_int", "into.shed_b_int", Traffic.flowing]),
-            dict(type="Void", states=["exit.car_park", "into.van_f_ext", Traffic.flowing]),
-            dict(type="View", states=["exit.van_f_int", "into.van_b_int", Traffic.blocked]),
+        tasks=[
             dict(
-                names=["Door", "Van door"], type="Door", aspect="unlocked", sketch="The {0.name} is {aspect}",
-                states=["exit.van_f_ext", "into.van_f_int", Traffic.flowing]),
-            dict(type="Void", states=["exit.car_park", "into.van_b_ext", Traffic.flowing]),
-            dict(type="Void", states=["exit.van_b_ext", "into.van_b_int", Traffic.flowing]),
-            dict(type="Void", states=["exit.van_b_ext", "into.roadside", Traffic.flowing]),
-        ]
+                label="tracker manual page 1",
+                prior=[],
+                spots = [
+                    dict(name="van_f_ext", terms=["in front of the van"], drama=[dict(type=Exploration, states=[0])]),
+                    dict(name="van_f_int", terms=["in the van"], drama=[dict(type=Exploration, states=[0])]),
+                    dict(name="van_b_ext", terms=["behind the van"], drama=[dict(type=Exploration, states=[0])]),
+                    dict(name="van_b_int", terms=["in the back of the van"], drama=[dict(type=Exploration, states=[0])]),
+                    dict(name="car_park", terms=["car park"], drama=[dict(type=Exploration, states=[0])]),
+                    dict(name="cafe_f_ext", terms=["in front of the cafe"], drama=[dict(type=Exploration, states=[0])]),
+                    dict(name="shed_f_ext", terms=["in front of the shed"], drama=[dict(type=Exploration, states=[0])]),
+                    dict(name="shed_f_int", terms=["inside the shed"], drama=[dict(type=Exploration, states=[0])]),
+                    dict(name="shed_b_int", terms=["back of the shed"], drama=[dict(type=Exploration, states=[0])]),
+                    dict(name="roadside", terms=["by the roadside"], drama=[dict(type=Exploration, states=[0])]),
+                ],
+                items = [
+                    dict(type="Void", states=["exit.cafe_f_ext", "into.car_park", Traffic.flowing]),
+                    dict(type="Void", states=["exit.car_park", "into.shed_f_ext", Traffic.flowing]),
+                    dict(type="Void", states=["exit.shed_f_ext", "into.shed_f_int", Traffic.flowing]),
+                    dict(type="Void", states=["exit.shed_f_int", "into.shed_b_int", Traffic.flowing]),
+                    dict(type="Void", states=["exit.car_park", "into.van_f_ext", Traffic.flowing]),
+                    dict(type="View", states=["exit.van_f_int", "into.van_b_int", Traffic.blocked]),
+                    dict(
+                        names=["Door", "Van door"], type="Door", aspect="unlocked", sketch="The {0.name} is {aspect}",
+                        states=["exit.van_f_ext", "into.van_f_int", Traffic.flowing]),
+                    dict(type="Void", states=["exit.car_park", "into.van_b_ext", Traffic.flowing]),
+                    dict(type="Void", states=["exit.van_b_ext", "into.van_b_int", Traffic.flowing]),
+                    dict(type="Void", states=["exit.van_b_ext", "into.roadside", Traffic.flowing]),
+                ],
+            ),
+            dict(
+                label="collect tracker samples",
+                prior=["tracker manual page 1"],
+                spots = [],
+                items = [
+                ],
+            ),
+        ],
     )
 ]
 
