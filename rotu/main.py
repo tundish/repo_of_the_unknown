@@ -107,12 +107,12 @@ class Story(StoryBuilder):
 def factory(*args, assets={}):
     spots = defaultdict(list)
     for strand in strands:
-        for task in strand.get("tasks", []):
-            for rule in task.get("rules", []):
-                for term in rule.get("terms", []):
+        for task in strand.tasks:
+            for rule in task.rules:
+                for term in rule.terms:
                     try:
-                        if term not in spots[rule["name"]]:
-                            spots[rule["name"]].append(term)
+                        if term not in spots[rule.name]:
+                            spots[rule.name].append(term)
                     except KeyError:
                         # TODO: warn
                         pass

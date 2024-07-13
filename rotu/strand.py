@@ -20,7 +20,22 @@ import dataclasses
 
 
 @dataclasses.dataclass
-class Strand:
-    pass
+class Rule:
+    name: str
+    terms: list[str] = dataclasses.field(default_factory=list)
+    stack: list[dict] = dataclasses.field(default_factory=list)
 
+
+@dataclasses.dataclass
+class Task:
+    label: str
+    prior: list[str] = dataclasses.field(default_factory=list)
+    rules: list[dict] = dataclasses.field(default_factory=list)
+    items: list[dict] = dataclasses.field(default_factory=list)
+
+
+@dataclasses.dataclass
+class Strand:
+    label: str
+    tasks: list[Task] = dataclasses.field(default_factory=list)
 

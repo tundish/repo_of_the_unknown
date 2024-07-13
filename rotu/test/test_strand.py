@@ -18,12 +18,16 @@
 
 import unittest
 
+from rotu.strand import Strand
+from rotu.strand import Task
+
 
 class StrandTests(unittest.TestCase):
 
     def test_defaults(self):
-        s = Strand()
-        self.fail(s)
+        self.assertRaises(TypeError, Strand)
+        s = Strand(label="test")
+        self.assertFalse(s.tasks)
 
     def test_base_map(self):
         self.fail()
