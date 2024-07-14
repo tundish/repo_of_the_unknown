@@ -18,6 +18,7 @@
 
 import unittest
 
+from rotu.strand import Rule
 from rotu.strand import Strand
 from rotu.strand import Task
 
@@ -26,8 +27,15 @@ class StrandTests(unittest.TestCase):
 
     def test_defaults(self):
         self.assertRaises(TypeError, Strand)
+        self.assertRaises(TypeError, Task)
+        self.assertRaises(TypeError, Rule)
         s = Strand(label="test")
         self.assertFalse(s.tasks)
+
+    def test_simple(self):
+        s = Strand(label="test", tasks=[Task(label="test", rules=[Rule(name="local")])])
+        self.assertEqual(s.tasks[0].items, [])
+        self.assertIsNone(s.tasks[0].rules[0].drama)
 
     def test_base_map(self):
         self.fail()

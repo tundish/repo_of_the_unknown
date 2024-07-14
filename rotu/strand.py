@@ -18,12 +18,14 @@
 
 import dataclasses
 
+from balladeer import Drama
+
 
 @dataclasses.dataclass
 class Rule:
     name: str
     terms: list[str] = dataclasses.field(default_factory=list)
-    stack: list[dict] = dataclasses.field(default_factory=list)
+    drama: Drama = None
 
 
 @dataclasses.dataclass
