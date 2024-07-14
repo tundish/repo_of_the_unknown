@@ -2,7 +2,7 @@ from collections.abc import Generator
 import operator
 
 from balladeer import Entity
-from balladeer.lite.types import Fruition
+from balladeer import Fruition
 from balladeer import MapBuilder
 from balladeer import Traffic
 from balladeer import Transit
@@ -65,7 +65,7 @@ strands = [
 
 class Map(MapBuilder):
 
-    def build(self, base=[]):
+    def build(self, base=[], **kwargs):
         yield from base
         yield from [
             Transit(type="Void").set_state(self.exit.cafe_f_ext, self.into.car_park, Traffic.flowing),
@@ -89,7 +89,7 @@ class World(WorldBuilder):
     def focus(self):
         return next((reversed(sorted(self.typewise["Focus"], key=operator.attrgetter("state")))), None)
 
-    def build(self) -> Generator[Entity]:
+    def build(self, **kwargs) -> Generator[Entity]:
         yield Entity(type="Focus").set_state(self.map.spot.van_f_int)
         for entity in self.build_to_spec(self.specs):
             if entity.names and "Goal" in entity.types:
