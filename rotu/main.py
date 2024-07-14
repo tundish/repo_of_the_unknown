@@ -117,7 +117,8 @@ def factory(*args, assets={}):
                         # TODO: warn
                         pass
 
-    world = World(map=Map(spots, strands=strands), assets=assets)
+    base = [] # TODO: Generate via Strand
+    world = World(map=Map(spots, base=base), assets=assets)
     return Story(*args, assets=assets, world=world)
 
 

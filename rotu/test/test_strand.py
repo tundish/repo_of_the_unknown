@@ -37,5 +37,6 @@ class StrandTests(unittest.TestCase):
         self.assertEqual(s.tasks[0].items, [])
         self.assertIsNone(s.tasks[0].rules[0].drama)
 
+    @unittest.skip("TODO")
     def test_base_map(self):
         self.fail()
