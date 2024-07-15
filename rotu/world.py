@@ -44,7 +44,7 @@ strands = [
                         Rule(name="roadside", terms=["by the roadside"]),
                     ],
                 ),
-                items = [
+                items=[
                     dict(type="Void", states=["exit.cafe_f_ext", "into.car_park", Traffic.flowing]),
                     dict(type="Void", states=["exit.car_park", "into.shed_f_ext", Traffic.flowing]),
                     dict(type="Void", states=["exit.shed_f_ext", "into.shed_f_int", Traffic.flowing]),
@@ -63,7 +63,7 @@ strands = [
             Task(
                 label="collect tracker samples",
                 prior=["tracker manual page 1"],
-                items = [
+                items=[
                 ],
             ),
         ],
