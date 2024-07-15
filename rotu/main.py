@@ -108,7 +108,8 @@ def factory(*args, assets={}):
     spots = defaultdict(list)
     for strand in strands:
         for task in strand.tasks:
-            for rule in task.rules:
+            if task.drama is None: continue
+            for rule in task.drama.rules:
                 for term in rule.terms:
                     try:
                         if term not in spots[rule.name]:
