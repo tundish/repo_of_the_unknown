@@ -1,6 +1,7 @@
 from collections.abc import Generator
 import operator
 
+from balladeer import Drama
 from balladeer import Entity
 from balladeer import Fruition
 from balladeer import MapBuilder
@@ -16,6 +17,12 @@ from rotu.strand import Strand
 from rotu.strand import Task
 
 
+class Puzzle(Drama):
+    def __init__(self, *args, **kwargs):
+        self.rules = kwargs.pop("rules", [])
+        super().__init__(*args, **kwargs)
+
+
 strands = [
     Strand(
         label="Get Gigging",
@@ -23,18 +30,20 @@ strands = [
             Task(
                 label="tracker manual page 1",
                 prior=[],
-                rules = [
-                    Rule(name="van_f_ext", terms=["in front of the van"], drama=Exploration()),
-                    Rule(name="van_f_int", terms=["in the van"], drama=Exploration()),
-                    Rule(name="van_b_ext", terms=["behind the van"], drama=Exploration()),
-                    Rule(name="van_b_int", terms=["in the back of the van"], drama=Exploration()),
-                    Rule(name="car_park", terms=["car park"], drama=Exploration()),
-                    Rule(name="cafe_f_ext", terms=["in front of the cafe"], drama=Exploration()),
-                    Rule(name="shed_f_ext", terms=["in front of the shed"], drama=Exploration()),
-                    Rule(name="shed_f_int", terms=["inside the shed"], drama=Exploration()),
-                    Rule(name="shed_b_int", terms=["back of the shed"], drama=Exploration()),
-                    Rule(name="roadside", terms=["by the roadside"], drama=Exploration()),
-                ],
+                drama=Puzzle(
+                    rules=[
+                        Rule(name="van_f_ext", terms=["in front of the van"]),
+                        Rule(name="van_f_int", terms=["in the van"]),
+                        Rule(name="van_b_ext", terms=["behind the van"]),
+                        Rule(name="van_b_int", terms=["in the back of the van"]),
+                        Rule(name="car_park", terms=["car park"]),
+                        Rule(name="cafe_f_ext", terms=["in front of the cafe"]),
+                        Rule(name="shed_f_ext", terms=["in front of the shed"]),
+                        Rule(name="shed_f_int", terms=["inside the shed"]),
+                        Rule(name="shed_b_int", terms=["back of the shed"]),
+                        Rule(name="roadside", terms=["by the roadside"]),
+                    ],
+                ),
                 items = [
                     dict(type="Void", states=["exit.cafe_f_ext", "into.car_park", Traffic.flowing]),
                     dict(type="Void", states=["exit.car_park", "into.shed_f_ext", Traffic.flowing]),
@@ -54,7 +63,6 @@ strands = [
             Task(
                 label="collect tracker samples",
                 prior=["tracker manual page 1"],
-                rules = [],
                 items = [
                 ],
             ),

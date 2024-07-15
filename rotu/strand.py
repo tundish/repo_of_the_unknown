@@ -25,14 +25,13 @@ from balladeer import Drama
 class Rule:
     name: str
     terms: list[str] = dataclasses.field(default_factory=list)
-    drama: Drama = None
 
 
 @dataclasses.dataclass
 class Task:
     label: str
     prior: list[str] = dataclasses.field(default_factory=list)
-    rules: list[dict] = dataclasses.field(default_factory=list)
+    drama: Drama = None
     items: list[dict] = dataclasses.field(default_factory=list)
 
 

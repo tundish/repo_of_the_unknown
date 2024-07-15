@@ -33,9 +33,9 @@ class StrandTests(unittest.TestCase):
         self.assertFalse(s.tasks)
 
     def test_simple(self):
-        s = Strand(label="test", tasks=[Task(label="test", rules=[Rule(name="local")])])
+        s = Strand(label="test", tasks=[Task(label="test")])
         self.assertEqual(s.tasks[0].items, [])
-        self.assertIsNone(s.tasks[0].rules[0].drama)
+        self.assertIsNone(s.tasks[0].drama)
 
     @unittest.skip("TODO")
     def test_base_map(self):
