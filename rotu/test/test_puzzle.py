@@ -18,22 +18,20 @@
 
 import unittest
 
-from rotu.puzzle import Rule
+from rotu.puzzle import Puzzle
 from rotu.puzzle import Strand
-from rotu.puzzle import Task
 
 
 class StrandTests(unittest.TestCase):
 
     def test_defaults(self):
         self.assertRaises(TypeError, Strand)
-        self.assertRaises(TypeError, Task)
-        self.assertRaises(TypeError, Rule)
+        self.assertRaises(TypeError, Puzzle.Rule)
         s = Strand(label="test")
         self.assertFalse(s.tasks)
 
     def test_simple(self):
-        s = Strand(label="test", tasks=[Task(label="test")])
+        s = Strand(label="test", drama=[Puzzle(name="test")])
         self.assertEqual(s.tasks[0].items, [])
         self.assertIsNone(s.tasks[0].drama)
 

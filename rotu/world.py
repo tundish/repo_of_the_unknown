@@ -13,9 +13,7 @@ from balladeer import WorldBuilder
 from rotu.drama import Exploration
 from rotu.drama import Interaction
 from rotu.puzzle import Puzzle
-from rotu.puzzle import Rule
 from rotu.puzzle import Strand
-from rotu.puzzle import Task
 
 
 strands = [
@@ -38,25 +36,25 @@ strands = [
                 },
                 # TODO: yield from setup method
                 rules=(
-                    Rule(type="Void", states=("exit.cafe_f_ext", "into.car_park", Traffic.flowing)),
-                    Rule(type="Void", states=("exit.car_park", "into.shed_f_ext", Traffic.flowing)),
-                    Rule(type="Void", states=("exit.shed_f_ext", "into.shed_f_int", Traffic.flowing)),
-                    Rule(type="Void", states=("exit.shed_f_int", "into.shed_b_int", Traffic.flowing)),
-                    Rule(type="Void", states=("exit.car_park", "into.van_f_ext", Traffic.flowing)),
-                    Rule(type="View", states=("exit.van_f_int", "into.van_b_int", Traffic.blocked)),
-                    Rule(
+                    Puzzle.Rule(type="Transit", states=("exit.cafe_f_ext", "into.car_park", Traffic.flowing)),
+                    Puzzle.Rule(type="Transit", states=("exit.car_park", "into.shed_f_ext", Traffic.flowing)),
+                    Puzzle.Rule(type="Transit", states=("exit.shed_f_ext", "into.shed_f_int", Traffic.flowing)),
+                    Puzzle.Rule(type="Transit", states=("exit.shed_f_int", "into.shed_b_int", Traffic.flowing)),
+                    Puzzle.Rule(type="Transit", states=("exit.car_park", "into.van_f_ext", Traffic.flowing)),
+                    Puzzle.Rule(type="Transit", states=("exit.van_f_int", "into.van_b_int", Traffic.blocked)),
+                    Puzzle.Rule(
                         names=("Door", "Van door"), type="Door", aspect="unlocked", sketch="The {0.name} is {aspect}",
                         states=("exit.van_f_ext", "into.van_f_int", Traffic.flowing)
                     ),
-                    Rule(type="Void", states=("exit.car_park", "into.van_b_ext", Traffic.flowing)),
-                    Rule(type="Void", states=("exit.van_b_ext", "into.van_b_int", Traffic.flowing)),
-                    Rule(type="Void", states=("exit.van_b_ext", "into.roadside", Traffic.flowing)),
+                    Puzzle.Rule(type="Void", states=("exit.car_park", "into.van_b_ext", Traffic.flowing)),
+                    Puzzle.Rule(type="Void", states=("exit.van_b_ext", "into.van_b_int", Traffic.flowing)),
+                    Puzzle.Rule(type="Void", states=("exit.van_b_ext", "into.roadside", Traffic.flowing)),
                 ),
             ),
             Puzzle(
                 name="collect tracker samples",
                 links={"tracker manual page 1"},
-                items=[
+                rules=[
                 ],
             ),
         ],

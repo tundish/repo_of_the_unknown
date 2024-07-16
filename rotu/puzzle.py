@@ -19,31 +19,23 @@
 import dataclasses
 
 from balladeer import Drama
-
-
-@dataclasses.dataclass
-class Rule:
-    name: str
-    terms: list[str] = dataclasses.field(default_factory=list)
-
-
-@dataclasses.dataclass
-class Task:
-    label: str
-    prior: list[str] = dataclasses.field(default_factory=list)
-    drama: Drama = None
-    items: list[dict] = dataclasses.field(default_factory=list)
+from balladeer import Entity
 
 
 @dataclasses.dataclass
 class Strand:
     label: str
-    tasks: list[Task] = dataclasses.field(default_factory=list)
+    drama: list[Drama] = dataclasses.field(default_factory=list)
 
 
 class Puzzle(Drama):
-    def __init__(self, *args, **kwargs):
-        self.spots = tuple(kwargs.pop("spots", {}).items())
+
+    class Rule(Entity):
+        drama: tuple[Drama] = dataclasses.field(default_factory=tuple)
+
+    def __init__(self, *args, rules: list[Rule] = [], spots: dict = {}, **kwargs):
+        self.rules = tuple(rules)
+        self.spots = tuple(spots.items())
         super().__init__(*args, **kwargs)
 
 

@@ -107,9 +107,8 @@ class Story(StoryBuilder):
 def factory(*args, assets={}):
     spots = defaultdict(list)
     for strand in strands:
-        for task in strand.tasks:
-            if task.drama is None: continue
-            for rule in task.drama.rules:
+        for drama in strand.drama:
+            for rule in drama.rules:
                 for term in rule.terms:
                     try:
                         if term not in spots[rule.name]:
