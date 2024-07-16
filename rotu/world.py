@@ -19,50 +19,48 @@ from rotu.strand import Task
 
 class Puzzle(Drama):
     def __init__(self, *args, **kwargs):
-        self.rules = kwargs.pop("rules", [])
+        self.spots = tuple(kwargs.pop("spots", {}).items())
         super().__init__(*args, **kwargs)
 
 
 strands = [
     Strand(
         label="Get Gigging",
-        tasks=[
-            Task(
-                label="tracker manual page 1",
-                prior=[],
-                drama=Puzzle(
-                    rules=[
-                        Rule(name="van_f_ext", terms=["in front of the van"]),
-                        Rule(name="van_f_int", terms=["in the van"]),
-                        Rule(name="van_b_ext", terms=["behind the van"]),
-                        Rule(name="van_b_int", terms=["in the back of the van"]),
-                        Rule(name="car_park", terms=["car park"]),
-                        Rule(name="cafe_f_ext", terms=["in front of the cafe"]),
-                        Rule(name="shed_f_ext", terms=["in front of the shed"]),
-                        Rule(name="shed_f_int", terms=["inside the shed"]),
-                        Rule(name="shed_b_int", terms=["back of the shed"]),
-                        Rule(name="roadside", terms=["by the roadside"]),
-                    ],
-                ),
-                items=[
-                    dict(type="Void", states=["exit.cafe_f_ext", "into.car_park", Traffic.flowing]),
-                    dict(type="Void", states=["exit.car_park", "into.shed_f_ext", Traffic.flowing]),
-                    dict(type="Void", states=["exit.shed_f_ext", "into.shed_f_int", Traffic.flowing]),
-                    dict(type="Void", states=["exit.shed_f_int", "into.shed_b_int", Traffic.flowing]),
-                    dict(type="Void", states=["exit.car_park", "into.van_f_ext", Traffic.flowing]),
-                    dict(type="View", states=["exit.van_f_int", "into.van_b_int", Traffic.blocked]),
-                    dict(
-                        names=["Door", "Van door"], type="Door", aspect="unlocked", sketch="The {0.name} is {aspect}",
-                        states=["exit.van_f_ext", "into.van_f_int", Traffic.flowing]
+        drama=[
+            Puzzle(
+                name="tracker manual page 1",
+                spots={
+                    "van_f_ext": ["in front of the van"],
+                    "van_f_int": ["in the van"],
+                    "van_b_ext": ["behind the van"],
+                    "van_b_int": ["in the back of the van"],
+                    "car_park": ["car park"],
+                    "cafe_f_ext": ["in front of the cafe"],
+                    "shed_f_ext": ["in front of the shed"],
+                    "shed_f_int": ["inside the shed"],
+                    "shed_b_int": ["back of the shed"],
+                    "roadside": ["by the roadside"],
+                },
+                # TODO: yield from setup method
+                rules=(
+                    Rule(type="Void", states=("exit.cafe_f_ext", "into.car_park", Traffic.flowing)),
+                    Rule(type="Void", states=("exit.car_park", "into.shed_f_ext", Traffic.flowing)),
+                    Rule(type="Void", states=("exit.shed_f_ext", "into.shed_f_int", Traffic.flowing)),
+                    Rule(type="Void", states=("exit.shed_f_int", "into.shed_b_int", Traffic.flowing)),
+                    Rule(type="Void", states=("exit.car_park", "into.van_f_ext", Traffic.flowing)),
+                    Rule(type="View", states=("exit.van_f_int", "into.van_b_int", Traffic.blocked)),
+                    Rule(
+                        names=("Door", "Van door"), type="Door", aspect="unlocked", sketch="The {0.name} is {aspect}",
+                        states=("exit.van_f_ext", "into.van_f_int", Traffic.flowing)
                     ),
-                    dict(type="Void", states=["exit.car_park", "into.van_b_ext", Traffic.flowing]),
-                    dict(type="Void", states=["exit.van_b_ext", "into.van_b_int", Traffic.flowing]),
-                    dict(type="Void", states=["exit.van_b_ext", "into.roadside", Traffic.flowing]),
-                ],
+                    Rule(type="Void", states=("exit.car_park", "into.van_b_ext", Traffic.flowing)),
+                    Rule(type="Void", states=("exit.van_b_ext", "into.van_b_int", Traffic.flowing)),
+                    Rule(type="Void", states=("exit.van_b_ext", "into.roadside", Traffic.flowing)),
+                ),
             ),
-            Task(
-                label="collect tracker samples",
-                prior=["tracker manual page 1"],
+            Puzzle(
+                name="collect tracker samples",
+                links={"tracker manual page 1"},
                 items=[
                 ],
             ),
