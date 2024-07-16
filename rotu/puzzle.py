@@ -40,3 +40,10 @@ class Strand:
     label: str
     tasks: list[Task] = dataclasses.field(default_factory=list)
 
+
+class Puzzle(Drama):
+    def __init__(self, *args, **kwargs):
+        self.spots = tuple(kwargs.pop("spots", {}).items())
+        super().__init__(*args, **kwargs)
+
+

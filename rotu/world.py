@@ -12,15 +12,10 @@ from balladeer import WorldBuilder
 
 from rotu.drama import Exploration
 from rotu.drama import Interaction
-from rotu.strand import Rule
-from rotu.strand import Strand
-from rotu.strand import Task
-
-
-class Puzzle(Drama):
-    def __init__(self, *args, **kwargs):
-        self.spots = tuple(kwargs.pop("spots", {}).items())
-        super().__init__(*args, **kwargs)
+from rotu.puzzle import Puzzle
+from rotu.puzzle import Rule
+from rotu.puzzle import Strand
+from rotu.puzzle import Task
 
 
 strands = [

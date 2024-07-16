@@ -18,9 +18,9 @@
 
 import unittest
 
-from rotu.strand import Rule
-from rotu.strand import Strand
-from rotu.strand import Task
+from rotu.puzzle import Rule
+from rotu.puzzle import Strand
+from rotu.puzzle import Task
 
 
 class StrandTests(unittest.TestCase):
