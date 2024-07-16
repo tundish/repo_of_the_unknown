@@ -108,11 +108,11 @@ def factory(*args, assets={}):
     spots = defaultdict(list)
     for strand in strands:
         for drama in strand.drama:
-            for rule in drama.rules:
-                for term in rule.terms:
+            for name, terms in drama.spots:
+                for term in terms:
                     try:
-                        if term not in spots[rule.name]:
-                            spots[rule.name].append(term)
+                        if term not in spots[name]:
+                            spots[name].append(term)
                     except KeyError:
                         # TODO: warn
                         pass

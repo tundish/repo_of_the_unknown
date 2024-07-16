@@ -32,8 +32,8 @@ class StrandTests(unittest.TestCase):
 
     def test_simple(self):
         s = Strand(label="test", drama=[Puzzle(name="test")])
-        self.assertEqual(s.tasks[0].items, [])
-        self.assertIsNone(s.tasks[0].drama)
+        self.assertEqual(s.drama[0].rules, tuple())
+        self.assertIsNone(s.drama[0].spots)
 
     @unittest.skip("TODO")
     def test_base_map(self):
