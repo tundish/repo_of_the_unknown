@@ -18,6 +18,10 @@
 
 import unittest
 
+from balladeer import StoryBuilder
+from balladeer import MapBuilder
+from balladeer import WorldBuilder
+
 from rotu.puzzle import Puzzle
 from rotu.puzzle import Strand
 
@@ -38,3 +42,21 @@ class StrandTests(unittest.TestCase):
     @unittest.skip("TODO")
     def test_base_map(self):
         self.fail()
+
+
+class TurnTests(unittest.TestCase):
+
+    class Map(MapBuilder):
+        pass
+
+    class World(WorldBuilder):
+        pass
+
+    class Story(StoryBuilder):
+        pass
+
+    def test_simple(self):
+        world = self.World(map=self.Map(spots={}))
+        story = self.Story(world=world)
+
+        self.fail(story)
