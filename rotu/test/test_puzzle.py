@@ -62,6 +62,7 @@ class TurnTests(unittest.TestCase):
         story = self.Story("Test", world=world)
 
         self.assertEqual(len(story.drama), 1)
+        self.assertFalse(story.world.specs)
         self.assertFalse(story.world.statewise)
         self.assertFalse(story.world.typewise)
 
