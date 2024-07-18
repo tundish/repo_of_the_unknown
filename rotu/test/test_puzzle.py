@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU Affero General Public License along with Rotu.
 # If not, see <https://www.gnu.org/licenses/>.
 
+import enum
 import unittest
 
 from balladeer import Grouping
@@ -60,7 +61,21 @@ class TurnTests(unittest.TestCase):
             self.world.typewise = Grouping.typewise(self.world.entities)
             return super().turn(*args, **kwargs)
 
+
     def test_simple(self):
+        strands = [
+            Strand(
+                label="single test strand",
+                drama=[
+                    Puzzle(
+                        name="single spot",
+                        spots={
+                            "inventory": ["inventory", "carrying"],
+                        }
+                    )
+                ]
+            )
+        ]
         world = self.World(map=self.Map(spots={}), assets={})
         story = self.Story("Test", world=world)
 
@@ -68,6 +83,9 @@ class TurnTests(unittest.TestCase):
         self.assertFalse(story.world.specs)
         self.assertFalse(story.world.statewise)
         self.assertFalse(story.world.typewise)
+
+        self.assertTrue(issubclass(story.world.map.spot, enum.Enum))
+        self.assertFalse(list(story.world.map.spot))
 
         print(f"{story.world.statewise=}")
         story.turn()
