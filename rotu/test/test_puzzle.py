@@ -50,13 +50,19 @@ class TurnTests(unittest.TestCase):
         pass
 
     class World(WorldBuilder):
-        pass
+        def build(self, **kwargs):
+            return
+            yield
 
     class Story(StoryBuilder):
         pass
 
     def test_simple(self):
-        world = self.World(map=self.Map(spots={}))
-        story = self.Story(world=world)
+        world = self.World(map=self.Map(spots={}), assets={})
+        story = self.Story("Test", world=world)
 
-        self.fail(story)
+        self.assertEqual(len(story.drama), 1)
+        self.assertFalse(story.world.statewise)
+        self.assertFalse(story.world.typewise)
+
+        print(f"{story.world.statewise=}")
