@@ -18,6 +18,7 @@
 
 import unittest
 
+from balladeer import Grouping
 from balladeer import StoryBuilder
 from balladeer import MapBuilder
 from balladeer import WorldBuilder
@@ -55,7 +56,9 @@ class TurnTests(unittest.TestCase):
             yield
 
     class Story(StoryBuilder):
-        pass
+        def turn(self, *args, **kwargs):
+            self.world.typewise = Grouping.typewise(self.world.entities)
+            return super().turn(*args, **kwargs)
 
     def test_simple(self):
         world = self.World(map=self.Map(spots={}), assets={})
@@ -67,3 +70,4 @@ class TurnTests(unittest.TestCase):
         self.assertFalse(story.world.typewise)
 
         print(f"{story.world.statewise=}")
+        story.turn()
