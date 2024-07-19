@@ -66,8 +66,19 @@ class TurnTests(unittest.TestCase):
             self.world.typewise = Grouping.typewise(self.world.entities)
             return super().turn(*args, **kwargs)
 
+    def test_simple_puzzle(self):
+        puzzle = Puzzle(
+            name="single spot",
+            spots={
+                "inventory": ["inventory", "carrying"],
+            }
+        )
+        m = self.Map(spots={})
 
-    def test_simple(self):
+        rv = list(puzzle.build(map=m))
+        self.assertEqual(len(rv), len(puzzle.items), rv)
+
+    def test_simple_strand(self):
         strands = [
             Strand(
                 label="single test strand",
