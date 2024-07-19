@@ -30,8 +30,8 @@ from rotu.puzzle import Strand
 
 class StrandTests(unittest.TestCase):
 
-    def test_default_rule(self):
-        r = Puzzle.Rule()
+    def test_default_item(self):
+        r = Puzzle.Item()
         self.assertFalse(r.states)
         r.set_state(1)
         self.assertEqual(r.states, {"int": 1})
@@ -43,7 +43,7 @@ class StrandTests(unittest.TestCase):
 
     def test_simple(self):
         s = Strand(label="test", drama=[Puzzle(name="test")])
-        self.assertEqual(s.drama[0].rules, tuple())
+        self.assertEqual(s.drama[0].items, tuple())
         self.assertEqual(s.drama[0].spots, tuple())
 
     @unittest.skip("TODO")

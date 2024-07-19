@@ -31,11 +31,11 @@ class Strand:
 
 class Puzzle(Drama):
 
-    class Rule(Entity):
+    class Item(Entity):
         states: tuple[str | enum.Enum] = dataclasses.field(default_factory=tuple)
 
-    def __init__(self, *args, rules: list[Rule] = [], spots: dict = {}, **kwargs):
-        self.rules = tuple(rules)
+    def __init__(self, *args, items: list[Item] = [], spots: dict = {}, **kwargs):
+        self.items = tuple(items)
         self.spots = tuple(spots.items())
         super().__init__(*args, **kwargs)
 
