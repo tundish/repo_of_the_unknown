@@ -33,6 +33,8 @@ class StrandTests(unittest.TestCase):
     def test_default_rule(self):
         r = Puzzle.Rule()
         self.assertFalse(r.states)
+        r.set_state(1)
+        self.assertEqual(r.states, {"int": 1})
 
     def test_default_strand(self):
         self.assertRaises(TypeError, Strand)
