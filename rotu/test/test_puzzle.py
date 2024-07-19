@@ -30,16 +30,19 @@ from rotu.puzzle import Strand
 
 class StrandTests(unittest.TestCase):
 
-    def test_defaults(self):
+    def test_default_rule(self):
+        r = Puzzle.Rule()
+        self.assertFalse(r.states)
+
+    def test_default_strand(self):
         self.assertRaises(TypeError, Strand)
-        self.assertRaises(TypeError, Puzzle.Rule)
         s = Strand(label="test")
-        self.assertFalse(s.tasks)
+        self.assertEqual(s.drama, [])
 
     def test_simple(self):
         s = Strand(label="test", drama=[Puzzle(name="test")])
         self.assertEqual(s.drama[0].rules, tuple())
-        self.assertIsNone(s.drama[0].spots)
+        self.assertEqual(s.drama[0].spots, tuple())
 
     @unittest.skip("TODO")
     def test_base_map(self):
@@ -87,5 +90,4 @@ class TurnTests(unittest.TestCase):
         self.assertTrue(issubclass(story.world.map.spot, enum.Enum))
         self.assertFalse(list(story.world.map.spot))
 
-        print(f"{story.world.statewise=}")
         story.turn()

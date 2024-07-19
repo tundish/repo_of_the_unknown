@@ -17,6 +17,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 import dataclasses
+import enum
 
 from balladeer import Drama
 from balladeer import Entity
@@ -31,11 +32,14 @@ class Strand:
 class Puzzle(Drama):
 
     class Rule(Entity):
-        drama: tuple[Drama] = dataclasses.field(default_factory=tuple)
+        states: tuple[str | enum.Enum] = dataclasses.field(default_factory=tuple)
 
     def __init__(self, *args, rules: list[Rule] = [], spots: dict = {}, **kwargs):
         self.rules = tuple(rules)
         self.spots = tuple(spots.items())
         super().__init__(*args, **kwargs)
 
+    def build(self, **kwargs):
+        yield
+        return
 
