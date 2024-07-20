@@ -94,8 +94,15 @@ class StrandTests(unittest.TestCase):
                 Puzzle(name="d", links={"b", "c"}),
             ]
         )
-        self.assertEqual(strand.ready, next(iter(strand.drama.values())))
-        self.fail(strand)
+        self.assertIn(Fruition.completion, {Fruition.completion})
+        self.assertEqual(strand.active[0], strand.drama["a"])
+
+        strand.drama["a"].set_state(Fruition.completion)
+        self.assertEqual(strand.active, [strand.drama["b"], strand.drama["c"]], strand.active)
+
+        strand.drama["b"].set_state(Fruition.completion)
+        strand.drama["c"].set_state(Fruition.completion)
+        self.assertEqual(strand.active[0], strand.drama["d"])
 
 
 class TurnTests(unittest.TestCase):

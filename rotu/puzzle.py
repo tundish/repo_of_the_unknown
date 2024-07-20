@@ -37,26 +37,28 @@ class Strand:
     sorter: TopologicalSorter = dataclasses.field(default_factory=TopologicalSorter)
 
     def __post_init__(self, puzzles):
-        try:
-            self.drama.update({i.names[0]: i for i in puzzles})
-        except IndexError:
-            warnings.warn("Every Puzzle needs a name.")
+        self.drama.update({i.names[0] if i.names else i.uid: i for i in puzzles})
 
-        for uid, drama in self.drama.items():
-            self.sorter.add(uid)
+        for key, drama in self.drama.items():
+            self.sorter.add(key, *drama.links)
 
         self.sorter.prepare()
+        self._active = {i: self.drama.get(i) for i in self.sorter.get_ready()}
 
     @property
-    def ready(self):
-        done = [
-            i for i in self.drama.values()
-            if i.get_state(Fruition) in {
-                Fruition.withdrawn, Fruition.defaulted, Fruition.cancelled, Fruition.completion
-            }
-        ]
-        print(f"{done=}")
-        return self.sorter.get_ready()
+    def active(self):
+        for key in list(self._active.keys()):
+            try:
+                if self.drama[key].get_state(Fruition) in {
+                    Fruition.withdrawn, Fruition.defaulted, Fruition.cancelled, Fruition.completion
+                }:
+                    del self._active[key]
+                    self.sorter.done(key)
+            except (AttributeError, KeyError, ValueError):
+                continue
+
+        self._active.update({i: self.drama.get(i) for i in self.sorter.get_ready()})
+        return list(self._active.values())
 
 
 class Puzzle(Drama):
