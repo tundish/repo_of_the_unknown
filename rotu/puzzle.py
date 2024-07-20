@@ -18,6 +18,7 @@
 
 import dataclasses
 import enum
+from graphlib import TopologicalSorter
 import operator
 
 from balladeer import Drama
@@ -29,7 +30,10 @@ from balladeer import WorldBuilder
 class Strand:
     label: str
     drama: list[Drama] = dataclasses.field(default_factory=list)
+    sorter: TopologicalSorter = dataclasses.field(default_factory=TopologicalSorter)
 
+    def __post_init__(self):
+        print(f"{self.drama=}")
 
 class Puzzle(Drama):
 

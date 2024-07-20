@@ -93,12 +93,10 @@ class TurnTests(unittest.TestCase):
             Strand(
                 label="single test strand",
                 drama=[
-                    Puzzle(
-                        name="single spot",
-                        spots={
-                            "inventory": ["inventory", "carrying"],
-                        }
-                    )
+                    Puzzle(name="a"),
+                    Puzzle(name="b", links={"a"}),
+                    Puzzle(name="c", links={"a"}),
+                    Puzzle(name="d", links={"b", "c"}),
                 ]
             )
         ]
