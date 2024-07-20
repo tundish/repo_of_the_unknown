@@ -77,23 +77,24 @@ class StrandTests(unittest.TestCase):
     def test_default_strand(self):
         self.assertRaises(TypeError, Strand)
         s = Strand(label="test")
-        self.assertEqual(s.drama, [])
+        self.assertEqual(s.drama, {})
 
     def test_init(self):
-        s = Strand(label="test", drama=[Puzzle(name="test")])
-        self.assertEqual(s.drama[0].items, tuple())
-        self.assertEqual(s.drama[0].spots, tuple())
+        s = Strand(label="test", puzzles=[Puzzle(name="test")])
+        self.assertEqual(next(iter(s.drama.values())).items, tuple())
+        self.assertEqual(next(iter(s.drama.values())).spots, tuple())
 
     def test_simple(self):
         strand = Strand(
             label="single test strand",
-            drama=[
+            puzzles=[
                 Puzzle(name="a"),
                 Puzzle(name="b", links={"a"}),
                 Puzzle(name="c", links={"a"}),
                 Puzzle(name="d", links={"b", "c"}),
             ]
         )
+        self.assertEqual(strand.ready, next(iter(strand.drama.values())))
         self.fail(strand)
 
 
@@ -103,7 +104,7 @@ class TurnTests(unittest.TestCase):
         strands = [
             Strand(
                 label="single test strand",
-                drama=[
+                puzzles=[
                     Puzzle(name="a"),
                     Puzzle(name="b", links={"a"}),
                     Puzzle(name="c", links={"a"}),

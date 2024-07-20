@@ -107,7 +107,7 @@ class Story(StoryBuilder):
 def factory(*args, assets={}):
     spots = defaultdict(list)
     for strand in strands:
-        for drama in strand.drama:
+        for drama in strand.drama.values():
             for name, terms in drama.spots:
                 for term in terms:
                     try:

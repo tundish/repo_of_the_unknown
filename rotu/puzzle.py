@@ -20,20 +20,36 @@ import dataclasses
 import enum
 from graphlib import TopologicalSorter
 import operator
+import uuid
 
 from balladeer import Drama
 from balladeer import Entity
+from balladeer import Fruition
 from balladeer import WorldBuilder
 
 
 @dataclasses.dataclass
 class Strand:
     label: str
-    drama: list[Drama] = dataclasses.field(default_factory=list)
+    puzzles: dataclasses.InitVar = []
+    drama: dict[uuid.UUID, Drama] = dataclasses.field(default_factory=dict)
     sorter: TopologicalSorter = dataclasses.field(default_factory=TopologicalSorter)
 
-    def __post_init__(self):
-        print(f"{self.drama=}")
+    def __post_init__(self, puzzles):
+        self.drama.update({i.uid: i for i in puzzles})
+        self.sorter.prepare()
+
+    @property
+    def ready(self):
+        done = [
+            i for i in self.drama.values()
+            if i.get_state(Fruition) in {
+                Fruition.withdrawn, Fruition.defaulted, Fruition.cancelled, Fruition.completion
+            }
+        ]
+        print(f"{done=}")
+        return self.sorter.get_ready()
+
 
 class Puzzle(Drama):
 

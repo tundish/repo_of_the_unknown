@@ -19,7 +19,7 @@ from rotu.puzzle import Strand
 strands = [
     Strand(
         label="Get Gigging",
-        drama=[
+        puzzles=[
             Puzzle(
                 name="tracker manual page 1",
                 spots={
