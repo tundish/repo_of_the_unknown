@@ -60,6 +60,15 @@ class Strand:
         self._active.update({i: self.drama.get(i) for i in self.sorter.get_ready()})
         return list(self._active.values())
 
+    @property
+    def spots(self) -> list[tuple[str, str]]:
+        return [
+            (name, term)
+            for drama in self.drama.values()
+            for name, terms in drama.spots
+            for term in terms
+        ]
+
 
 class Puzzle(Drama):
 

@@ -107,15 +107,9 @@ class Story(StoryBuilder):
 def factory(*args, assets={}):
     spots = defaultdict(list)
     for strand in strands:
-        for drama in strand.drama.values():
-            for name, terms in drama.spots:
-                for term in terms:
-                    try:
-                        if term not in spots[name]:
-                            spots[name].append(term)
-                    except KeyError:
-                        # TODO: warn
-                        pass
+        for name, term in strand.spots:
+            if term not in spots[name]:
+                spots[name].append(term)
 
     base = [] # TODO: Generate via Strand
     world = World(map=Map(spots, base=base), assets=assets)
