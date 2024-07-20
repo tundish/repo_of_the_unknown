@@ -103,6 +103,13 @@ class Story(StoryBuilder):
             world=self.world, config=self.config
         )
 
+    def turn(self, *args, **kwargs):
+        # TODO: active strand dramas with no Fruition state:
+        # + Set Fruition.inception
+        # + Build puzzle to world
+        self.context.interlude(*args, **kwargs)
+        return self
+
 
 def factory(*args, assets={}):
     spots = defaultdict(list)
