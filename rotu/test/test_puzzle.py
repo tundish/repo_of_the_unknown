@@ -29,30 +29,7 @@ from rotu.puzzle import Puzzle
 from rotu.puzzle import Strand
 
 
-class StrandTests(unittest.TestCase):
-
-    def test_default_item(self):
-        r = Puzzle.Item()
-        self.assertFalse(r.states)
-        r.set_state(1)
-        self.assertEqual(r.states, {"int": 1})
-
-    def test_default_strand(self):
-        self.assertRaises(TypeError, Strand)
-        s = Strand(label="test")
-        self.assertEqual(s.drama, [])
-
-    def test_simple(self):
-        s = Strand(label="test", drama=[Puzzle(name="test")])
-        self.assertEqual(s.drama[0].items, tuple())
-        self.assertEqual(s.drama[0].spots, tuple())
-
-    @unittest.skip("TODO")
-    def test_base_map(self):
-        self.fail()
-
-
-class TurnTests(unittest.TestCase):
+class PuzzleTests(unittest.TestCase):
 
     class Map(MapBuilder):
         pass
@@ -88,6 +65,40 @@ class TurnTests(unittest.TestCase):
         self.assertEqual(entity.get_state("Home").label, "inventory")
         self.assertEqual(entity.get_state("Fruition"), Fruition.inception)
 
+
+class StrandTests(unittest.TestCase):
+
+    def test_default_item(self):
+        r = Puzzle.Item()
+        self.assertFalse(r.states)
+        r.set_state(1)
+        self.assertEqual(r.states, {"int": 1})
+
+    def test_default_strand(self):
+        self.assertRaises(TypeError, Strand)
+        s = Strand(label="test")
+        self.assertEqual(s.drama, [])
+
+    def test_init(self):
+        s = Strand(label="test", drama=[Puzzle(name="test")])
+        self.assertEqual(s.drama[0].items, tuple())
+        self.assertEqual(s.drama[0].spots, tuple())
+
+    def test_simple(self):
+        strand = Strand(
+            label="single test strand",
+            drama=[
+                Puzzle(name="a"),
+                Puzzle(name="b", links={"a"}),
+                Puzzle(name="c", links={"a"}),
+                Puzzle(name="d", links={"b", "c"}),
+            ]
+        )
+        self.fail(strand)
+
+
+class TurnTests(unittest.TestCase):
+
     def test_simple_strand(self):
         strands = [
             Strand(
@@ -100,8 +111,8 @@ class TurnTests(unittest.TestCase):
                 ]
             )
         ]
-        world = self.World(map=self.Map(spots={}), assets={})
-        story = self.Story("Test", world=world)
+        world = PuzzleTests.World(map=PuzzleTests.Map(spots={}), assets={})
+        story = PuzzleTests.Story("Test", world=world)
 
         self.assertEqual(len(story.drama), 1)
         self.assertFalse(story.world.specs)
