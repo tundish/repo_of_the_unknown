@@ -107,10 +107,7 @@ class StoryTests(unittest.TestCase):
         map_ = self.story.world.map
         focus = self.story.world.focus
         self.assertIsInstance(focus, Entity)
-        print(f"{focus=}")
         options = map_.options(focus.get_state(map_.spot))
         for label, dest, transit in options:
-            print(f"{transit=}")
             print(f"{transit.description}")
 
-        print(f"{self.story.context=}")

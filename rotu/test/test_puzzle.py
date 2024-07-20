@@ -19,6 +19,7 @@
 import enum
 import unittest
 
+from balladeer import Fruition
 from balladeer import Grouping
 from balladeer import StoryBuilder
 from balladeer import MapBuilder
@@ -73,7 +74,7 @@ class TurnTests(unittest.TestCase):
                 "inventory": ["inventory", "carrying"],
             },
             items=(
-                Puzzle.Item(states=("home.inventory",)),
+                Puzzle.Item(states=("home.inventory", Fruition.inception)),
             ),
         )
         m = self.Map(spots=puzzle.spots)
@@ -82,10 +83,10 @@ class TurnTests(unittest.TestCase):
         rv = list(puzzle.build(world=world))
         self.assertEqual(len(rv), len(puzzle.items), rv)
 
-        for n, entity in enumerate(rv):
-            with self.subTest(n=n, entity=entity):
-                self.assertEqual(entity.get_state(world.map.home).label, "inventory")
-                self.assertEqual(entity.get_state("Home").label, "inventory")
+        entity = rv[0]
+        self.assertEqual(entity.get_state(world.map.home).label, "inventory")
+        self.assertEqual(entity.get_state("Home").label, "inventory")
+        self.assertEqual(entity.get_state("Fruition"), Fruition.inception)
 
     def test_simple_strand(self):
         strands = [
