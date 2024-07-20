@@ -18,9 +18,11 @@
 
 import dataclasses
 import enum
+import operator
 
 from balladeer import Drama
 from balladeer import Entity
+from balladeer import WorldBuilder
 
 
 @dataclasses.dataclass
@@ -39,7 +41,11 @@ class Puzzle(Drama):
         self.spots = tuple(spots.items())
         super().__init__(*args, **kwargs)
 
-    def build(self, **kwargs):
-        yield
-        return
+    def build(self, world: WorldBuilder, **kwargs):
+        for item in self.items:
+            item.states, rules = {}, item.states
+            for rule in rules:
+                state = operator.attrgetter(rule)(world.map)
+                item.set_state(state)
+            yield item
 

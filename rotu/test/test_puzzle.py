@@ -71,12 +71,21 @@ class TurnTests(unittest.TestCase):
             name="single spot",
             spots={
                 "inventory": ["inventory", "carrying"],
-            }
+            },
+            items=(
+                Puzzle.Item(states=("home.inventory",)),
+            ),
         )
-        m = self.Map(spots={})
+        m = self.Map(spots=puzzle.spots)
+        world = self.World(map=m, assets={})
 
-        rv = list(puzzle.build(map=m))
+        rv = list(puzzle.build(world=world))
         self.assertEqual(len(rv), len(puzzle.items), rv)
+
+        for n, entity in enumerate(rv):
+            with self.subTest(n=n, entity=entity):
+                self.assertEqual(entity.get_state(world.map.home).label, "inventory")
+                self.assertEqual(entity.get_state("Home").label, "inventory")
 
     def test_simple_strand(self):
         strands = [
