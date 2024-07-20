@@ -21,6 +21,7 @@ import enum
 from graphlib import TopologicalSorter
 import operator
 import uuid
+import warnings
 
 from balladeer import Drama
 from balladeer import Entity
@@ -32,11 +33,18 @@ from balladeer import WorldBuilder
 class Strand:
     label: str
     puzzles: dataclasses.InitVar = []
-    drama: dict[uuid.UUID, Drama] = dataclasses.field(default_factory=dict)
+    drama: dict[str, Drama] = dataclasses.field(default_factory=dict)
     sorter: TopologicalSorter = dataclasses.field(default_factory=TopologicalSorter)
 
     def __post_init__(self, puzzles):
-        self.drama.update({i.uid: i for i in puzzles})
+        try:
+            self.drama.update({i.names[0]: i for i in puzzles})
+        except IndexError:
+            warnings.warn("Every Puzzle needs a name.")
+
+        for uid, drama in self.drama.items():
+            self.sorter.add(uid)
+
         self.sorter.prepare()
 
     @property
