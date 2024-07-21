@@ -134,11 +134,13 @@ class TurnTests(unittest.TestCase):
         self.assertEqual(list(spots), ["a", "c", "d"])
         self.assertEqual(spots["a"], ["spot a", "spot a again"])
         print(f"{spots=}")
-        world = PuzzleTests.World(map=PuzzleTests.Map(spots={}), assets={})
+
+        m = PuzzleTests.Map(spots=spots)
+        world = PuzzleTests.World(map=m, assets={})
         story = PuzzleTests.Story("Test", world=world)
 
         self.assertEqual(len(story.drama), 1)
-        self.assertFalse(story.world.specs)
+        self.assertFalse(story.world.specs, story.world.assets)
         self.assertFalse(story.world.statewise)
         self.assertFalse(story.world.typewise)
 
