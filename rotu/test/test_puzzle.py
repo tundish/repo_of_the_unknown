@@ -131,6 +131,8 @@ class TurnTests(unittest.TestCase):
         ]
 
         spots = Story.spots(strands)
+        self.assertEqual(list(spots), ["a", "c", "d"])
+        self.assertEqual(spots["a"], ["spot a", "spot a again"])
         print(f"{spots=}")
         world = PuzzleTests.World(map=PuzzleTests.Map(spots={}), assets={})
         story = PuzzleTests.Story("Test", world=world)

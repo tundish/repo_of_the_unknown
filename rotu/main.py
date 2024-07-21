@@ -92,7 +92,7 @@ class Story(StoryBuilder):
     @staticmethod
     def spots(strands: list[Strand]):
         return {
-            k: list(v)
+            k: [i[1] for i in v]
             for k, v in itertools.groupby(
                 sorted(spot for strand in strands for spot in strand.spots),
                 key=operator.itemgetter(0)
