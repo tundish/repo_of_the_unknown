@@ -107,24 +107,24 @@ class StrandTests(unittest.TestCase):
 
 class TurnTests(unittest.TestCase):
 
-    def test_simple_strand(self):
+    def test_two_strands(self):
         strands = [
             Strand(
-                label="test strand one",
+                label="strand one",
                 puzzles=[
-                    Puzzle(name="a"),
-                    Puzzle(name="b", links={"a"}),
-                    Puzzle(name="c", links={"a"}),
-                    Puzzle(name="d", links={"b", "c"}),
+                    Puzzle(name="a", spots={"a": ["spot a"]}),
+                    Puzzle(name="f", links={"a"}),
+                    Puzzle(name="g", links={"a"}),
+                    Puzzle(name="d", links={"f", "g"}, spots={"d": ["spot d"]}),
                 ]
             ),
             Strand(
-                label="test strand two",
+                label="strand two",
                 puzzles=[
-                    Puzzle(name="a"),
-                    Puzzle(name="b", links={"a"}),
-                    Puzzle(name="c", links={"a"}),
-                    Puzzle(name="d", links={"b", "c"}),
+                    Puzzle(name="e", spots={"a": ["spot a again"]}),
+                    Puzzle(name="b", links={"e"}),
+                    Puzzle(name="c", links={"e"}, spots={"c": ["spot c"]}),
+                    Puzzle(name="h", links={"b", "c"}),
                 ]
             )
         ]
