@@ -36,6 +36,7 @@ class PuzzleTests(unittest.TestCase):
         pass
 
     class World(WorldBuilder):
+        specs = set()
         def build(self, **kwargs):
             return
             yield
@@ -145,6 +146,6 @@ class TurnTests(unittest.TestCase):
         self.assertFalse(story.world.typewise)
 
         self.assertTrue(issubclass(story.world.map.spot, enum.Enum))
-        self.assertFalse(list(story.world.map.spot))
+        self.assertEqual(len(story.world.map.spot), 3)
 
         story.turn()
