@@ -26,6 +26,7 @@ from balladeer import Entity
 import rotu
 from rotu.main import factory
 from rotu.main import World
+from rotu.world import strands
 
 
 class GoalTests(unittest.TestCase):
@@ -48,7 +49,7 @@ class GoalTests(unittest.TestCase):
 
     def test_build_story(self):
         witness = Counter()
-        story = factory(assets=self.assets)
+        story = factory(assets=self.assets, strands=strands)
         for n, (g, i) in enumerate(self.inputs.a):
             with self.subTest(i=i, n=n):
                 with story.turn() as turn:

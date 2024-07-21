@@ -33,6 +33,7 @@ from balladeer.utils.themes import static_page
 import rotu
 from rotu.drama import Interaction
 from rotu.frames.session import StorySession
+from rotu.puzzle import Strand
 from rotu.world import Map
 from rotu.world import strands
 from rotu.world import World
@@ -111,7 +112,7 @@ class Story(StoryBuilder):
         return self
 
 
-def factory(*args, assets={}):
+def factory(*args, assets={}, strands: list[Strand] = []):
     spots = defaultdict(list)
     for strand in strands:
         for name, term in strand.spots:
@@ -125,7 +126,7 @@ def factory(*args, assets={}):
 
 def run():
     assets = discover_assets(rotu, "")
-    story = factory(assets=assets)
+    story = factory(assets=assets, strands=strands)
     print(static_page().html)
 
     about = textwrap.dedent(f"""

@@ -26,12 +26,13 @@ from balladeer import WorldBuilder
 
 from rotu.main import factory
 from rotu.main import Story
+from rotu.world import strands
 
 
 class StoryTests(unittest.TestCase):
 
     def setUp(self):
-        self.story = factory()
+        self.story = factory(strands=strands)
 
     def test_story_copy_drama(self):
         b = copy.deepcopy(self.story)
