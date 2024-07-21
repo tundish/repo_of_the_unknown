@@ -88,16 +88,20 @@ class Representer(Presenter):
 
 class Story(StoryBuilder):
 
-    def make(self):
+    @staticmethod
+    def spots(strands: list[Strand]):
+        yield
+
+    def make(self, **kwargs):
         # TODO: drama stored by location
-        self.drama = list(self.build())
+        self.drama = list(self.build(**kwargs))
         return self
 
     @property
     def context(self):
         return next((reversed(sorted(self.drama, key=operator.attrgetter("state")))), None)
 
-    def build(self, *args):
+    def build(self, *args: tuple[type], **kwargs):
         # TODO: Store drama objects by strand/task/spot
         yield Interaction(
             *self.speech,

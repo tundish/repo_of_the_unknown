@@ -110,7 +110,16 @@ class TurnTests(unittest.TestCase):
     def test_simple_strand(self):
         strands = [
             Strand(
-                label="single test strand",
+                label="test strand one",
+                puzzles=[
+                    Puzzle(name="a"),
+                    Puzzle(name="b", links={"a"}),
+                    Puzzle(name="c", links={"a"}),
+                    Puzzle(name="d", links={"b", "c"}),
+                ]
+            ),
+            Strand(
+                label="test strand two",
                 puzzles=[
                     Puzzle(name="a"),
                     Puzzle(name="b", links={"a"}),
