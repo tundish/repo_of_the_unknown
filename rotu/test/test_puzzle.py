@@ -25,6 +25,7 @@ from balladeer import StoryBuilder
 from balladeer import MapBuilder
 from balladeer import WorldBuilder
 
+from rotu.main import Story
 from rotu.puzzle import Puzzle
 from rotu.puzzle import Strand
 
@@ -128,6 +129,9 @@ class TurnTests(unittest.TestCase):
                 ]
             )
         ]
+
+        spots = Story.spots(strands)
+        print(f"{spots=}")
         world = PuzzleTests.World(map=PuzzleTests.Map(spots={}), assets={})
         story = PuzzleTests.Story("Test", world=world)
 

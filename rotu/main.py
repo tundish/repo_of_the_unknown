@@ -17,6 +17,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 from collections import defaultdict
+import itertools
 import operator
 import re
 import sys
@@ -90,7 +91,13 @@ class Story(StoryBuilder):
 
     @staticmethod
     def spots(strands: list[Strand]):
-        yield
+        return {
+            k: list(v)
+            for k, v in itertools.groupby(
+                sorted(spot for strand in strands for spot in strand.spots),
+                key=operator.itemgetter(0)
+            )
+        }
 
     def make(self, **kwargs):
         # TODO: drama stored by location
