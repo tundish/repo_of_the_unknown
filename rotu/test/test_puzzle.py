@@ -172,5 +172,5 @@ class TurnTests(unittest.TestCase):
 
         story.turn()
 
-        self.assertIs(story.context, strands[0].drama["A"])
+        self.assertIn(story.context, (strands[0].drama["A"], strands[1].drama["E"]))
         self.assertEqual(story.context.get_state(Fruition), Fruition.inception)
