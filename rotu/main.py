@@ -28,6 +28,7 @@ import textwrap
 import balladeer
 from balladeer import discover_assets
 from balladeer import quick_start
+from balladeer import Fruition
 from balladeer import Page
 from balladeer import Presenter
 from balladeer import StoryBuilder
@@ -137,15 +138,9 @@ class Story(StoryBuilder):
 
 
 def factory(*args, assets={}, strands: list[Strand] = []):
-    spots = defaultdict(list)
-    for strand in strands:
-        for name, term in strand.spots:
-            if term not in spots[name]:
-                spots[name].append(term)
-
-    base = [] # TODO: Generate via Strand
-    world = World(map=Map(spots, base=base), assets=assets)
-    return Story(*args, assets=assets, world=world)
+    spots = Story.spots(strands)
+    world = World(map=Map(spots=spots), assets=assets)
+    return Story(*args, assets=assets, world=world, strands=strands)
 
 
 def run():

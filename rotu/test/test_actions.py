@@ -22,6 +22,7 @@ from balladeer import Dialogue
 from balladeer import Page
 
 from rotu.main import factory
+from rotu.main import Story
 from rotu.main import StorySession
 from rotu.test.test_popover import PopoverTests
 
@@ -30,7 +31,7 @@ class ActionTests(unittest.TestCase):
 
     def test_command_form(self):
 
-        story = factory(
+        story = Story(
             Dialogue("<> Perhaps it's time to go to bed?"),
         )
 
@@ -49,7 +50,7 @@ class ActionTests(unittest.TestCase):
 
     def test_code_implies_action(self):
 
-        story = factory(
+        story = Story(
             Dialogue("<> Perhaps it's time to `go to bed`?"),
         )
 
