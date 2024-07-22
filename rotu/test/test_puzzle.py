@@ -134,7 +134,7 @@ class TurnTests(unittest.TestCase):
                     Puzzle(
                         name="E", spots={"a": ["spot a again"]},
                         items=(
-                            Puzzle.Item(type="Matches", states=("spot.a")),
+                            Puzzle.Item(name="Matches", states=("spot.a")),
                         ),
                     ),
                     Puzzle(name="B", links={"E"}),
@@ -173,4 +173,9 @@ class TurnTests(unittest.TestCase):
         story.turn()
 
         self.assertIn(story.context, (strands[0].drama["A"], strands[1].drama["E"]))
+        self.assertEqual(story.world.entities[0].name, "Matches")
+        self.assertEqual(story.world.typewise[Puzzle.Item][0].name, "Matches")
         self.assertEqual(story.context.get_state(Fruition), Fruition.inception)
+
+        story.turn()
+
