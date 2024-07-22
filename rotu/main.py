@@ -29,6 +29,7 @@ import balladeer
 from balladeer import discover_assets
 from balladeer import quick_start
 from balladeer import Fruition
+from balladeer import Grouping
 from balladeer import Page
 from balladeer import Presenter
 from balladeer import StoryBuilder
@@ -103,7 +104,6 @@ class Story(StoryBuilder):
         }
 
     def make(self, strands=[], **kwargs):
-        # TODO: drama stored by location
         self.strands = deque(strands)
         self.drama = list(self.build(**kwargs))
         return self
@@ -126,14 +126,16 @@ class Story(StoryBuilder):
         )
 
     def turn(self, *args, **kwargs):
-        # TODO: active strand dramas with no Fruition state:
-        # + Set Fruition.inception
-        # + Build puzzle to world
         active = [puzzle for strand in self.strands for puzzle in strand.active]
         for puzzle in active:
-            print(f"{puzzle=}")
             if puzzle.get_state(Fruition) is None:
-                print(f"{puzzle=}")
+                puzzle.set_state(Fruition.inception)
+                for item in puzzle.items:
+                    if "Transit" in item.types:
+                        self.world.map.transits.append(item)
+                    else:
+                        self.world.entities.append(item)
+        self.world.typewise = Grouping.typewise(self.world.entities)
         self.context.interlude(*args, **kwargs)
         return self
 
