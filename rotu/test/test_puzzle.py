@@ -22,6 +22,7 @@ import unittest
 from balladeer import Fruition
 from balladeer import Grouping
 from balladeer import StoryBuilder
+from balladeer import Traffic
 from balladeer import MapBuilder
 from balladeer import WorldBuilder
 
@@ -114,20 +115,38 @@ class TurnTests(unittest.TestCase):
             Strand(
                 label="strand one",
                 puzzles=[
-                    Puzzle(name="a", spots={"a": ["spot a"]}),
-                    Puzzle(name="f", links={"a"}),
-                    Puzzle(name="g", links={"a"}),
-                    Puzzle(name="d", links={"f", "g"}, spots={"d": ["spot d"]}),
+                    Puzzle(name="A", spots={"a": ["spot a"]}),
+                    Puzzle(name="F", links={"A"}),
+                    Puzzle(name="G", links={"A"}),
+                    Puzzle(
+                        name="D", links={"F", "G"},
+                        spots={"d": ["spot d"]},
+                        items=(
+                            Puzzle.Item(type="Transit", states=("exit.a", "into.d", Traffic.flowing)),
+                            Puzzle.Item(type="Lamp", states=("spot.d")),
+                        ),
+                    )
                 ]
             ),
             Strand(
                 label="strand two",
                 puzzles=[
-                    Puzzle(name="e", spots={"a": ["spot a again"]}),
-                    Puzzle(name="b", links={"e"}),
-                    Puzzle(name="c", links={"e"}, spots={"c": ["spot c"]}),
-                    Puzzle(name="h", links={"b", "c"}),
-                ]
+                    Puzzle(
+                        name="E", spots={"a": ["spot a again"]},
+                        items=(
+                            Puzzle.Item(type="Matches", states=("spot.a")),
+                        ),
+                    ),
+                    Puzzle(name="B", links={"E"}),
+                    Puzzle(
+                        name="C", links={"E"},
+                        spots={"c": ["spot c"]},
+                        items=[
+                            Puzzle.Item(type="Transit", states=("exit.a", "into.c", Traffic.flowing)),
+                        ]
+                    ),
+                    Puzzle(name="H", links={"B", "C"}),
+                ],
             )
         ]
 
@@ -144,6 +163,7 @@ class TurnTests(unittest.TestCase):
         self.assertFalse(story.world.specs, story.world.assets)
         self.assertFalse(story.world.statewise)
         self.assertFalse(story.world.typewise)
+        self.assertFalse(story.world.map.transits)
 
         self.assertTrue(issubclass(story.world.map.spot, enum.Enum))
         self.assertEqual(len(story.world.map.spot), 3)
