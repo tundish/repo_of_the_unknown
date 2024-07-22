@@ -153,19 +153,24 @@ class TurnTests(unittest.TestCase):
         spots = Story.spots(strands)
         self.assertEqual(list(spots), ["a", "c", "d"])
         self.assertEqual(spots["a"], ["spot a", "spot a again"])
-        print(f"{spots=}")
 
         m = PuzzleTests.Map(spots=spots)
         world = PuzzleTests.World(map=m, assets={})
         story = PuzzleTests.Story("Test", world=world)
 
-        self.assertEqual(len(story.drama), 1)
-        self.assertFalse(story.world.specs, story.world.assets)
-        self.assertFalse(story.world.statewise)
-        self.assertFalse(story.world.typewise)
-        self.assertFalse(story.world.map.transits)
-
         self.assertTrue(issubclass(story.world.map.spot, enum.Enum))
         self.assertEqual(len(story.world.map.spot), 3)
 
+        self.assertFalse(story.world.specs, story.world.assets)
+        self.assertFalse(story.world.statewise)
+
+        self.assertFalse(story.world.entities)
+        self.assertFalse(story.world.typewise)
+        self.assertFalse(story.world.map.transits)
+
+        self.assertIsNone(story.context.get_state(Fruition))
+
         story.turn()
+
+        self.assertIs(story.context, strands[0].drama["A"])
+        self.assertEqual(story.context.get_state(Fruition), Fruition.inception)
