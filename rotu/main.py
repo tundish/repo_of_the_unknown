@@ -114,6 +114,7 @@ class Story(StoryBuilder):
         if active:
             self.strands.rotate(-1)
             rv = random.choice(active)
+            rv.world = self.world
         else:
             rv = next(reversed(sorted(self.drama, key=operator.attrgetter("state"))))
         return rv

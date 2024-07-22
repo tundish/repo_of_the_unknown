@@ -56,6 +56,7 @@ class GoalTests(unittest.TestCase):
                     witness[tuple(turn.blocks)] += 1
                     ensemble = story.context.ensemble
                     options = story.context.options(ensemble)
+                    self.assertTrue(turn.scene.path)
                     self.assertIn(turn.scene.path.parent.name, turn.roles["GOAL"].types)
                     self.assertEqual(turn.roles["GOAL"].name, g, turn.roles)
                     if i:
