@@ -17,8 +17,10 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 from collections import defaultdict
+from collections import deque
 import itertools
 import operator
+import random
 import re
 import sys
 import textwrap
@@ -99,17 +101,23 @@ class Story(StoryBuilder):
             )
         }
 
-    def make(self, **kwargs):
+    def make(self, strands=[], **kwargs):
         # TODO: drama stored by location
+        self.strands = deque(strands)
         self.drama = list(self.build(**kwargs))
         return self
 
     @property
     def context(self):
-        return next((reversed(sorted(self.drama, key=operator.attrgetter("state")))), None)
+        active = [puzzle for strand in self.strands for puzzle in strand.active]
+        if active:
+            self.strands.rotate(-1)
+            rv = random.choice(active)
+        else:
+            rv = next(reversed(sorted(self.drama, key=operator.attrgetter("state"))))
+        return rv
 
     def build(self, *args: tuple[type], **kwargs):
-        # TODO: Store drama objects by strand/task/spot
         yield Interaction(
             *self.speech,
             world=self.world, config=self.config
