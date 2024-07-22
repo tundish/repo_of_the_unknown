@@ -156,7 +156,7 @@ class TurnTests(unittest.TestCase):
 
         m = PuzzleTests.Map(spots=spots)
         world = PuzzleTests.World(map=m, assets={})
-        story = PuzzleTests.Story("Test", world=world)
+        story = Story("Test", world=world, strands=strands)
 
         self.assertTrue(issubclass(story.world.map.spot, enum.Enum))
         self.assertEqual(len(story.world.map.spot), 3)

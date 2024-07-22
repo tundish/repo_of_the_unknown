@@ -127,6 +127,11 @@ class Story(StoryBuilder):
         # TODO: active strand dramas with no Fruition state:
         # + Set Fruition.inception
         # + Build puzzle to world
+        active = [puzzle for strand in self.strands for puzzle in strand.active]
+        for puzzle in active:
+            print(f"{puzzle=}")
+            if puzzle.get_state(Fruition) is None:
+                print(f"{puzzle=}")
         self.context.interlude(*args, **kwargs)
         return self
 
