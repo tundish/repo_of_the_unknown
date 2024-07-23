@@ -28,19 +28,17 @@ import textwrap
 import balladeer
 from balladeer import discover_assets
 from balladeer import quick_start
-from balladeer import Fruition
-from balladeer import Grouping
 from balladeer import Page
 from balladeer import Presenter
-from balladeer import StoryBuilder
+from balladeer import Traffic
+from balladeer import Transit
 from balladeer.utils.themes import static_page
 
 import rotu
-from rotu.drama import Interaction
-from rotu.frames.session import StorySession
+from rotu.puzzle import Puzzle
 from rotu.puzzle import Strand
+from rotu.story import Story
 from rotu.world import Map
-from rotu.world import strands
 from rotu.world import World
 
 
@@ -77,6 +75,52 @@ Page.themes["blue"] = {
 }
 
 
+strands = [
+    Strand(
+        label="Get Gigging",
+        puzzles=[
+            Puzzle(
+                name="tracker manual page 1",
+                spots={
+                    "van_f_ext": ["in front of the van"],
+                    "van_f_int": ["in the van"],
+                    "van_b_ext": ["behind the van"],
+                    "van_b_int": ["in the back of the van"],
+                    "car_park": ["car park"],
+                    "cafe_f_ext": ["in front of the cafe"],
+                    "shed_f_ext": ["in front of the shed"],
+                    "shed_f_int": ["inside the shed"],
+                    "shed_b_int": ["back of the shed"],
+                    "roadside": ["by the roadside"],
+                },
+                # TODO: yield from setup method
+                items=(
+                    Puzzle.Item(type="Transit", states=("exit.cafe_f_ext", "into.car_park", Traffic.flowing)),
+                    Puzzle.Item(type="Transit", states=("exit.car_park", "into.shed_f_ext", Traffic.flowing)),
+                    Puzzle.Item(type="Transit", states=("exit.shed_f_ext", "into.shed_f_int", Traffic.flowing)),
+                    Puzzle.Item(type="Transit", states=("exit.shed_f_int", "into.shed_b_int", Traffic.flowing)),
+                    Puzzle.Item(type="Transit", states=("exit.car_park", "into.van_f_ext", Traffic.flowing)),
+                    Puzzle.Item(type="Transit", states=("exit.van_f_int", "into.van_b_int", Traffic.blocked)),
+                    Puzzle.Item(
+                        names=("Door", "Van door"), type="Door", aspect="unlocked", sketch="The {0.name} is {aspect}",
+                        states=("exit.van_f_ext", "into.van_f_int", Traffic.flowing)
+                    ),
+                    Puzzle.Item(type="Void", states=("exit.car_park", "into.van_b_ext", Traffic.flowing)),
+                    Puzzle.Item(type="Void", states=("exit.van_b_ext", "into.van_b_int", Traffic.flowing)),
+                    Puzzle.Item(type="Void", states=("exit.van_b_ext", "into.roadside", Traffic.flowing)),
+                ),
+            ),
+            Puzzle(
+                name="collect tracker samples",
+                links={"tracker manual page 1"},
+                items=[
+                ],
+            ),
+        ],
+    ),
+]
+
+
 class Representer(Presenter):
 
     href_matcher = re.compile('(<a\\s+)(href\\s*=\\s*")([^"]*?)("[^>]*?)>([^<]*?)(</a>)')
@@ -89,55 +133,6 @@ class Representer(Presenter):
     def sanitize(self, html5: str) -> str:
         html5 = self.href_matcher.sub(self.convert_link_into_button, html5)
         return html5.replace("<blockquote id=", "<blockquote popover id=")
-
-
-class Story(StoryBuilder):
-
-    @staticmethod
-    def spots(strands: list[Strand]):
-        return {
-            k: [i[1] for i in v]
-            for k, v in itertools.groupby(
-                sorted(spot for strand in strands for spot in strand.spots),
-                key=operator.itemgetter(0)
-            )
-        }
-
-    def make(self, strands=[], **kwargs):
-        self.strands = deque(strands)
-        self.drama = list(self.build(**kwargs))
-        return self
-
-    @property
-    def context(self):
-        active = [puzzle for strand in self.strands for puzzle in strand.active]
-        if active:
-            self.strands.rotate(-1)
-            rv = random.choice(active)
-            rv.world = self.world
-        else:
-            rv = next(reversed(sorted(self.drama, key=operator.attrgetter("state"))))
-        return rv
-
-    def build(self, *args: tuple[type], **kwargs):
-        yield Interaction(
-            *self.speech,
-            world=self.world, config=self.config
-        )
-
-    def turn(self, *args, **kwargs):
-        active = [puzzle for strand in self.strands for puzzle in strand.active]
-        for puzzle in active:
-            if puzzle.get_state(Fruition) is None:
-                puzzle.set_state(Fruition.inception)
-                for item in puzzle.items:
-                    if "Transit" in item.types:
-                        self.world.map.transits.append(item)
-                    else:
-                        self.world.entities.append(item)
-        self.world.typewise = Grouping.typewise(self.world.entities)
-        self.context.interlude(*args, **kwargs)
-        return self
 
 
 def factory(*args, assets={}, strands: list[Strand] = []):

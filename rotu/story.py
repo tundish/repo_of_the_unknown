@@ -1,0 +1,79 @@
+#!/usr/bin/env python
+# encoding: utf8
+
+# Copyright 2024 D E Haynes
+
+# This file is part of rotu.
+#
+# Rotu is free software: you can redistribute it and/or modify it under the terms of the
+# GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License,
+# or (at your option) any later version.
+#
+# Rotu is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License along with Rotu.
+# If not, see <https://www.gnu.org/licenses/>.
+
+from collections import deque
+import itertools
+import operator
+import random
+
+from balladeer import Fruition
+from balladeer import Grouping
+from balladeer import StoryBuilder
+
+import rotu
+from rotu.drama import Interaction
+from rotu.puzzle import Strand
+
+
+class Story(StoryBuilder):
+
+    @staticmethod
+    def spots(strands: list[Strand]):
+        return {
+            k: [i[1] for i in v]
+            for k, v in itertools.groupby(
+                sorted(spot for strand in strands for spot in strand.spots),
+                key=operator.itemgetter(0)
+            )
+        }
+
+    def make(self, strands=[], **kwargs):
+        self.strands = deque(strands)
+        self.drama = list(self.build(**kwargs))
+        return self
+
+    @property
+    def context(self):
+        active = [puzzle for strand in self.strands for puzzle in strand.active]
+        if active:
+            self.strands.rotate(-1)
+            rv = random.choice(active)
+            rv.world = self.world
+        else:
+            rv = next(reversed(sorted(self.drama, key=operator.attrgetter("state"))))
+        return rv
+
+    def build(self, *args: tuple[type], **kwargs):
+        yield Interaction(
+            *self.speech,
+            world=self.world, config=self.config
+        )
+
+    def turn(self, *args, **kwargs):
+        active = [puzzle for strand in self.strands for puzzle in strand.active]
+        for puzzle in active:
+            if puzzle.get_state(Fruition) is None:
+                puzzle.set_state(Fruition.inception)
+                for item in puzzle.items:
+                    if "Transit" in item.types:
+                        self.world.map.transits.append(item)
+                    else:
+                        self.world.entities.append(item)
+        self.world.typewise = Grouping.typewise(self.world.entities)
+        self.context.interlude(*args, **kwargs)
+        return self

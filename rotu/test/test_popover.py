@@ -26,10 +26,10 @@ from starlette.applications import Starlette
 from starlette.datastructures import State
 from starlette.requests import Request
 
+from rotu.frames.session import StorySession
 from rotu.main import Representer
 from rotu.main import factory
-from rotu.main import Story
-from rotu.main import StorySession
+from rotu.story import Story
 
 
 class PopoverTests(unittest.TestCase):

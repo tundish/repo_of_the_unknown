@@ -25,8 +25,8 @@ from balladeer import MapBuilder
 from balladeer import WorldBuilder
 
 from rotu.main import factory
-from rotu.main import Story
-from rotu.world import strands
+from rotu.main import strands
+from rotu.story import Story
 
 
 class StoryTests(unittest.TestCase):

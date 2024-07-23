@@ -25,8 +25,8 @@ from balladeer import Entity
 
 import rotu
 from rotu.main import factory
+from rotu.main import strands
 from rotu.main import World
-from rotu.world import strands
 
 
 class GoalTests(unittest.TestCase):

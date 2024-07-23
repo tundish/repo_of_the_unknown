@@ -21,9 +21,9 @@ import unittest
 from balladeer import Dialogue
 from balladeer import Page
 
+from rotu.frames.session import StorySession
 from rotu.main import factory
 from rotu.main import Story
-from rotu.main import StorySession
 from rotu.test.test_popover import PopoverTests
 
 
