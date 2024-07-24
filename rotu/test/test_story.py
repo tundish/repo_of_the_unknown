@@ -104,6 +104,13 @@ class StoryTests(unittest.TestCase):
         self.assertEqual(4, len(witness), witness)
         self.assertTrue(all(witness.values()), witness)
 
+    def test_story_copy_strands(self):
+        s = copy.deepcopy(self.story)
+        self.assertEqual(
+            self.story.spots(self.story.strands),
+            s.spots(s.strands)
+        )
+
     def test_focus(self):
         map_ = self.story.world.map
         focus = self.story.world.focus

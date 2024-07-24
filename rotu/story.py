@@ -17,6 +17,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 from collections import deque
+import copy
 import itertools
 import operator
 import random
@@ -41,6 +42,10 @@ class Story(StoryBuilder):
                 key=operator.itemgetter(0)
             )
         }
+
+    def __dxepcopy__(self, memo):
+        rv = super().__deepcopy__(memo)
+        rv.strands = copy.deepcopy(self.strands)
 
     def make(self, strands=[], **kwargs):
         self.strands = deque(strands)
