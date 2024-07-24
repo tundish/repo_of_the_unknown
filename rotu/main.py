@@ -93,7 +93,6 @@ strands = [
                     "shed_b_int": ["back of the shed"],
                     "roadside": ["by the roadside"],
                 },
-                # TODO: yield from setup method
                 items=(
                     Puzzle.Item(type="Transit", states=("exit.cafe_f_ext", "into.car_park", Traffic.flowing)),
                     Puzzle.Item(type="Transit", states=("exit.car_park", "into.shed_f_ext", Traffic.flowing)),

@@ -8,7 +8,7 @@ sketch = "drive the van back home"
 state = "Fruition.elaboration"
 
 [CONTEXT]
-type = "Interaction"
+type = "Puzzle"
 
 [[_]]
 if.CONTEXT.tree = false

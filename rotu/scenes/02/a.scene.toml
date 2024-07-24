@@ -11,7 +11,7 @@ state = "Fruition.elaboration"
 types = ["Goal", "24", "a"]
 
 [CONTEXT]
-type = "Interaction"
+type = "Puzzle"
 
 [[_]]
 if.CONTEXT.tree = false

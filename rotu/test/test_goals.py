@@ -17,6 +17,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 from collections import Counter
+import copy
 from types import SimpleNamespace
 import unittest
 
@@ -49,13 +50,16 @@ class GoalTests(unittest.TestCase):
 
     def test_build_story(self):
         witness = Counter()
-        story = factory(assets=self.assets, strands=strands)
+        story = copy.deepcopy(factory(assets=self.assets, strands=strands))
+        print(f"{story.world.specs=}")
         for n, (g, i) in enumerate(self.inputs.a):
             with self.subTest(i=i, n=n):
                 with story.turn() as turn:
                     witness[tuple(turn.blocks)] += 1
                     ensemble = story.context.ensemble
                     options = story.context.options(ensemble)
+
+                    self.assertTrue(ensemble)
                     self.assertTrue(turn.scene.path)
                     self.assertIn(turn.scene.path.parent.name, turn.roles["GOAL"].types)
                     self.assertEqual(turn.roles["GOAL"].name, g, turn.roles)

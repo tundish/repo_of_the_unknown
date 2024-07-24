@@ -35,6 +35,7 @@ class Map(MapBuilder):
 
 
 class World(WorldBuilder):
+    specs = set()
 
     @property
     def focus(self):
