@@ -33,6 +33,7 @@ class StoryTests(unittest.TestCase):
 
     def setUp(self):
         self.story = factory(strands=strands)
+        self.assertTrue(self.story.strands)
 
     def test_story_copy_drama(self):
         b = copy.deepcopy(self.story)
@@ -106,9 +107,12 @@ class StoryTests(unittest.TestCase):
 
     def test_story_copy_strands(self):
         s = copy.deepcopy(self.story)
+        self.assertTrue(s.strands)
+        print(f"{s.strands=}")
         self.assertEqual(
             self.story.spots(self.story.strands),
-            s.spots(s.strands)
+            s.spots(s.strands),
+            s.strands
         )
 
     def test_focus(self):
