@@ -45,8 +45,7 @@ class Story(StoryBuilder):
 
     def __deepcopy__(self, memo):
         rv = super().__deepcopy__(memo)
-        rv.strands = copy.deepcopy(self.strands, memo)
-        return rv
+        return rv.make(strands=self.strands)
 
     def make(self, strands=[], **kwargs):
         self.strands = deque(strands)
