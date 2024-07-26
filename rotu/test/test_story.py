@@ -113,6 +113,13 @@ class StoryTests(unittest.TestCase):
             s.spots(s.strands),
             s.strands
         )
+        self.assertEqual(len(self.story.strands), len(s.strands))
+        for a in self.story.strands:
+            for b in s.strands:
+                with self.subTest(a=a, b=b):
+                    self.assertIsNot(a.sorter, b.sorter)
+                    self.assertFalse(set(a.items).intersection(set(b.items)))
+                    self.assertFalse({i.uid for i in a.items}.intersection({i.uid for i in a.items}))
 
     def test_focus(self):
         map_ = self.story.world.map
