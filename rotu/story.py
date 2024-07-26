@@ -24,11 +24,25 @@ import random
 
 from balladeer import Fruition
 from balladeer import Grouping
+from balladeer import Speech
 from balladeer import StoryBuilder
 
 import rotu
 from rotu.drama import Interaction
 from rotu.puzzle import Strand
+
+
+class StoryWeaver(StoryBuilder):
+
+    def __init__(
+        self,
+        *speech: tuple[Speech],
+        config=None,
+        assets: Grouping = Grouping(list),
+        strands: list[Strand] = None,
+        **kwargs,
+    ):
+        pass
 
 
 class Story(StoryBuilder):
@@ -49,8 +63,7 @@ class Story(StoryBuilder):
 
     def make(self, strands=[], **kwargs):
         self.strands = deque(strands)
-        self.drama = list(self.build(**kwargs))
-        return self
+        return super().make(**kwargs)
 
     @property
     def context(self):
@@ -63,11 +76,13 @@ class Story(StoryBuilder):
             rv = next(reversed(sorted(self.drama, key=operator.attrgetter("state"))))
         return rv
 
+    """
     def build(self, *args: tuple[type], **kwargs):
         yield Interaction(
             *self.speech,
             world=self.world, config=self.config
         )
+    """
 
     def turn(self, *args, **kwargs):
         active = [puzzle for strand in self.strands for puzzle in strand.active]
