@@ -21,10 +21,7 @@ import unittest
 
 from balladeer import Entity
 from balladeer import Transit
-from balladeer import MapBuilder
-from balladeer import WorldBuilder
 
-from rotu.main import factory
 from rotu.main import strands
 from rotu.puzzle import Puzzle
 from rotu.story import Story
@@ -35,13 +32,13 @@ class StoryTests(unittest.TestCase):
     def setUp(self):
         self.story = Story(strands=strands)
         self.assertTrue(self.story.strands)
+        self.assertTrue(self.story.world.map.transits)
 
     def test_story_copy_drama(self):
         b = copy.deepcopy(self.story)
         self.assertNotEqual(self.story.uid, b.uid, vars(self.story))
         self.assertNotEqual(self.story.director, b.director, vars(self.story.director))
 
-        # Side effect: each drama generates its active set
         self.assertFalse(self.story.drama)
         self.assertTrue(self.story.context)
 
