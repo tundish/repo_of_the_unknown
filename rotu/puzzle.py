@@ -27,6 +27,7 @@ from balladeer import Drama
 from balladeer import Entity
 from balladeer import Fruition
 from balladeer import WorldBuilder
+from balladeer import Speech
 
 
 @dataclasses.dataclass
@@ -44,6 +45,19 @@ class Strand:
 
         self.sorter.prepare()
         self._active = {i: self.drama.get(i) for i in self.sorter.get_ready()}
+
+    @classmethod
+    def default(cls, *speech: tuple[Speech], label="init"):
+        return cls(
+            label=label,
+            puzzles=[
+                Puzzle(
+                    *speech,
+                    spots={"here": ["here"]},
+                    items=[Puzzle.Item(type="Focus", init=("spot.here",))]
+                )
+            ]
+        )
 
     @property
     def active(self):
@@ -72,8 +86,9 @@ class Strand:
 
 class Puzzle(Drama):
 
+    @dataclasses.dataclass
     class Item(Entity):
-        states: tuple[str | enum.Enum] = dataclasses.field(default_factory=tuple)
+        init: tuple[str | enum.Enum] = dataclasses.field(default_factory=tuple)
 
     def __init__(self, *args, items: list[Item] = [], spots: dict = {}, **kwargs):
         self.items = tuple(items)
@@ -82,7 +97,7 @@ class Puzzle(Drama):
 
     def build(self, world: WorldBuilder, **kwargs):
         for item in self.items:
-            item.states, rules = {}, item.states
+            item.init, rules = {}, item.init
             for rule in rules:
                 try:
                     state = operator.attrgetter(rule)(world.map)

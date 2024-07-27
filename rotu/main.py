@@ -94,20 +94,20 @@ strands = [
                     "roadside": ["by the roadside"],
                 },
                 items=(
-                    Puzzle.Item(type="Focus", states=("spot.van_f_int")),
-                    Puzzle.Item(type="Transit", states=("exit.cafe_f_ext", "into.car_park", Traffic.flowing)),
-                    Puzzle.Item(type="Transit", states=("exit.car_park", "into.shed_f_ext", Traffic.flowing)),
-                    Puzzle.Item(type="Transit", states=("exit.shed_f_ext", "into.shed_f_int", Traffic.flowing)),
-                    Puzzle.Item(type="Transit", states=("exit.shed_f_int", "into.shed_b_int", Traffic.flowing)),
-                    Puzzle.Item(type="Transit", states=("exit.car_park", "into.van_f_ext", Traffic.flowing)),
-                    Puzzle.Item(type="Transit", states=("exit.van_f_int", "into.van_b_int", Traffic.blocked)),
+                    Puzzle.Item(type="Focus", init=("spot.van_f_int")),
+                    Puzzle.Item(type="Transit", init=("exit.cafe_f_ext", "into.car_park", Traffic.flowing)),
+                    Puzzle.Item(type="Transit", init=("exit.car_park", "into.shed_f_ext", Traffic.flowing)),
+                    Puzzle.Item(type="Transit", init=("exit.shed_f_ext", "into.shed_f_int", Traffic.flowing)),
+                    Puzzle.Item(type="Transit", init=("exit.shed_f_int", "into.shed_b_int", Traffic.flowing)),
+                    Puzzle.Item(type="Transit", init=("exit.car_park", "into.van_f_ext", Traffic.flowing)),
+                    Puzzle.Item(type="Transit", init=("exit.van_f_int", "into.van_b_int", Traffic.blocked)),
                     Puzzle.Item(
                         names=("Door", "Van door"), type="Door", aspect="unlocked", sketch="The {0.name} is {aspect}",
-                        states=("exit.van_f_ext", "into.van_f_int", Traffic.flowing)
+                        init=("exit.van_f_ext", "into.van_f_int", Traffic.flowing)
                     ),
-                    Puzzle.Item(type="Void", states=("exit.car_park", "into.van_b_ext", Traffic.flowing)),
-                    Puzzle.Item(type="Void", states=("exit.van_b_ext", "into.van_b_int", Traffic.flowing)),
-                    Puzzle.Item(type="Void", states=("exit.van_b_ext", "into.roadside", Traffic.flowing)),
+                    Puzzle.Item(type="Void", init=("exit.car_park", "into.van_b_ext", Traffic.flowing)),
+                    Puzzle.Item(type="Void", init=("exit.van_b_ext", "into.van_b_int", Traffic.flowing)),
+                    Puzzle.Item(type="Void", init=("exit.van_b_ext", "into.roadside", Traffic.flowing)),
                 ),
             ),
             Puzzle(

@@ -55,14 +55,14 @@ class StoryWeaver(StoryBuilder):
         strands: list[Strand] = None,
         **kwargs,
     ):
-        self.strands = deque(strands or [Strand(label="init", puzzles=[Puzzle(*speech)])])
+        self.strands = deque(strands or [Strand.default(*speech)])
         super().__init__(*speech, config=config, assets=assets, world=None)
 
     def make(self, **kwargs):
         spots = self.spots(self.strands)
         m = MapBuilder(spots=spots)
         self.world = WorldBuilder(map=m, config=self.config, assets=self.assets)
-        return self
+        return self.turn()
 
 
 class Story(StoryWeaver):

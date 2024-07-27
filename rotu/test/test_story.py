@@ -26,13 +26,14 @@ from balladeer import WorldBuilder
 
 from rotu.main import factory
 from rotu.main import strands
+from rotu.puzzle import Puzzle
 from rotu.story import Story
 
 
 class StoryTests(unittest.TestCase):
 
     def setUp(self):
-        self.story = factory(strands=strands)
+        self.story = Story(strands=strands)
         self.assertTrue(self.story.strands)
 
     def test_story_copy_drama(self):
@@ -123,6 +124,10 @@ class StoryTests(unittest.TestCase):
 
     def test_focus(self):
         map_ = self.story.world.map
+        self.assertIsInstance(self.story.context, Puzzle)
+
+        self.assertTrue(self.story.world.typewise)
+
         focus = self.story.context.focus
         self.assertIsInstance(focus, Entity)
         options = map_.options(focus.get_state(map_.spot))
