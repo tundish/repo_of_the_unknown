@@ -42,19 +42,17 @@ class StoryTests(unittest.TestCase):
         self.assertNotEqual(self.story.director, b.director, vars(self.story.director))
 
         # Side effect: each drama generates its active set
-        self.assertTrue([i.options([]) for i in self.story.drama])
-        self.assertTrue([i.options([]) for i in b.drama])
+        self.assertFalse(self.story.drama)
+        self.assertTrue(self.story.context)
 
-        for drama in self.story.drama:
-            with self.subTest(a=self.story, b=b, drama=drama):
-                self.assertNotIn(drama, b.drama)
-                self.assertFalse(
-                    any(set(drama.active).intersection(set(i.active)) for i in b.drama)
-                )
+        witness = []
+        for strand in self.story.strands:
+            for drama in strand.drama:
+                with self.subTest(a=self.story, b=b, drama=drama):
+                    self.assertNotIn(drama, [i for strand in b.strands for i in strand.drama])
+                    witness.append(drama)
 
-        for a_d, b_d in zip(self.story.drama, b.drama):
-            with self.subTest(a_d=a_d, b_d=b_d):
-                self.assertNotEqual(a_d.uid, b_d.uid)
+        self.assertTrue(witness)
 
     def test_story_copy_map(self):
         witness = dict()

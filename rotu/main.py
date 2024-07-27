@@ -28,6 +28,7 @@ import textwrap
 import balladeer
 from balladeer import discover_assets
 from balladeer import quick_start
+from balladeer import Fruition
 from balladeer import Page
 from balladeer import Presenter
 from balladeer import Traffic
@@ -95,6 +96,7 @@ strands = [
                 },
                 items=(
                     Puzzle.Item(type="Focus", init=("spot.van_f_int")),
+                    Puzzle.Item(name="goal_00a", init=(Fruition.elaboration)),
                     Puzzle.Item(type="Transit", init=("exit.cafe_f_ext", "into.car_park", Traffic.flowing)),
                     Puzzle.Item(type="Transit", init=("exit.car_park", "into.shed_f_ext", Traffic.flowing)),
                     Puzzle.Item(type="Transit", init=("exit.shed_f_ext", "into.shed_f_int", Traffic.flowing)),
