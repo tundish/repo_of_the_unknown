@@ -22,7 +22,6 @@ from balladeer import Dialogue
 from balladeer import Page
 
 from rotu.frames.session import StorySession
-from rotu.main import factory
 from rotu.main import Story
 from rotu.test.test_popover import PopoverTests
 
@@ -38,6 +37,7 @@ class ActionTests(unittest.TestCase):
         page = Page()
         request = PopoverTests.mock_request()
         endpoint = StorySession(dict(type="http"), None, None)
+
         with story.turn() as turn:
             page = endpoint.compose(request, page, story, turn)
         lines = page.html.splitlines()

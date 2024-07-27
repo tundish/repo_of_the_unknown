@@ -94,6 +94,7 @@ strands = [
                     "roadside": ["by the roadside"],
                 },
                 items=(
+                    Puzzle.Item(type="Focus", states=("spot.van_f_int")),
                     Puzzle.Item(type="Transit", states=("exit.cafe_f_ext", "into.car_park", Traffic.flowing)),
                     Puzzle.Item(type="Transit", states=("exit.car_park", "into.shed_f_ext", Traffic.flowing)),
                     Puzzle.Item(type="Transit", states=("exit.shed_f_ext", "into.shed_f_int", Traffic.flowing)),

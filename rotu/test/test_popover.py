@@ -28,7 +28,6 @@ from starlette.requests import Request
 
 from rotu.frames.session import StorySession
 from rotu.main import Representer
-from rotu.main import factory
 from rotu.story import Story
 
 

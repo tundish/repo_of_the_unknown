@@ -91,3 +91,7 @@ class Puzzle(Drama):
                     item.set_state(rule)
             yield item
 
+    @property
+    def focus(self):
+        return next((reversed(sorted(self.world.typewise["Focus"], key=operator.attrgetter("state")))), None)
+

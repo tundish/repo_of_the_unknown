@@ -123,7 +123,7 @@ class StoryTests(unittest.TestCase):
 
     def test_focus(self):
         map_ = self.story.world.map
-        focus = self.story.world.focus
+        focus = self.story.context.focus
         self.assertIsInstance(focus, Entity)
         options = map_.options(focus.get_state(map_.spot))
         for label, dest, transit in options:

@@ -55,7 +55,7 @@ class StoryWeaver(StoryBuilder):
         strands: list[Strand] = None,
         **kwargs,
     ):
-        self.strands = deque(strands or [Strand(label="init", puzzles=[Puzzle()])])
+        self.strands = deque(strands or [Strand(label="init", puzzles=[Puzzle(*speech)])])
         super().__init__(*speech, config=config, assets=assets, world=None)
 
     def make(self, **kwargs):
