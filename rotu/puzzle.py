@@ -86,7 +86,7 @@ class Strand:
 
 class Puzzle(Drama):
 
-    @dataclasses.dataclass
+    @dataclasses.dataclass(kw_only=True, unsafe_hash=True)
     class Item(Entity):
         init: tuple[str | enum.Enum] = dataclasses.field(default_factory=tuple, compare=False)
 

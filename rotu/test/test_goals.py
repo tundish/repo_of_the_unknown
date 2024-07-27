@@ -25,9 +25,9 @@ from balladeer import discover_assets
 from balladeer import Entity
 
 import rotu
-from rotu.main import factory
 from rotu.main import strands
 from rotu.main import World
+from rotu.story import Story
 
 
 class GoalTests(unittest.TestCase):
@@ -47,11 +47,16 @@ class GoalTests(unittest.TestCase):
 
     def setUp(self):
         self.assets = discover_assets(rotu, "")
+        self.assertTrue(self.assets)
 
     def test_build_story(self):
         witness = Counter()
-        story = copy.deepcopy(factory(assets=self.assets, strands=strands))
-        print(f"{story.world.specs=}")
+        story = Story(assets=self.assets, strands=strands)
+
+        for i in story.context.ensemble:
+            with self.subTest(i=i):
+                self.assertTrue(hash(i), i)
+
         for n, (g, i) in enumerate(self.inputs.a):
             with self.subTest(i=i, n=n):
                 with story.turn() as turn:
