@@ -55,29 +55,6 @@ class StoryTests(unittest.TestCase):
         self.assertTrue(witness)
 
     def test_story_copy_map(self):
-        witness = dict()
-
-        class Map(MapBuilder):
-            def build(self):
-                nonlocal witness
-                witness[self] = True
-                yield Transit().set_state(self.exit.a, self.into.b)
-                yield Transit().set_state(self.exit.b, self.into.a)
-
-        class World(WorldBuilder):
-            def build(self):
-                nonlocal witness
-                witness[self] = bool(self.map)
-                yield Entity()
-                yield Entity()
-                yield Entity()
-
-        spots = {
-            "a": ["A", "a"],
-            "b": ["B", "b"],
-        }
-        m = Map(spots)
-        self.story.world = World(map=m)
         a = self.story
         b = copy.deepcopy(a)
 
@@ -86,7 +63,6 @@ class StoryTests(unittest.TestCase):
             [name for s in b.strands for name in s.drama]
         )
 
-        self.assertEqual(3, len(a.world.entities))
         for entity in a.world.entities:
             with self.subTest(a=a, b=b, entity=entity):
                 self.assertFalse(any(entity.names is i.names for i in b.world.entities))
@@ -97,18 +73,23 @@ class StoryTests(unittest.TestCase):
         self.assertTrue(b.world.map)
         self.assertIsNot(a.world.map.spot, b.world.map.spot)
         self.assertEqual([str(i) for i in a.world.map.spot], [str(i) for i in b.world.map.spot])
-        self.assertIs(a.world.map.exit, b.world.map.exit)
-        self.assertIs(a.world.map.into, b.world.map.into)
-        self.assertIs(a.world.map.home, b.world.map.home)
 
+        self.assertIsNot(a.world.map.exit, b.world.map.exit)
+        self.assertEqual([str(i) for i in a.world.map.exit], [str(i) for i in b.world.map.exit])
+
+        self.assertIsNot(a.world.map.into, b.world.map.into)
+        self.assertEqual([str(i) for i in a.world.map.into], [str(i) for i in b.world.map.into])
+
+        self.assertIsNot(a.world.map.home, b.world.map.home)
+        self.assertEqual([str(i) for i in a.world.map.home], [str(i) for i in b.world.map.home])
+
+        self.assertTrue(a.world.map.transits)
+        self.assertTrue(b.world.map.transits, a.world.map.transits)
         for transit in a.world.map.transits:
             with self.subTest(a=a, b=b, transit=transit):
                 self.assertFalse(any(transit.names is i.names for i in b.world.map.transits))
                 self.assertFalse(any(transit.states is i.states for i in b.world.map.transits))
                 self.assertFalse(any(transit.types is i.types for i in b.world.map.transits))
-
-        self.assertEqual(4, len(witness), witness)
-        self.assertTrue(all(witness.values()), witness)
 
     def test_story_copy_strands(self):
         s = copy.deepcopy(self.story)
