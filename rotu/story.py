@@ -59,6 +59,9 @@ class StoryWeaver(StoryBuilder):
         self.strands = deque(strands or [Strand.default(*speech)])
         super().__init__(*speech, config=config, assets=assets, world=None)
 
+    def __deepcopy__(self, memo):
+        return self.__class__(*self.speech, config=self.config, assets=self.assets, strands=self.strands)
+
     def make(self, **kwargs):
         spots = self.spots(self.strands)
         m = MapBuilder(spots=spots)
@@ -67,22 +70,6 @@ class StoryWeaver(StoryBuilder):
 
 
 class Story(StoryWeaver):
-
-    @staticmethod
-    def spots(strands: list[Strand]):
-        return {
-            k: [i[1] for i in v]
-            for k, v in itertools.groupby(
-                sorted(spot for strand in strands for spot in strand.spots),
-                key=operator.itemgetter(0)
-            )
-        }
-
-    """
-    def __deepcopy__(self, memo):
-        rv = super().__deepcopy__(memo)
-        return rv.make(strands=copy.deepcopy(self.strands, memo))
-    """
 
     @property
     def context(self):
@@ -94,14 +81,6 @@ class Story(StoryWeaver):
         else:
             rv = next(reversed(sorted(self.drama, key=operator.attrgetter("state"))), None)
         return rv
-
-    """
-    def build(self, *args: tuple[type], **kwargs):
-        yield Interaction(
-            *self.speech,
-            world=self.world, config=self.config
-        )
-    """
 
     def turn(self, *args, **kwargs):
         active = [puzzle for strand in self.strands for puzzle in strand.active]

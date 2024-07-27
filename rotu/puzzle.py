@@ -30,12 +30,12 @@ from balladeer import WorldBuilder
 from balladeer import Speech
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(unsafe_hash=True)
 class Strand:
     label: str
     puzzles: dataclasses.InitVar = []
     drama: dict[str, Drama] = dataclasses.field(default_factory=dict)
-    sorter: TopologicalSorter = dataclasses.field(default_factory=TopologicalSorter)
+    sorter: TopologicalSorter = dataclasses.field(default_factory=TopologicalSorter, compare=False)
 
     def __post_init__(self, puzzles):
         self.drama.update({i.names[0] if i.names else i.uid: i for i in puzzles})
@@ -109,4 +109,3 @@ class Puzzle(Drama):
     @property
     def focus(self):
         return next((reversed(sorted(self.world.typewise["Focus"], key=operator.attrgetter("state")))), None)
-

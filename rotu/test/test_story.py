@@ -81,6 +81,11 @@ class StoryTests(unittest.TestCase):
         a = self.story
         b = copy.deepcopy(a)
 
+        self.assertEqual(
+            [name for s in a.strands for name in s.drama],
+            [name for s in b.strands for name in s.drama]
+        )
+
         self.assertEqual(3, len(a.world.entities))
         for entity in a.world.entities:
             with self.subTest(a=a, b=b, entity=entity):
@@ -90,7 +95,8 @@ class StoryTests(unittest.TestCase):
 
         self.assertTrue(a.world.map)
         self.assertTrue(b.world.map)
-        self.assertIs(a.world.map.spot, b.world.map.spot)
+        self.assertIsNot(a.world.map.spot, b.world.map.spot)
+        self.assertEqual([str(i) for i in a.world.map.spot], [str(i) for i in b.world.map.spot])
         self.assertIs(a.world.map.exit, b.world.map.exit)
         self.assertIs(a.world.map.into, b.world.map.into)
         self.assertIs(a.world.map.home, b.world.map.home)
