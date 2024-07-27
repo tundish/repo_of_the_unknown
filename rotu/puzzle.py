@@ -88,7 +88,7 @@ class Puzzle(Drama):
 
     @dataclasses.dataclass
     class Item(Entity):
-        init: tuple[str | enum.Enum] = dataclasses.field(default_factory=tuple)
+        init: tuple[str | enum.Enum] = dataclasses.field(default_factory=tuple, compare=False)
 
     def __init__(self, *args, items: list[Item] = [], spots: dict = {}, **kwargs):
         self.items = tuple(items)

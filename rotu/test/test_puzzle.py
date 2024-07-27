@@ -174,18 +174,17 @@ class TurnTests(unittest.TestCase):
         self.assertFalse(story.world.specs, story.world.assets)
         self.assertFalse(story.world.statewise)
 
-        self.assertFalse(story.world.entities)
-        self.assertFalse(story.world.typewise)
-        self.assertFalse(story.world.map.transits)
-
-        self.assertIsNone(story.context.get_state(Fruition))
-
-        story.turn()
-
         self.assertIn(story.context, (strands[0].drama["A"], strands[1].drama["E"]))
         self.assertEqual(story.world.entities[0].name, "Matches")
         self.assertEqual(story.world.typewise[Puzzle.Item][0].name, "Matches")
         self.assertEqual(story.context.get_state(Fruition), Fruition.inception)
 
-        story.turn()
+        witness = set()
+        for n in range(1, 9):
+            with self.subTest(n=n):
+                story.turn()
 
+                context = story.context
+                context.set_state(Fruition.completion)
+                witness.add(context.name)
+                self.assertEqual(len(witness), n, witness)

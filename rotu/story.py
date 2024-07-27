@@ -21,6 +21,7 @@ import copy
 import itertools
 import operator
 import random
+import warnings
 
 from balladeer import Fruition
 from balladeer import Grouping
@@ -91,7 +92,7 @@ class Story(StoryWeaver):
             rv = random.choice(active)
             rv.world = self.world
         else:
-            rv = next(reversed(sorted(self.drama, key=operator.attrgetter("state"))))
+            rv = next(reversed(sorted(self.drama, key=operator.attrgetter("state"))), None)
         return rv
 
     """
@@ -113,5 +114,8 @@ class Story(StoryWeaver):
                     else:
                         self.world.entities.append(item)
         self.world.typewise = Grouping.typewise(self.world.entities)
-        self.context.interlude(*args, **kwargs)
+        try:
+            self.context.interlude(*args, **kwargs)
+        except AttributeError:
+            warnings.warn("Turn exhausted context")
         return self
