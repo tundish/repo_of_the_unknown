@@ -24,15 +24,28 @@ import random
 
 from balladeer import Fruition
 from balladeer import Grouping
+from balladeer import MapBuilder
 from balladeer import Speech
 from balladeer import StoryBuilder
+from balladeer import WorldBuilder
 
 import rotu
 from rotu.drama import Interaction
+from rotu.puzzle import Puzzle
 from rotu.puzzle import Strand
 
 
 class StoryWeaver(StoryBuilder):
+
+    @staticmethod
+    def spots(strands: list[Strand]) -> dict[str, list]:
+        return {
+            k: [i[1] for i in v]
+            for k, v in itertools.groupby(
+                sorted(spot for strand in strands for spot in strand.spots),
+                key=operator.itemgetter(0)
+            )
+        }
 
     def __init__(
         self,
@@ -42,10 +55,17 @@ class StoryWeaver(StoryBuilder):
         strands: list[Strand] = None,
         **kwargs,
     ):
-        pass
+        self.strands = deque(strands or [Strand(label="init", puzzles=[Puzzle()])])
+        super().__init__(*speech, config=config, assets=assets, world=None)
+
+    def make(self, **kwargs):
+        spots = self.spots(self.strands)
+        m = MapBuilder(spots=spots)
+        self.world = WorldBuilder(map=m, config=self.config, assets=self.assets)
+        return self
 
 
-class Story(StoryBuilder):
+class Story(StoryWeaver):
 
     @staticmethod
     def spots(strands: list[Strand]):
@@ -57,13 +77,11 @@ class Story(StoryBuilder):
             )
         }
 
+    """
     def __deepcopy__(self, memo):
         rv = super().__deepcopy__(memo)
         return rv.make(strands=copy.deepcopy(self.strands, memo))
-
-    def make(self, strands=[], **kwargs):
-        self.strands = deque(strands)
-        return super().make(**kwargs)
+    """
 
     @property
     def context(self):

@@ -37,6 +37,7 @@ class Map(MapBuilder):
 class World(WorldBuilder):
     specs = set()
 
+    # Move to Puzzle
     @property
     def focus(self):
         return next((reversed(sorted(self.typewise["Focus"], key=operator.attrgetter("state")))), None)
