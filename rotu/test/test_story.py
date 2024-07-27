@@ -121,16 +121,3 @@ class StoryTests(unittest.TestCase):
                     self.assertIsNot(a.sorter, b.sorter)
                     self.assertFalse(set(a.items).intersection(set(b.items)))
                     self.assertFalse({i.uid for i in a.items}.intersection({i.uid for i in a.items}))
-
-    def test_focus(self):
-        map_ = self.story.world.map
-        self.assertIsInstance(self.story.context, Puzzle)
-
-        self.assertTrue(self.story.world.typewise)
-
-        focus = self.story.context.focus
-        self.assertIsInstance(focus, Entity)
-        options = map_.options(focus.get_state(map_.spot))
-        for label, dest, transit in options:
-            print(f"{transit.description}")
-
