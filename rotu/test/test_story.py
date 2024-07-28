@@ -34,6 +34,7 @@ class StoryTests(unittest.TestCase):
         self.story = Story(strands=strands)
         self.assertTrue(self.story.strands)
         self.assertTrue(issubclass(self.story.world.map.spot, enum.Enum))
+
         self.assertTrue(self.story.world.entities)
         self.assertTrue(self.story.world.map.transits)
 
@@ -47,16 +48,17 @@ class StoryTests(unittest.TestCase):
 
         witness = []
         for strand in self.story.strands:
-            for drama in strand.drama:
+            for drama in strand.drama.values():
+                print(f"{drama.names=}")
                 with self.subTest(a=self.story, b=b, drama=drama):
-                    self.assertNotIn(drama, [i for strand in b.strands for i in strand.drama.values()])
+                    self.assertNotIn(id(drama), [id(i) for strand in b.strands for i in strand.drama.values()])
                     witness.append(drama)
 
         self.assertTrue(witness)
 
     def test_story_copy_map(self):
-        a = self.story
-        b = copy.deepcopy(a)
+        a = copy.deepcopy(self.story)
+        b = copy.deepcopy(self.story)
 
         self.assertEqual(
             [name for s in a.strands for name in s.drama],
@@ -71,6 +73,10 @@ class StoryTests(unittest.TestCase):
 
         self.assertTrue(a.world.map)
         self.assertTrue(b.world.map)
+
+        self.assertIsNot(a.world, b.world)
+        self.assertIsNot(a.world.map, b.world.map)
+
         self.assertIsNot(a.world.map.spot, b.world.map.spot)
         self.assertEqual([str(i) for i in a.world.map.spot], [str(i) for i in b.world.map.spot])
 

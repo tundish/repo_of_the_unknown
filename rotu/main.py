@@ -39,7 +39,6 @@ import rotu
 from rotu.puzzle import Puzzle
 from rotu.strand import Strand
 from rotu.story import Story
-from rotu.world import Map
 
 
 __doc__ = """

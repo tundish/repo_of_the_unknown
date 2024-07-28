@@ -59,18 +59,28 @@ class StoryWeaver(StoryBuilder):
         self.strands = deque(strands or [Strand.default(*speech)])
         super().__init__(*speech, config=config, assets=assets, world=None)
 
+    def make(self, **kwargs):
+        spots = self.spots(self.strands)
+        m = Map(spots=spots)
+        self.world = WorldBuilder(map=m, config=self.config, assets=self.assets)
+        return self.turn()
+
     def __deepcopy__(self, memo):
-        rv = self.__class__(*self.speech, config=self.config, assets=self.assets, strands=self.strands)
+        strands = copy.deepcopy(self.strands, memo)
+        rv = self.__class__(*self.speech, config=self.config, assets=self.assets, strands=strands)
         rv.world.entities = copy.deepcopy(self.world.entities, memo)
         rv.world.map.transits = copy.deepcopy(self.world.map.transits, memo)
         return rv
 
-    def make(self, **kwargs):
-        spots = self.spots(self.strands)
-        m = MapBuilder(spots=spots)
-        self.world = WorldBuilder(map=m, config=self.config, assets=self.assets)
-        return self.turn()
 
+class Map(MapBuilder):
+    def __init__(self, spots: dict, config=None, strands=None, **kwargs):
+        super().__init__(spots, config=config, strands=strands, **kwargs)
+
+
+class World(WorldBuilder):
+    def __init__(self, map: MapBuilder=None, config: dict  = None, assets: Grouping = None, strands=None, **kwargs):
+        super().__init__(map, config, assets=assets, strands=strands, **kwargs)
 
 class Story(StoryWeaver):
 
