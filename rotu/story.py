@@ -66,9 +66,13 @@ class StoryWeaver(StoryBuilder):
         return self.turn()
 
     def __deepcopy__(self, memo):
-        strands = copy.deepcopy(self.strands, memo)
-        rv = self.__class__(*self.speech, config=self.config, assets=self.assets, strands=strands)
-        rv.world = copy.deepcopy(self.world, memo)
+        rv = self.__class__(
+            *self.speech,
+            config=self.config and self.config.copy(),
+            assets=self.assets and self.assets.copy(),
+            world=copy.deepcopy(self.world, memo),
+            strands=self.strands and copy.deepcopy(self.strands, memo)
+        )
         #rv.world.entities = copy.deepcopy(self.world.entities, memo)
         #rv.world.map.transits = copy.deepcopy(self.world.map.transits, memo)
         print(f"{self.__class__.__name__} deepcopy {memo}")
@@ -84,7 +88,7 @@ class Map(MapBuilder):
         rv = self.__class__(
             spots={i.name: i.value for i in self.spot},
             config=self.config and self.config.copy(),
-            strands=self.strands and copy.deepcopy(self.strands),
+            strands=self.strands and copy.deepcopy(self.strands, memo),
         )
         print(f"{self.__class__.__name__} deepcopy {memo}")
         return rv

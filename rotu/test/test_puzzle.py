@@ -69,6 +69,7 @@ class PuzzleTests(unittest.TestCase):
 
         rv = list(puzzle.build(world=world))
         self.assertEqual(len(rv), len(puzzle.items), rv)
+        self.assertIsInstance(puzzle.names[0], str)
 
         entity = rv[0]
         self.assertEqual(entity.get_state(world.map.home).label, "inventory")
