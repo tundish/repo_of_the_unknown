@@ -26,6 +26,7 @@ import warnings
 from balladeer import Drama
 from balladeer import Entity
 from balladeer import Fruition
+from balladeer import Loader
 from balladeer import WorldBuilder
 from balladeer import Speech
 
@@ -94,6 +95,9 @@ class Puzzle(Drama):
         self.items = tuple(items)
         self.spots = tuple(spots.items())
         super().__init__(*args, **kwargs)
+
+    def scripts(self, assets):
+        return [i for i in assets if isinstance(i, Loader.Scene)]
 
     def build(self, world: WorldBuilder, **kwargs):
         for item in self.items:
