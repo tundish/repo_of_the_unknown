@@ -62,25 +62,49 @@ class StoryWeaver(StoryBuilder):
     def make(self, **kwargs):
         spots = self.spots(self.strands)
         m = Map(spots=spots)
-        self.world = WorldBuilder(map=m, config=self.config, assets=self.assets)
+        self.world = World(map=m, config=self.config, assets=self.assets)
         return self.turn()
 
     def __deepcopy__(self, memo):
         strands = copy.deepcopy(self.strands, memo)
         rv = self.__class__(*self.speech, config=self.config, assets=self.assets, strands=strands)
-        rv.world.entities = copy.deepcopy(self.world.entities, memo)
-        rv.world.map.transits = copy.deepcopy(self.world.map.transits, memo)
+        rv.world = copy.deepcopy(self.world, memo)
+        #rv.world.entities = copy.deepcopy(self.world.entities, memo)
+        #rv.world.map.transits = copy.deepcopy(self.world.map.transits, memo)
+        print(f"{self.__class__.__name__} deepcopy {memo}")
         return rv
 
 
 class Map(MapBuilder):
     def __init__(self, spots: dict, config=None, strands=None, **kwargs):
-        super().__init__(spots, config=config, strands=strands, **kwargs)
+        self.strands = strands
+        super().__init__(spots, config=config, **kwargs)
+
+    def __deepcopy__(self, memo):
+        rv = self.__class__(
+            spots={i.name: i.value for i in self.spot},
+            config=self.config and self.config.copy(),
+            strands=self.strands and copy.deepcopy(self.strands),
+        )
+        print(f"{self.__class__.__name__} deepcopy {memo}")
+        return rv
 
 
 class World(WorldBuilder):
     def __init__(self, map: MapBuilder=None, config: dict  = None, assets: Grouping = None, strands=None, **kwargs):
         super().__init__(map, config, assets=assets, strands=strands, **kwargs)
+        self.strands = strands
+
+    def __deepcopy__(self, memo):
+        rv = self.__class__(
+            map=copy.deepcopy(self.map),
+            config=self.config and self.config.copy(),
+            assets=self.assets and self.assets.copy(),
+            strands=self.strands and copy.deepcopy(self.strands)
+        )
+        print(f"{self.__class__.__name__} deepcopy {memo}")
+        return rv
+
 
 class Story(StoryWeaver):
 
