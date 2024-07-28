@@ -34,6 +34,7 @@ class StoryTests(unittest.TestCase):
         self.story = Story(strands=strands)
         self.assertTrue(self.story.strands)
         self.assertTrue(issubclass(self.story.world.map.spot, enum.Enum))
+        self.assertTrue(self.story.world.entities)
         self.assertTrue(self.story.world.map.transits)
 
     def test_story_copy_drama(self):

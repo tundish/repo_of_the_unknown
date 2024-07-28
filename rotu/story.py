@@ -60,7 +60,10 @@ class StoryWeaver(StoryBuilder):
         super().__init__(*speech, config=config, assets=assets, world=None)
 
     def __deepcopy__(self, memo):
-        return self.__class__(*self.speech, config=self.config, assets=self.assets, strands=self.strands)
+        rv = self.__class__(*self.speech, config=self.config, assets=self.assets, strands=self.strands)
+        rv.world.entities = copy.deepcopy(self.world.entities, memo)
+        rv.world.map.transits = copy.deepcopy(self.world.map.transits, memo)
+        return rv
 
     def make(self, **kwargs):
         spots = self.spots(self.strands)

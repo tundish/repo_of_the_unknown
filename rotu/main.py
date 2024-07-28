@@ -103,7 +103,7 @@ strands = [
                     Puzzle.Item(type="Transit", init=("exit.car_park", "into.van_f_ext", Traffic.flowing)),
                     Puzzle.Item(type="Transit", init=("exit.van_f_int", "into.van_b_int", Traffic.blocked)),
                     Puzzle.Item(
-                        names=("Door", "Van door"), type="Door", aspect="unlocked", sketch="The {0.name} is {aspect}",
+                        names=["Door", "Van door"], type="Door", aspect="unlocked", sketch="The {0.name} is {aspect}",
                         init=("exit.van_f_ext", "into.van_f_int", Traffic.flowing)
                     ),
                     Puzzle.Item(type="Void", init=("exit.car_park", "into.van_b_ext", Traffic.flowing)),

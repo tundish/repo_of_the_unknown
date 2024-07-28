@@ -90,7 +90,7 @@ class TurnTests(unittest.TestCase):
                         spots={"d": ["spot d"]},
                         items=(
                             Puzzle.Item(type="Transit", init=("exit.a", "into.d", Traffic.flowing)),
-                            Puzzle.Item(type="Lamp", init=("spot.d")),
+                            Puzzle.Item(type="Lamp", init=("spot.d", )),
                         ),
                     )
                 ]
@@ -101,7 +101,7 @@ class TurnTests(unittest.TestCase):
                     Puzzle(
                         name="E", spots={"a": ["spot a again"]},
                         items=(
-                            Puzzle.Item(name="Matches", init=("spot.a")),
+                            Puzzle.Item(name="Matches", init=("spot.a", )),
                         ),
                     ),
                     Puzzle(name="B", links={"E"}),
