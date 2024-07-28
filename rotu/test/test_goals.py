@@ -26,7 +26,6 @@ from balladeer import Entity
 
 import rotu
 from rotu.main import strands
-from rotu.main import World
 from rotu.story import Story
 
 

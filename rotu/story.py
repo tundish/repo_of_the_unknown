@@ -33,7 +33,7 @@ from balladeer import WorldBuilder
 import rotu
 from rotu.drama import Interaction
 from rotu.puzzle import Puzzle
-from rotu.puzzle import Strand
+from rotu.strand import Strand
 
 
 class StoryWeaver(StoryBuilder):

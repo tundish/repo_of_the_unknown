@@ -37,7 +37,7 @@ from balladeer.utils.themes import static_page
 
 import rotu
 from rotu.puzzle import Puzzle
-from rotu.puzzle import Strand
+from rotu.strand import Strand
 from rotu.story import Story
 from rotu.world import Map
 from rotu.world import World
