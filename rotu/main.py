@@ -40,7 +40,6 @@ from rotu.puzzle import Puzzle
 from rotu.strand import Strand
 from rotu.story import Story
 from rotu.world import Map
-from rotu.world import World
 
 
 __doc__ = """
@@ -95,8 +94,8 @@ strands = [
                     "roadside": ["by the roadside"],
                 },
                 items=(
-                    Puzzle.Item(type="Focus", init=("spot.van_f_int")),
-                    Puzzle.Item(name="goal_00a", init=(Fruition.elaboration)),
+                    Puzzle.Item(type="Focus", init=("spot.van_f_int",)),
+                    Puzzle.Item(name="goal_00a", init=(Fruition.elaboration,)),
                     Puzzle.Item(type="Transit", init=("exit.cafe_f_ext", "into.car_park", Traffic.flowing)),
                     Puzzle.Item(type="Transit", init=("exit.car_park", "into.shed_f_ext", Traffic.flowing)),
                     Puzzle.Item(type="Transit", init=("exit.shed_f_ext", "into.shed_f_int", Traffic.flowing)),
@@ -137,15 +136,9 @@ class Representer(Presenter):
         return html5.replace("<blockquote id=", "<blockquote popover id=")
 
 
-def factory(*args, assets={}, strands: list[Strand] = []):
-    spots = Story.spots(strands)
-    world = World(map=Map(spots=spots), assets=assets)
-    return Story(*args, assets=assets, world=world, strands=strands)
-
-
 def run():
     assets = discover_assets(rotu, "")
-    story = factory(assets=assets, strands=strands)
+    story = Story(assets=assets, strands=strands)
     print(static_page().html)
 
     about = textwrap.dedent(f"""

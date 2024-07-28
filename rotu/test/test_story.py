@@ -17,6 +17,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 import copy
+import enum
 import unittest
 
 from balladeer import Entity
@@ -32,6 +33,7 @@ class StoryTests(unittest.TestCase):
     def setUp(self):
         self.story = Story(strands=strands)
         self.assertTrue(self.story.strands)
+        self.assertTrue(issubclass(self.story.world.map.spot, enum.Enum))
         self.assertTrue(self.story.world.map.transits)
 
     def test_story_copy_drama(self):
@@ -46,7 +48,7 @@ class StoryTests(unittest.TestCase):
         for strand in self.story.strands:
             for drama in strand.drama:
                 with self.subTest(a=self.story, b=b, drama=drama):
-                    self.assertNotIn(drama, [i for strand in b.strands for i in strand.drama])
+                    self.assertNotIn(drama, [i for strand in b.strands for i in strand.drama.values()])
                     witness.append(drama)
 
         self.assertTrue(witness)

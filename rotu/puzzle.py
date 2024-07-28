@@ -42,6 +42,7 @@ class Puzzle(Drama):
 
     def build(self, world: WorldBuilder, **kwargs):
         for item in self.items:
+            print(f"{item.init=}")
             item.init, rules = {}, item.init
             for rule in rules:
                 try:

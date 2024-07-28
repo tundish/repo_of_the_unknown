@@ -87,11 +87,14 @@ class Story(StoryWeaver):
         for puzzle in active:
             if puzzle.get_state(Fruition) is None:
                 puzzle.set_state(Fruition.inception)
-                for item in puzzle.items:
+                for item in puzzle.build(self.world):
                     if "Transit" in item.types:
+                        print(f"{item=}")
                         self.world.map.transits.append(item)
                     else:
                         self.world.entities.append(item)
+
+        print(f"{self.world.map.transits=}")
         self.world.typewise = Grouping.typewise(self.world.entities)
         try:
             self.context.interlude(*args, **kwargs)
