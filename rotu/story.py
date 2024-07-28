@@ -17,17 +17,20 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 from collections import deque
+from collections.abc import Generator
 import copy
 import itertools
 import operator
 import random
 import warnings
 
+from balladeer import Entity
 from balladeer import Fruition
 from balladeer import Grouping
 from balladeer import MapBuilder
 from balladeer import Speech
 from balladeer import StoryBuilder
+from balladeer import Transit
 from balladeer import WorldBuilder
 
 import rotu
@@ -61,8 +64,8 @@ class StoryWeaver(StoryBuilder):
 
     def make(self, **kwargs):
         spots = self.spots(self.strands)
-        m = Map(spots=spots)
-        self.world = World(map=m, config=self.config, assets=self.assets)
+        m = Map(spots=spots, config=self.config, strands=self.strands)
+        self.world = World(map=m, config=self.config, assets=self.assets, strands=self.strands)
         return self.turn()
 
     def __deepcopy__(self, memo):
@@ -82,6 +85,7 @@ class StoryWeaver(StoryBuilder):
 class Map(MapBuilder):
     def __init__(self, spots: dict, config=None, strands=None, **kwargs):
         self.strands = strands
+        kwargs["strands"] = strands
         super().__init__(spots, config=config, **kwargs)
 
     def __deepcopy__(self, memo):
@@ -93,10 +97,15 @@ class Map(MapBuilder):
         print(f"{self.__class__.__name__} deepcopy {memo}")
         return rv
 
+    def build(self, strands: list = None, **kwargs) -> Generator[Transit]:
+        print(f"{self.__class__.__name__} build {strands}")
+        return ()
+
 
 class World(WorldBuilder):
     def __init__(self, map: MapBuilder=None, config: dict  = None, assets: Grouping = None, strands=None, **kwargs):
-        super().__init__(map, config, assets=assets, strands=strands, **kwargs)
+        kwargs["strands"] = strands
+        super().__init__(map, config, assets=assets, **kwargs)
         self.strands = strands
 
     def __deepcopy__(self, memo):
@@ -108,6 +117,15 @@ class World(WorldBuilder):
         )
         print(f"{self.__class__.__name__} deepcopy {memo}")
         return rv
+
+    def build(self, strands: list = None, **kwargs) -> Generator[Entity]:
+        """
+        Override this method to generate Entities.
+
+        """
+        print(f"{self.__class__.__name__} build {strands}")
+        yield from self.build_to_spec(self.specs)
+
 
 
 class Story(StoryWeaver):

@@ -30,7 +30,7 @@ class Puzzle(Drama):
 
     @dataclasses.dataclass(kw_only=True, unsafe_hash=True)
     class Item(Entity):
-        init: tuple[str | enum.Enum] = dataclasses.field(default_factory=tuple, compare=False)
+        init: list[str | enum.Enum] = dataclasses.field(default_factory=list, compare=False)
 
     def __init__(self, *args, items: list[Item] = [], spots: dict = {}, **kwargs):
         self.items = tuple(items)
