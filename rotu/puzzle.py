@@ -43,7 +43,7 @@ class Puzzle(Drama):
     def build(self, world: WorldBuilder, **kwargs):
         for item in self.items:
             print(f"{item.init=}")
-            item.init, rules = {}, item.init
+            item.init, rules = tuple(), item.init
             for rule in rules:
                 try:
                     state = operator.attrgetter(rule)(world.map)

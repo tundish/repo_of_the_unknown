@@ -40,7 +40,7 @@ class StoryTests(unittest.TestCase):
     def test_story_copy_drama(self):
         b = copy.deepcopy(self.story)
         self.assertNotEqual(self.story.uid, b.uid, vars(self.story))
-        self.assertNotEqual(self.story.director, b.director, vars(self.story.director))
+        self.assertIsNot(self.story.director, b.director, vars(self.story.director))
 
         self.assertFalse(self.story.drama)
         self.assertTrue(self.story.context)

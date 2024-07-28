@@ -77,61 +77,60 @@ class StrandTests(unittest.TestCase):
 
 class TurnTests(unittest.TestCase):
 
-    def test_two_strands(self):
-        strands = [
-            Strand(
-                label="strand one",
-                puzzles=[
-                    Puzzle(name="A", spots={"a": ["spot a"]}),
-                    Puzzle(name="F", links={"A"}),
-                    Puzzle(name="G", links={"A"}),
-                    Puzzle(
-                        name="D", links={"F", "G"},
-                        spots={"d": ["spot d"]},
-                        items=(
-                            Puzzle.Item(type="Transit", init=("exit.a", "into.d", Traffic.flowing)),
-                            Puzzle.Item(type="Lamp", init=("spot.d", )),
-                        ),
-                    )
-                ]
-            ),
-            Strand(
-                label="strand two",
-                puzzles=[
-                    Puzzle(
-                        name="E", spots={"a": ["spot a again"]},
-                        items=(
-                            Puzzle.Item(name="Matches", init=("spot.a", )),
-                        ),
+    strands = [
+        Strand(
+            label="strand one",
+            puzzles=[
+                Puzzle(name="A", spots={"a": ["spot a"]}),
+                Puzzle(name="F", links={"A"}),
+                Puzzle(name="G", links={"A"}),
+                Puzzle(
+                    name="D", links={"F", "G"},
+                    spots={"d": ["spot d"]},
+                    items=(
+                        Puzzle.Item(type="Transit", init=("exit.a", "into.d", Traffic.flowing)),
+                        Puzzle.Item(type="Lamp", init=("spot.d", )),
                     ),
-                    Puzzle(name="B", links={"E"}),
-                    Puzzle(
-                        name="C", links={"E"},
-                        spots={"c": ["spot c"]},
-                        items=[
-                            Puzzle.Item(type="Transit", init=("exit.a", "into.c", Traffic.flowing)),
-                        ]
+                )
+            ]
+        ),
+        Strand(
+            label="strand two",
+            puzzles=[
+                Puzzle(
+                    name="E", spots={"a": ["spot a again"]},
+                    items=(
+                        Puzzle.Item(name="Matches", init=("spot.a", )),
                     ),
-                    Puzzle(name="H", links={"B", "C"}),
-                ],
-            )
-        ]
+                ),
+                Puzzle(name="B", links={"E"}),
+                Puzzle(
+                    name="C", links={"E"},
+                    spots={"c": ["spot c"]},
+                    items=[
+                        Puzzle.Item(type="Transit", init=("exit.a", "into.c", Traffic.flowing)),
+                    ]
+                ),
+                Puzzle(name="H", links={"B", "C"}),
+            ],
+        )
+    ]
 
-        spots = Story.spots(strands)
+    def test_story_spots(self):
+        spots = Story.spots(self.strands)
         self.assertEqual(list(spots), ["a", "c", "d"])
         self.assertEqual(spots["a"], ["spot a", "spot a again"])
 
-        m = PuzzleTests.Map(spots=spots)
-        world = PuzzleTests.World(map=m, assets={})
-        story = Story("Test", world=world, strands=strands)
+    def test_two_strands(self):
+        story = Story("Test", strands=self.strands)
 
         self.assertTrue(issubclass(story.world.map.spot, enum.Enum))
         self.assertEqual(len(story.world.map.spot), 3)
 
         self.assertFalse(story.world.specs, story.world.assets)
-        self.assertFalse(story.world.statewise)
+        self.assertTrue(story.world.statewise)
 
-        self.assertIn(story.context, (strands[0].drama["A"], strands[1].drama["E"]))
+        self.assertIn(story.context, (self.strands[0].drama["A"], self.strands[1].drama["E"]))
         self.assertEqual(story.world.entities[0].name, "Matches")
         self.assertEqual(story.world.typewise[Puzzle.Item][0].name, "Matches")
         self.assertEqual(story.context.get_state(Fruition), Fruition.inception)
