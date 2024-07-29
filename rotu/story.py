@@ -78,7 +78,7 @@ class StoryWeaver(StoryBuilder):
         )
         #rv.world.entities = copy.deepcopy(self.world.entities, memo)
         #rv.world.map.transits = copy.deepcopy(self.world.map.transits, memo)
-        print(f"{self.__class__.__name__} deepcopy {memo}")
+        print(f"{self.__class__.__name__} deepcopy")
         return rv
 
 
@@ -94,7 +94,7 @@ class Map(MapBuilder):
             config=self.config and self.config.copy(),
             strands=self.strands and copy.deepcopy(self.strands, memo),
         )
-        print(f"{self.__class__.__name__} deepcopy {memo}")
+        print(f"{self.__class__.__name__} deepcopy")
         return rv
 
     def build(self, strands: list = None, **kwargs) -> Generator[Transit]:

@@ -22,7 +22,7 @@ from balladeer import Dialogue
 from balladeer import Page
 
 from rotu.frames.session import StorySession
-from rotu.main import Story
+from rotu.story import Story
 from rotu.test.test_popover import PopoverTests
 
 
