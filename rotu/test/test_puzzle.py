@@ -61,7 +61,7 @@ class PuzzleTests(unittest.TestCase):
                 "inventory": ["inventory", "carrying"],
             },
             items=(
-                Puzzle.Item(init=("home.inventory", Fruition.inception)),
+                Puzzle.Item(init=("map.home.inventory", Fruition.inception)),
             ),
         )
         m = self.Map(spots=puzzle.spots)

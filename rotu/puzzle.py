@@ -44,7 +44,7 @@ class Puzzle(Drama):
         for item in self.items:
             for rule in item.init:
                 try:
-                    state = operator.attrgetter(rule)(world.map)
+                    state = operator.attrgetter(rule)(world)
                     item.set_state(state)
                 except TypeError:
                     item.set_state(rule)

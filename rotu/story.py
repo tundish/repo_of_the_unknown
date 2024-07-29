@@ -119,12 +119,13 @@ class World(WorldBuilder):
         return rv
 
     def build(self, strands: list = None, **kwargs) -> Generator[Entity]:
-        """
-        Override this method to generate Entities.
-
-        """
-        print(f"{self.__class__.__name__} build {strands}")
-        yield from self.build_to_spec(self.specs)
+        "Generate new world entities whenever a puzzle becomes freshly active."
+        active = [puzzle for strand in strands for puzzle in strand.active]
+        for puzzle in active:
+            if puzzle.get_state(Fruition) is None:
+                for item in puzzle.build(self):
+                    if "Transit" not in item.types:
+                        yield item
 
 
 class Story(StoryWeaver):
