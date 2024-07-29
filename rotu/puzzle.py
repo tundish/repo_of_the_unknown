@@ -23,7 +23,7 @@ import operator
 from balladeer import Drama
 from balladeer import Entity
 from balladeer import Loader
-from balladeer import WorldBuilder
+from balladeer import MapBuilder
 
 
 class Puzzle(Drama):
@@ -40,11 +40,11 @@ class Puzzle(Drama):
     def scripts(self, assets):
         return [i for i in assets if isinstance(i, Loader.Scene)]
 
-    def build(self, world: WorldBuilder, **kwargs):
+    def build(self, m: MapBuilder, **kwargs):
         for item in self.items:
             for rule in item.init:
                 try:
-                    state = operator.attrgetter(rule)(world)
+                    state = operator.attrgetter(rule)(m)
                     item.set_state(state)
                 except TypeError:
                     item.set_state(rule)

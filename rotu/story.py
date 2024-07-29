@@ -98,8 +98,13 @@ class Map(MapBuilder):
         return rv
 
     def build(self, strands: list = None, **kwargs) -> Generator[Transit]:
-        print(f"{self.__class__.__name__} build {strands}")
-        return ()
+        "Generate new map transits whenever a puzzle becomes freshly active."
+        active = [puzzle for strand in strands for puzzle in strand.active]
+        for puzzle in active:
+            if puzzle.get_state(Fruition) is None:
+                for item in puzzle.build(self):
+                    if "Transit" in item.types:
+                        yield item
 
 
 class World(WorldBuilder):
@@ -123,7 +128,7 @@ class World(WorldBuilder):
         active = [puzzle for strand in strands for puzzle in strand.active]
         for puzzle in active:
             if puzzle.get_state(Fruition) is None:
-                for item in puzzle.build(self):
+                for item in puzzle.build(self.map):
                     if "Transit" not in item.types:
                         yield item
 
