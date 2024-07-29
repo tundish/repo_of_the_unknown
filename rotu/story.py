@@ -148,18 +148,19 @@ class Story(StoryWeaver):
 
     def turn(self, *args, **kwargs):
         active = [puzzle for strand in self.strands for puzzle in strand.active]
+        if any(puzzle.get_state(Fruition) is None for puzzle in active):
+            self.world.map.transits.extend(self.world.map.build(self.strands))
+            self.world.entities.extend(self.world.build(self.strands))
+
         for puzzle in active:
             if puzzle.get_state(Fruition) is None:
                 puzzle.set_state(Fruition.inception)
-                for item in puzzle.build(self.world):
-                    if "Transit" in item.types:
-                        self.world.map.transits.append(item)
-                    else:
-                        self.world.entities.append(item)
 
+        """
         self.world.typewise = Grouping.typewise(self.world.entities)
         try:
             self.context.interlude(*args, **kwargs)
         except AttributeError:
             warnings.warn("Turn exhausted context")
+        """
         return self
