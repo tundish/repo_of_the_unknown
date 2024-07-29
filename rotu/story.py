@@ -60,13 +60,13 @@ class StoryWeaver(StoryBuilder):
         **kwargs,
     ):
         self.strands = deque(strands or [Strand.default(*speech)])
-        super().__init__(*speech, config=config, assets=assets, world=None)
-
-    def make(self, **kwargs):
         spots = self.spots(self.strands)
-        m = Map(spots=spots, config=self.config, strands=self.strands)
-        self.world = World(map=m, config=self.config, assets=self.assets, strands=self.strands)
-        return self.turn()
+        m = Map(spots=spots, config=config, strands=self.strands)
+        world = World(map=m, config=config, assets=assets, strands=self.strands)
+        super().__init__(*speech, config=config, assets=assets, world=world)
+
+    def build(self, *args, **kwargs):
+        return ()
 
     def __deepcopy__(self, memo):
         rv = self.__class__(
@@ -125,7 +125,6 @@ class World(WorldBuilder):
         """
         print(f"{self.__class__.__name__} build {strands}")
         yield from self.build_to_spec(self.specs)
-
 
 
 class Story(StoryWeaver):
