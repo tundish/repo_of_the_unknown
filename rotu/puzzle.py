@@ -41,6 +41,7 @@ class Puzzle(Drama):
         return [i for i in assets if isinstance(i, Loader.Scene)]
 
     def build(self, m: MapBuilder, **kwargs):
+        print(f"{self.__class__.__name__} build")
         for item in self.items:
             for rule in item.init:
                 try:

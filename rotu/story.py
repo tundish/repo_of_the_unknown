@@ -68,6 +68,7 @@ class StoryWeaver(StoryBuilder):
     def build(self, *args, **kwargs):
         return ()
 
+    """
     def __deepcopy__(self, memo):
         rv = self.__class__(
             *self.speech,
@@ -80,6 +81,7 @@ class StoryWeaver(StoryBuilder):
         #rv.world.map.transits = copy.deepcopy(self.world.map.transits, memo)
         print(f"{self.__class__.__name__} deepcopy")
         return rv
+    """
 
 
 class Map(MapBuilder):
@@ -88,17 +90,22 @@ class Map(MapBuilder):
         kwargs["strands"] = strands
         super().__init__(spots, config=config, **kwargs)
 
+    """
     def __deepcopy__(self, memo):
         rv = self.__class__(
             spots={i.name: i.value for i in self.spot},
             config=self.config and self.config.copy(),
             strands=self.strands and copy.deepcopy(self.strands, memo),
         )
+        rv.transits = copy.deepcopy(self.transits, memo)
         print(f"{self.__class__.__name__} deepcopy")
         return rv
+    """
 
     def build(self, strands: list = None, **kwargs) -> Generator[Transit]:
         "Generate new map transits whenever a puzzle becomes freshly active."
+        assert strands is not None
+        print(f"{strands[0].active=} build")
         active = [puzzle for strand in strands for puzzle in strand.active]
         for puzzle in active:
             if puzzle.get_state(Fruition) is None:
@@ -113,6 +120,7 @@ class World(WorldBuilder):
         super().__init__(map, config, assets=assets, **kwargs)
         self.strands = strands
 
+    """
     def __deepcopy__(self, memo):
         rv = self.__class__(
             map=copy.deepcopy(self.map),
@@ -122,6 +130,7 @@ class World(WorldBuilder):
         )
         print(f"{self.__class__.__name__} deepcopy {memo}")
         return rv
+    """
 
     def build(self, strands: list = None, **kwargs) -> Generator[Entity]:
         "Generate new world entities whenever a puzzle becomes freshly active."
@@ -149,8 +158,8 @@ class Story(StoryWeaver):
     def turn(self, *args, **kwargs):
         active = [puzzle for strand in self.strands for puzzle in strand.active]
         if any(puzzle.get_state(Fruition) is None for puzzle in active):
-            self.world.map.transits.extend(self.world.map.build(self.strands))
-            self.world.entities.extend(self.world.build(self.strands))
+            self.world.map.transits.extend(list(self.world.map.build(strands=self.strands)))
+            self.world.entities.extend(list(self.world.build(strands=self.strands)))
 
         for puzzle in active:
             if puzzle.get_state(Fruition) is None:
