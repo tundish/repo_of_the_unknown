@@ -61,13 +61,13 @@ class PuzzleTests(unittest.TestCase):
                 "inventory": ["inventory", "carrying"],
             },
             items=(
-                Puzzle.Item(init=("map.home.inventory", Fruition.inception)),
+                Puzzle.Item(init=("home.inventory", Fruition.inception)),
             ),
         )
         m = self.Map(spots=puzzle.spots)
         world = self.World(map=m, assets={})
 
-        rv = list(puzzle.build(world=world))
+        rv = list(puzzle.build(world.map))
         self.assertEqual(len(rv), len(puzzle.items), rv)
         self.assertIsInstance(puzzle.names[0], str)
 
