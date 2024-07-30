@@ -87,7 +87,6 @@ class StoryWeaver(StoryBuilder):
 class Map(MapBuilder):
     def __init__(self, spots: dict, config=None, strands=None, **kwargs):
         self.strands = strands
-        kwargs["strands"] = strands
         super().__init__(spots, config=config, **kwargs)
 
     """
@@ -102,11 +101,9 @@ class Map(MapBuilder):
         return rv
     """
 
-    def build(self, strands: list = None, **kwargs) -> Generator[Transit]:
+    def build(self, **kwargs) -> Generator[Transit]:
         "Generate new map transits whenever a puzzle becomes freshly active."
-        assert strands is not None
-        print(f"{strands[0].active=} build")
-        active = [puzzle for strand in strands for puzzle in strand.active]
+        active = [puzzle for strand in self.strands for puzzle in strand.active]
         for puzzle in active:
             if puzzle.get_state(Fruition) is None:
                 for item in puzzle.build(self):
@@ -116,9 +113,8 @@ class Map(MapBuilder):
 
 class World(WorldBuilder):
     def __init__(self, map: MapBuilder=None, config: dict  = None, assets: Grouping = None, strands=None, **kwargs):
-        kwargs["strands"] = strands
-        super().__init__(map, config, assets=assets, **kwargs)
         self.strands = strands
+        super().__init__(map, config, assets=assets, **kwargs)
 
     """
     def __deepcopy__(self, memo):
@@ -132,9 +128,9 @@ class World(WorldBuilder):
         return rv
     """
 
-    def build(self, strands: list = None, **kwargs) -> Generator[Entity]:
+    def build(self, **kwargs) -> Generator[Entity]:
         "Generate new world entities whenever a puzzle becomes freshly active."
-        active = [puzzle for strand in strands for puzzle in strand.active]
+        active = [puzzle for strand in self.strands for puzzle in strand.active]
         for puzzle in active:
             if puzzle.get_state(Fruition) is None:
                 for item in puzzle.build(self.map):
