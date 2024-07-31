@@ -70,6 +70,8 @@ class StoryWeaver(StoryBuilder):
         m = self.world.map and copy.deepcopy(self.world.map, memo).make()
         w = self.world.__class__ (map=m, config=config, assets=self.assets)
         rv = self.__class__(*self.speech, config=config, assets=self.assets, strands=self.strands, world=w)
+        rv.world.entities = copy.deepcopy(rv.world.entities)
+        rv.world.map.transits = copy.deepcopy(rv.world.map.transits)
         return rv
 
     def build(self, *args, **kwargs):
