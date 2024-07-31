@@ -61,8 +61,8 @@ class StoryTests(unittest.TestCase):
         b = copy.deepcopy(self.story)
 
         self.assertEqual(
-            [name for s in a.strands for name in s.drama],
-            [name for s in b.strands for name in s.drama]
+            [drama.name for s in a.strands for drama in s.drama.values()],
+            [drama.name for s in b.strands for drama in s.drama.values()]
         )
 
         for entity in a.world.entities:
