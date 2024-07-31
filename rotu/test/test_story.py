@@ -77,6 +77,8 @@ class StoryTests(unittest.TestCase):
         self.assertIsNot(a.world, b.world)
         self.assertIsNot(a.world.map, b.world.map)
 
+        self.assertGreater(len(a.world.map.spot), 1, list(a.world.map.spot))
+
         self.assertIsNot(a.world.map.spot, b.world.map.spot)
         self.assertEqual([str(i) for i in a.world.map.spot], [str(i) for i in b.world.map.spot])
 
