@@ -37,6 +37,7 @@ class StoryTests(unittest.TestCase):
 
         self.assertTrue(self.story.world.entities)
         self.assertTrue(self.story.world.map.transits)
+        self.assertGreater(len(self.story.world.map.spot), 1, list(self.story.world.map.spot))
 
     def test_story_copy_drama(self):
         b = copy.deepcopy(self.story)
@@ -67,7 +68,7 @@ class StoryTests(unittest.TestCase):
 
         for entity in a.world.entities:
             with self.subTest(a=a, b=b, entity=entity):
-                self.assertFalse(any(entity.names is i.names for i in b.world.entities))
+                self.assertFalse(any(entity.names is i.names for i in b.world.entities), entity.names)
                 self.assertFalse(any(entity.states is i.states for i in b.world.entities))
                 self.assertFalse(any(entity.types is i.types for i in b.world.entities))
 
@@ -95,7 +96,7 @@ class StoryTests(unittest.TestCase):
         self.assertTrue(b.world.map.transits, a.world.map.transits)
         for transit in a.world.map.transits:
             with self.subTest(a=a, b=b, transit=transit):
-                self.assertFalse(any(transit.names is i.names for i in b.world.map.transits))
+                self.assertFalse(any(transit.names is i.names for i in b.world.map.transits), transit.names)
                 self.assertFalse(any(transit.states is i.states for i in b.world.map.transits))
                 self.assertFalse(any(transit.types is i.types for i in b.world.map.transits))
 

@@ -65,23 +65,15 @@ class StoryWeaver(StoryBuilder):
         world = World(map=m, config=config, assets=assets, strands=self.strands)
         super().__init__(*speech, config=config, assets=assets, world=world)
 
+    def __deepcopy__(self, memo):
+        config = copy.deepcopy(self.config, memo)
+        m = self.world.map and copy.deepcopy(self.world.map, memo).make()
+        w = self.world.__class__ (map=m, config=config, assets=self.assets)
+        rv = self.__class__(*self.speech, config=config, assets=self.assets, strands=self.strands, world=w)
+        return rv
+
     def build(self, *args, **kwargs):
         return ()
-
-    """
-    def __deepcopy__(self, memo):
-        rv = self.__class__(
-            *self.speech,
-            config=self.config and self.config.copy(),
-            assets=self.assets and self.assets.copy(),
-            world=copy.deepcopy(self.world, memo),
-            strands=self.strands and copy.deepcopy(self.strands, memo)
-        )
-        #rv.world.entities = copy.deepcopy(self.world.entities, memo)
-        #rv.world.map.transits = copy.deepcopy(self.world.map.transits, memo)
-        print(f"{self.__class__.__name__} deepcopy")
-        return rv
-    """
 
 
 class Map(MapBuilder):
