@@ -66,9 +66,9 @@ class StoryWeaver(StoryBuilder):
         super().__init__(*speech, config=config, assets=assets, world=world)
 
     def __deepcopy__(self, memo):
+        # TODO: Does Puzzle.build do a copy into each entity?
         config = copy.deepcopy(self.config, memo)
-        m = self.world.map and copy.deepcopy(self.world.map, memo).make()
-        w = self.world.__class__ (map=m, config=config, assets=self.assets)
+        w = copy.deepcopy(self.world)
         rv = self.__class__(*self.speech, config=config, assets=self.assets, strands=self.strands, world=w)
         rv.world.entities = copy.deepcopy(rv.world.entities)
         rv.world.map.transits = copy.deepcopy(rv.world.map.transits)
