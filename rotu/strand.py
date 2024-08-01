@@ -34,6 +34,7 @@ class Strand:
     sorter: TopologicalSorter = dataclasses.field(default_factory=TopologicalSorter, compare=False)
 
     def __post_init__(self, puzzles):
+        # TODO: Need separate make and build methods so strands can be copied and each copy initialized
         self.drama.update({i.names[0] if i.names else i.uid: i for i in puzzles})
 
         for key, drama in self.drama.items():
