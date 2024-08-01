@@ -17,6 +17,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 import copy
+import dataclasses
 import enum
 import unittest
 
@@ -69,7 +70,7 @@ class StrandTests(unittest.TestCase):
     def test_copy_protocol(self):
         strands = [
             Strand(
-                label="single test strand",
+                label="test strand one",
                 puzzles=[
                     Puzzle(name="a"),
                     Puzzle(name="b", links={"a"}),
@@ -78,7 +79,7 @@ class StrandTests(unittest.TestCase):
                 ]
             )
         ]
-        strands.append(copy.deepcopy(strands[0]))
+        strands.append(dataclasses.replace(strands[0], label="test strand two"))
         self.assertIsNot(strands[0], strands[1])
         self.assertIsNot(strands[0].sorter, strands[1].sorter)
         self.fail("TODO: Fuzz the sorter")
