@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU Affero General Public License along with Rotu.
 # If not, see <https://www.gnu.org/licenses/>.
 
+import copy
 import enum
 import unittest
 
@@ -64,6 +65,23 @@ class StrandTests(unittest.TestCase):
         strand.drama["b"].set_state(Fruition.completion)
         strand.drama["c"].set_state(Fruition.completion)
         self.assertEqual(strand.active[0], strand.drama["d"])
+
+    def test_copy_protocol(self):
+        strands = [
+            Strand(
+                label="single test strand",
+                puzzles=[
+                    Puzzle(name="a"),
+                    Puzzle(name="b", links={"a"}),
+                    Puzzle(name="c", links={"a"}),
+                    Puzzle(name="d", links={"b", "c"}),
+                ]
+            )
+        ]
+        strands.append(copy.deepcopy(strands[0]))
+        self.assertIsNot(strands[0], strands[1])
+        self.assertIsNot(strands[0].sorter, strands[1].sorter)
+        self.fail("TODO: Fuzz the sorter")
 
     def test_default(self):
         story = Story()
