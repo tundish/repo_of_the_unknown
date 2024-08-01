@@ -59,7 +59,7 @@ class StoryWeaver(StoryBuilder):
         strands: list[Strand] = None,
         **kwargs,
     ):
-        self.strands = deque(strands or [Strand.default(*speech)])
+        self.strands = deque(copy.deepcopy(strands) or [Strand.default(*speech)])
         spots = self.spots(self.strands)
         m = Map(spots=spots, config=config, strands=self.strands)
         world = World(map=m, config=config, assets=assets, strands=self.strands)

@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU Affero General Public License along with Rotu.
 # If not, see <https://www.gnu.org/licenses/>.
 
+import copy
 import dataclasses
 import enum
 import operator
