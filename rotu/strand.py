@@ -36,6 +36,7 @@ class Strand:
     sorter: TopologicalSorter = dataclasses.field(compare=False, default=None)
 
     def __post_init__(self, puzzles):
+        self.drama = self.drama or {}
         self.make(puzzles=puzzles)
 
     @classmethod
