@@ -67,7 +67,7 @@ class PuzzleTests(unittest.TestCase):
         m = self.Map(spots=puzzle.spots)
         world = self.World(map=m, assets={})
 
-        rv = list(puzzle.build(world.map))
+        rv = list(puzzle.build(world.map, items=puzzle.items))
         self.assertEqual(len(rv), len(puzzle.items), rv)
         self.assertIsInstance(puzzle.names[0], str)
 

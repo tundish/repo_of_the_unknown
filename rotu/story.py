@@ -96,13 +96,12 @@ class Map(MapBuilder):
         self.strands = strands
         super().__init__(spots, config=config, **kwargs)
 
-    def build(self, active: list[Puzzle] = [], **kwargs) -> Generator[Transit]:
-        "Generate new map transits whenever a puzzle becomes freshly active."
-        for puzzle in active:
-            if puzzle.get_state(Fruition) is None:
-                for item in puzzle.items:
-                    if "Transit" in item.types:
-                        yield item
+    def build(self, awake: list[Puzzle] = [], **kwargs) -> Generator[Transit]:
+        "Generate new map transits for freshly active puzzles."
+        for puzzle in awake:
+            for item in puzzle.items:
+                if "Transit" in item.types:
+                    yield item
 
 
 class World(WorldBuilder):
@@ -122,14 +121,12 @@ class World(WorldBuilder):
         return rv
     """
 
-    def build(self, **kwargs) -> Generator[Entity]:
-        "Generate new world entities whenever a puzzle becomes freshly active."
-        active = [puzzle for strand in self.strands for puzzle in strand.active]
-        for puzzle in active:
-            if puzzle.get_state(Fruition) is None:
-                for item in puzzle.build(self.map):
-                    if "Transit" not in item.types:
-                        yield item
+    def build(self, awake: list[Puzzle] = [], **kwargs) -> Generator[Entity]:
+        "Generate new world entities for freshly active puzzles."
+        for puzzle in awake:
+            for item in puzzle.build(self.map):
+                if "Transit" not in item.types:
+                    yield item
 
 
 class Story(StoryWeaver):
@@ -147,13 +144,12 @@ class Story(StoryWeaver):
 
     def turn(self, *args, **kwargs):
         active = [puzzle for strand in self.strands for puzzle in strand.active]
-        if any(puzzle.get_state(Fruition) is None for puzzle in active):
-            self.world.map.transits.extend(list(self.world.map.build(strands=self.strands)))
-            self.world.entities.extend(list(self.world.build(strands=self.strands)))
+        awake = [puzzle for puzzle in active if puzzle.get_state(Fruition) is None]
+        self.world.map.transits.extend(list(self.world.map.build(awake=awake)))
+        self.world.entities.extend(list(self.world.build(awake=awake)))
 
-        for puzzle in active:
-            if puzzle.get_state(Fruition) is None:
-                puzzle.set_state(Fruition.inception)
+        for puzzle in awake:
+            puzzle.set_state(Fruition.inception)
 
         """
         self.world.typewise = Grouping.typewise(self.world.entities)
