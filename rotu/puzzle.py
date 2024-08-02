@@ -29,16 +29,14 @@ from balladeer import Loader
 from balladeer import MapBuilder
 
 
+@dataclasses.dataclass(unsafe_hash=True)
 class Puzzle(Drama):
+    items: list[Entity] = dataclasses.field(default_factory=list)
+    spots: dict[str, list] = dataclasses.field(default_factory=dict)
 
     @dataclasses.dataclass(kw_only=True, unsafe_hash=True)
     class Item(Entity):
         init: list[str | enum.Enum] = dataclasses.field(default_factory=list, compare=False)
-
-    def __init__(self, *args, items: list[Item] = [], spots: dict = {}, **kwargs):
-        self.items = items
-        self.spots = tuple(spots.items())
-        super().__init__(*args, **kwargs)
 
     @property
     def focus(self):
