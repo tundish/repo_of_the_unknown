@@ -32,7 +32,7 @@ from rotu.puzzle import Puzzle
 class Strand:
     label: str
     puzzles: dataclasses.InitVar = []
-    drama: dict[str, Drama] = dataclasses.field(default_factory=dict)
+    drama: dict[str, Drama] = dataclasses.field(default=None)
     sorter: TopologicalSorter = dataclasses.field(compare=False, default=None)
 
     def __post_init__(self, puzzles):
@@ -77,17 +77,18 @@ class Strand:
 
     def build(self, puzzles: list = [], *args, **kwargs) -> Generator[tuple[str, Puzzle]]:
         # Generate replicas of initial puzzles
+        # TODO: replace uuid, etc
         yield from ((i.names[0] if i.names else i.uid, i) for i in puzzles)
 
     def make(self, puzzles=[], **kwargs):
-        # TODO: replace uuid, etc
-        self.drama.update({k: v for k, v in self.build(puzzles=puzzles)})
-        if not self.sorter:
-            self.sorter = TopologicalSorter()
-            for key, drama in self.drama.items():
-                self.sorter.add(key, *drama.links)
+        puzzles = puzzles or self.drama.values()
 
-            self.sorter.prepare()
+        self.drama = dict(self.build(puzzles=puzzles))
 
+        self.sorter = TopologicalSorter()
+        for key, drama in self.drama.items():
+            self.sorter.add(key, *drama.links)
+
+        self.sorter.prepare()
         self._active = {i: self.drama.get(i) for i in self.sorter.get_ready()}
         return self

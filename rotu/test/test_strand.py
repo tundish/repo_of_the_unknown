@@ -82,6 +82,13 @@ class StrandTests(unittest.TestCase):
         strands.append(dataclasses.replace(strands[0], label="test strand two").make())
         self.assertIsNot(strands[0], strands[1])
         self.assertIsNot(strands[0].sorter, strands[1].sorter)
+
+        self.assertFalse(any(d in set(strands[0].drama.values()) for d in strands[1].drama.values()))
+        self.assertFalse(
+            set(d.uid for d in strands[1].drama.values()).intersection(
+                set(d.uid for d in strands[1].drama.values())
+            )
+        )
         self.fail("TODO: Fuzz the sorter")
 
     def test_default(self):
