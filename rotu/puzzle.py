@@ -16,10 +16,12 @@
 # You should have received a copy of the GNU Affero General Public License along with Rotu.
 # If not, see <https://www.gnu.org/licenses/>.
 
+from collections.abc import Generator
 import copy
 import dataclasses
 import enum
 import operator
+import uuid
 
 from balladeer import Drama
 from balladeer import Entity
@@ -34,24 +36,31 @@ class Puzzle(Drama):
         init: list[str | enum.Enum] = dataclasses.field(default_factory=list, compare=False)
 
     def __init__(self, *args, items: list[Item] = [], spots: dict = {}, **kwargs):
-        self.items = tuple(items)
-        self.spots = tuple(spots.items())
         super().__init__(*args, **kwargs)
-
-    def scripts(self, assets):
-        return [i for i in assets if isinstance(i, Loader.Scene)]
-
-    def build(self, m: MapBuilder, **kwargs):
-        print(f"{self.__class__.__name__} build")
-        for item in self.items:
-            for rule in item.init:
-                try:
-                    state = operator.attrgetter(rule)(m)
-                    item.set_state(state)
-                except TypeError:
-                    item.set_state(rule)
-            yield item
+        self.items = items
+        self.spots = tuple(spots.items())
 
     @property
     def focus(self):
         return next((reversed(sorted(self.world.typewise["Focus"], key=operator.attrgetter("state")))), None)
+
+    def scripts(self, assets):
+        return [i for i in assets if isinstance(i, Loader.Scene)]
+
+    def build(self, m: MapBuilder, items: list[Item], **kwargs) -> Generator[Item]:
+        for item in self.items:
+            rv = dataclasses.replace(item, uid=uuid.uuid4())
+            for rule in item.init:
+                try:
+                    state = operator.attrgetter(rule)(m)
+                    rv.set_state(state)
+                except AttributeError:
+                    # No map supplied
+                    continue
+                except TypeError:
+                    rv.set_state(rule)
+            yield rv
+
+    def make(self, m: MapBuilder=None, items=[], **kwargs):
+        self.items = tuple(self.build(m, items=items))
+        return self

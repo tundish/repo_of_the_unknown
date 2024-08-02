@@ -78,7 +78,13 @@ class Strand:
     def build(self, puzzles: list = [], *args, **kwargs) -> Generator[tuple[str, Puzzle]]:
         # Generate replicas of initial puzzles
         # TODO: replace uuid, etc
-        yield from ((i.names[0] if i.names else i.uid, i) for i in puzzles)
+        yield from (
+            (
+                puzzle.names[0] if puzzle.names else puzzle.uid,
+                puzzle.make(items=puzzle.items)
+            )
+            for puzzle in puzzles
+        )
 
     def make(self, puzzles=[], **kwargs):
         puzzles = puzzles or self.drama.values()
