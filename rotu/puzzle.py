@@ -46,7 +46,7 @@ class Puzzle(Drama):
         return [i for i in assets if isinstance(i, Loader.Scene)]
 
     def build(self, m: MapBuilder, items: list[Item], **kwargs) -> Generator[Item]:
-        for item in self.items:
+        for item in items:
             rv = dataclasses.replace(item, uid=uuid.uuid4())
             for rule in item.init:
                 try:
@@ -59,6 +59,7 @@ class Puzzle(Drama):
                     rv.set_state(rule)
             yield rv
 
-    def make(self, m: MapBuilder=None, items=[], **kwargs):
+    def make(self, m: MapBuilder=None, items: list[Item] = [], spots: dict = {}, **kwargs):
+        self.spots = tuple(spots.items())
         self.items = tuple(self.build(m, items=items))
         return self
