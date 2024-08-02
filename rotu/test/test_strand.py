@@ -143,7 +143,7 @@ class TurnTests(unittest.TestCase):
 
     def test_story_gather_spots(self):
         spots = Story.gather_spots(self.strands)
-        self.assertEqual(list(spots), ["a", "c", "d"])
+        self.assertEqual(list(spots), ["a", "c", "d"], self.strands)
         self.assertEqual(spots["a"], ["spot a", "spot a again"])
 
     def test_two_strands(self):

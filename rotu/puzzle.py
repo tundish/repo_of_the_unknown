@@ -36,9 +36,9 @@ class Puzzle(Drama):
         init: list[str | enum.Enum] = dataclasses.field(default_factory=list, compare=False)
 
     def __init__(self, *args, items: list[Item] = [], spots: dict = {}, **kwargs):
-        super().__init__(*args, **kwargs)
         self.items = items
         self.spots = tuple(spots.items())
+        super().__init__(*args, **kwargs)
 
     @property
     def focus(self):
