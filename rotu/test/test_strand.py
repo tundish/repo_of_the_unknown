@@ -79,7 +79,7 @@ class StrandTests(unittest.TestCase):
                 ]
             )
         ]
-        strands.append(dataclasses.replace(strands[0], label="test strand two"))
+        strands.append(dataclasses.replace(strands[0], label="test strand two").make())
         self.assertIsNot(strands[0], strands[1])
         self.assertIsNot(strands[0].sorter, strands[1].sorter)
         self.fail("TODO: Fuzz the sorter")

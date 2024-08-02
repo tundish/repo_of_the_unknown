@@ -16,8 +16,10 @@
 # You should have received a copy of the GNU Affero General Public License along with Rotu.
 # If not, see <https://www.gnu.org/licenses/>.
 
+from collections.abc import Generator
 import dataclasses
 from graphlib import TopologicalSorter
+import uuid
 
 from balladeer import Drama
 from balladeer import Fruition
@@ -31,17 +33,10 @@ class Strand:
     label: str
     puzzles: dataclasses.InitVar = []
     drama: dict[str, Drama] = dataclasses.field(default_factory=dict)
-    sorter: TopologicalSorter = dataclasses.field(default_factory=TopologicalSorter, compare=False)
+    sorter: TopologicalSorter = dataclasses.field(compare=False, default=None)
 
     def __post_init__(self, puzzles):
-        # TODO: Need separate make and build methods so strands can be copied and each copy initialized
-        self.drama.update({i.names[0] if i.names else i.uid: i for i in puzzles})
-
-        for key, drama in self.drama.items():
-            self.sorter.add(key, *drama.links)
-
-        self.sorter.prepare()
-        self._active = {i: self.drama.get(i) for i in self.sorter.get_ready()}
+        self.make(puzzles=puzzles)
 
     @classmethod
     def default(cls, *speech: tuple[Speech], label="init"):
@@ -79,3 +74,20 @@ class Strand:
             for name, terms in drama.spots
             for term in terms
         ]
+
+    def build(self, puzzles: list = [], *args, **kwargs) -> Generator[tuple[str, Puzzle]]:
+        # Generate replicas of initial puzzles
+        yield from ((i.names[0] if i.names else i.uid, i) for i in puzzles)
+
+    def make(self, puzzles=[], **kwargs):
+        # TODO: replace uuid, etc
+        self.drama.update({k: v for k, v in self.build(puzzles=puzzles)})
+        if not self.sorter:
+            self.sorter = TopologicalSorter()
+            for key, drama in self.drama.items():
+                self.sorter.add(key, *drama.links)
+
+            self.sorter.prepare()
+
+        self._active = {i: self.drama.get(i) for i in self.sorter.get_ready()}
+        return self
