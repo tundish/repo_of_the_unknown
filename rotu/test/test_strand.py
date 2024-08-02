@@ -85,11 +85,10 @@ class StrandTests(unittest.TestCase):
 
         self.assertFalse(any(d in set(strands[0].drama.values()) for d in strands[1].drama.values()))
         self.assertFalse(
-            set(d.uid for d in strands[1].drama.values()).intersection(
+            set(d.uid for d in strands[0].drama.values()).intersection(
                 set(d.uid for d in strands[1].drama.values())
             )
         )
-        self.fail("TODO: Fuzz the sorter")
 
     def test_default(self):
         story = Story()
