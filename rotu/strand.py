@@ -41,17 +41,12 @@ class Strand:
 
     @classmethod
     def default(cls, *speech: tuple[Speech], label="init"):
-        print(f"{speech=}")
-        return cls(
-            label=label,
-            puzzles=[
-                Puzzle(
-                    speech=speech,
-                    spots={"here": ["here"]},
-                    items=[Puzzle.Item(type="Focus", init=("spot.here",))]
-                )
-            ]
+        puzzle = Puzzle(
+            speech=speech,
+            spots={"here": ["here"]},
+            items=[Puzzle.Item(type="Focus", init=("spot.here",))]
         )
+        return cls(label=label, puzzles=[puzzle])
 
     @property
     def active(self):

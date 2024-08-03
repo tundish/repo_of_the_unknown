@@ -30,15 +30,6 @@ from balladeer import Speech
 from balladeer import Loader
 from balladeer import MapBuilder
 
-_original_create_fn = dataclasses._create_fn
-
-def _new_create_fn(name, args, body, **kwargs):
-    args_str = ', '.join(args)
-    body_str = '\n'.join('  ' + l for l in body)
-    print(f'def {name}({args_str}):\n{body_str}\n')
-    return _original_create_fn(name, args, body, **kwargs)
-
-dataclasses._create_fn = _new_create_fn
 
 @dataclasses.dataclass(unsafe_hash=True)
 class Puzzle(Drama):
@@ -73,4 +64,7 @@ class Puzzle(Drama):
 
     def make(self, m: MapBuilder=None, items: list[Item] = [], spots: dict = {}, **kwargs):
         self.items = tuple(self.build(m, items=items))
+        self.speech = deque(self.speech)
+        self.prompt = ""
+        self.tooltip = ""
         return self
