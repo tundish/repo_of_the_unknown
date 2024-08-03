@@ -41,11 +41,12 @@ class Strand:
 
     @classmethod
     def default(cls, *speech: tuple[Speech], label="init"):
+        print(f"{speech=}")
         return cls(
             label=label,
             puzzles=[
                 Puzzle(
-                    *speech,
+                    speech=speech,
                     spots={"here": ["here"]},
                     items=[Puzzle.Item(type="Focus", init=("spot.here",))]
                 )
@@ -86,7 +87,7 @@ class Strand:
         )
 
     def make(self, puzzles=[], **kwargs):
-        puzzles = puzzles or self.drama.values()
+        puzzles = puzzles or list(self.drama.values())
 
         self.drama = dict(self.build(puzzles=puzzles))
 

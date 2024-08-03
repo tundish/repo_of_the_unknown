@@ -25,14 +25,25 @@ import uuid
 
 from balladeer import Drama
 from balladeer import Entity
+from balladeer import Speech
 from balladeer import Loader
 from balladeer import MapBuilder
 
+_original_create_fn = dataclasses._create_fn
+
+def _new_create_fn(name, args, body, **kwargs):
+    args_str = ', '.join(args)
+    body_str = '\n'.join('  ' + l for l in body)
+    print(f'def {name}({args_str}):\n{body_str}\n')
+    return _original_create_fn(name, args, body, **kwargs)
+
+dataclasses._create_fn = _new_create_fn
 
 @dataclasses.dataclass(unsafe_hash=True)
 class Puzzle(Drama):
-    items: list[Entity] = dataclasses.field(default_factory=list)
-    spots: dict[str, list] = dataclasses.field(default_factory=dict)
+    speech: tuple[Speech] = dataclasses.field(default_factory=tuple, kw_only=True)
+    items: list[Entity] = dataclasses.field(default_factory=list, kw_only=True)
+    spots: dict[str, list] = dataclasses.field(default_factory=dict, kw_only=True)
 
     @dataclasses.dataclass(kw_only=True, unsafe_hash=True)
     class Item(Entity):

@@ -45,7 +45,7 @@ class StrandTests(unittest.TestCase):
     def test_init(self):
         s = Strand(label="test", puzzles=[Puzzle(name="test")])
         self.assertEqual(next(iter(s.drama.values())).items, tuple())
-        self.assertEqual(next(iter(s.drama.values())).spots, tuple())
+        self.assertEqual(next(iter(s.drama.values())).spots, dict())
 
     def test_simple(self):
         strand = Strand(
