@@ -61,7 +61,8 @@ class StoryWeaver(StoryBuilder):
         **kwargs,
     ):
         kwargs["strands"] = strands
-        super().__init__(*speech, config=config, assets=assets, world=None, **kwargs)
+        kwargs["speech"] = speech
+        super().__init__(config=config, assets=assets, world=None, **kwargs)
 
     """
     def __deepcopy__(self, memo):
@@ -76,14 +77,14 @@ class StoryWeaver(StoryBuilder):
 
     def build(self, *, speech: tuple[type], strands: list[Strand] = None, **kwargs) -> Generator[Strand]:
         if strands:
-            yield from (strand.make() for strand in strands)
+            yield from (strand.make(strand.puzzles) for strand in strands)
         else:
             yield Strand.default(*speech)
 
-    def make(self, strands: list[Strand] = None, **kwargs):
+    def make(self, speech: tuple[Speech] = (), strands: list[Strand] = None, **kwargs):
         spots = self.gather_spots(strands or [])
         m = Map(spots=spots, config=self.config)
-        self.strands = deque(self.build(speech=self.speech, strands=strands))
+        self.strands = deque(self.build(speech=speech, strands=strands))
         active = [puzzle for strand in self.strands for puzzle in strand.active]
         self.world = World(map=m, config=self.config, assets=self.assets, strands=self.strands)
         return self
@@ -94,9 +95,9 @@ class Map(MapBuilder):
         self.strands = strands
         super().__init__(spots, config=config, **kwargs)
 
-    def build(self, awake: list[Puzzle] = [], **kwargs) -> Generator[Transit]:
+    def build(self, awoken: list[Puzzle] = [], **kwargs) -> Generator[Transit]:
         "Generate new map transits for freshly active puzzles."
-        for puzzle in awake:
+        for puzzle in awoken:
             for item in puzzle.items:
                 if "Transit" in item.types:
                     yield item
@@ -119,10 +120,10 @@ class World(WorldBuilder):
         return rv
     """
 
-    def build(self, awake: list[Puzzle] = [], **kwargs) -> Generator[Entity]:
+    def build(self, awoken: list[Puzzle] = [], **kwargs) -> Generator[Entity]:
         "Generate new world entities for freshly active puzzles."
-        for puzzle in awake:
-            for item in puzzle.build(self.map):
+        for puzzle in awoken:
+            for item in puzzle.build(self.map, items=puzzle.items):
                 if "Transit" not in item.types:
                     yield item
 
@@ -142,11 +143,11 @@ class Story(StoryWeaver):
 
     def turn(self, *args, **kwargs):
         active = [puzzle for strand in self.strands for puzzle in strand.active]
-        awake = [puzzle for puzzle in active if puzzle.get_state(Fruition) is None]
-        self.world.map.transits.extend(list(self.world.map.build(awake=awake)))
-        self.world.entities.extend(list(self.world.build(awake=awake)))
+        awoken = [puzzle for puzzle in active if puzzle.get_state(Fruition) is None]
+        self.world.map.transits.extend(list(self.world.map.build(awoken=awoken)))
+        self.world.entities.extend(list(self.world.build(awoken=awoken)))
 
-        for puzzle in awake:
+        for puzzle in awoken:
             puzzle.set_state(Fruition.inception)
 
         """

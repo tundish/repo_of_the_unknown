@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU Affero General Public License along with Rotu.
 # If not, see <https://www.gnu.org/licenses/>.
 
+from collections import deque
 from collections.abc import Generator
 import copy
 import dataclasses
@@ -41,9 +42,9 @@ dataclasses._create_fn = _new_create_fn
 
 @dataclasses.dataclass(unsafe_hash=True)
 class Puzzle(Drama):
-    speech: tuple[Speech] = dataclasses.field(default_factory=tuple, kw_only=True)
-    items: list[Entity] = dataclasses.field(default_factory=list, kw_only=True)
-    spots: dict[str, list] = dataclasses.field(default_factory=dict, kw_only=True)
+    speech: tuple[Speech] = dataclasses.field(default_factory=tuple, kw_only=True, compare=False)
+    items: list[Entity] = dataclasses.field(default_factory=list, kw_only=True, compare=False)
+    spots: dict[str, list] = dataclasses.field(default_factory=dict, kw_only=True, compare=False)
 
     @dataclasses.dataclass(kw_only=True, unsafe_hash=True)
     class Item(Entity):
