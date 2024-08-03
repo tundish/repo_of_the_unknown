@@ -43,13 +43,11 @@ class StoryWeaver(StoryBuilder):
 
     @staticmethod
     def gather_spots(strands: list[Strand]) -> dict[str, list]:
-        print(f"{strands=}")
         items = sorted(item for strand in strands for puzzle in strand.drama.values() for item in puzzle.spots)
-        print(f"{items=}")
         return {
-            k: [i[1] for i in v]
-            for k, v in itertools.groupby(
-                sorted(item for strand in strands for puzzle in strand.drama.values() for item in puzzle.spots),
+            g: list(itertools.chain.from_iterable([i[1] for i in v]))
+            for g, v in itertools.groupby(
+                sorted(item for strand in strands for puzzle in strand.drama.values() for item in puzzle.spots.items()),
                 key=operator.itemgetter(0)
             )
         }

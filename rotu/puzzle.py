@@ -60,6 +60,5 @@ class Puzzle(Drama):
             yield rv
 
     def make(self, m: MapBuilder=None, items: list[Item] = [], spots: dict = {}, **kwargs):
-        self.spots = tuple(spots.items())
         self.items = tuple(self.build(m, items=items))
         return self
