@@ -83,7 +83,9 @@ class StrandTests(unittest.TestCase):
         self.assertIsNot(strands[0], strands[1])
         self.assertIsNot(strands[0].sorter, strands[1].sorter)
 
-        self.assertFalse(any(d in set(strands[0].drama.values()) for d in strands[1].drama.values()))
+        self.assertFalse(any(
+            id(d) in {id(i) for i in strands[0].drama.values()} for d in strands[1].drama.values()
+        ))
         self.assertFalse(
             set(d.uid for d in strands[0].drama.values()).intersection(
                 set(d.uid for d in strands[1].drama.values())
