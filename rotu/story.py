@@ -52,7 +52,6 @@ class StoryWeaver(StoryBuilder):
             )
         }
 
-    """
     def __init__(
         self,
         *speech: tuple[Speech],
@@ -61,12 +60,8 @@ class StoryWeaver(StoryBuilder):
         strands: list[Strand] = None,
         **kwargs,
     ):
-        super().__init__(*speech, config=config, assets=assets, world=world, **kwargs)
-        self.strands = deque(copy.deepcopy(strands) or [Strand.default(*speech)])
-        spots = self.spots(self.strands)
-        m = Map(spots=spots, config=config, strands=self.strands)
-        world = World(map=m, config=config, assets=assets, strands=self.strands)
-    """
+        self.strands = strands
+        super().__init__(*speech, config=config, assets=assets, world=None, **kwargs)
 
     def __deepcopy__(self, memo):
         # TODO: Does Puzzle.build do a copy into each entity?
