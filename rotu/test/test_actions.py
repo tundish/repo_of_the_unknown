@@ -53,7 +53,6 @@ class ActionTests(unittest.TestCase):
         story = Story(
             Dialogue("<> Perhaps it's time to `go to bed`?"),
         )
-        print(f"{story.strands=}")
 
         page = Page()
         request = PopoverTests.mock_request()

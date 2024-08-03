@@ -62,7 +62,7 @@ class StoryWeaver(StoryBuilder):
     ):
         kwargs["strands"] = strands
         kwargs["speech"] = speech
-        super().__init__(config=config, assets=assets, world=None, **kwargs)
+        super().__init__(config=config, assets=assets, **kwargs)
 
     """
     def __deepcopy__(self, memo):
@@ -84,10 +84,11 @@ class StoryWeaver(StoryBuilder):
     def make(self, speech: tuple[Speech] = (), strands: list[Strand] = None, **kwargs):
         spots = self.gather_spots(strands or [])
         m = Map(spots=spots, config=self.config)
+
         self.strands = deque(self.build(speech=speech, strands=strands))
-        active = [puzzle for strand in self.strands for puzzle in strand.active]
         self.world = World(map=m, config=self.config, assets=self.assets, strands=self.strands)
-        return self
+
+        return self.turn(**kwargs)
 
 
 class Map(MapBuilder):
@@ -150,11 +151,9 @@ class Story(StoryWeaver):
         for puzzle in awoken:
             puzzle.set_state(Fruition.inception)
 
-        """
         self.world.typewise = Grouping.typewise(self.world.entities)
         try:
             self.context.interlude(*args, **kwargs)
         except AttributeError:
             warnings.warn("Turn exhausted context")
-        """
         return self

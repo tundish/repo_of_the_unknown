@@ -50,7 +50,7 @@ class StoryTests(unittest.TestCase):
         witness = []
         for strand in self.story.strands:
             for drama in strand.drama.values():
-                print(f"{drama.names=}")
+                self.assertEqual(sorted(set(drama.names)), sorted(drama.names), drama.names)
                 with self.subTest(a=self.story, b=b, drama=drama):
                     self.assertNotIn(id(drama), [id(i) for strand in b.strands for i in strand.drama.values()])
                     witness.append(drama)
