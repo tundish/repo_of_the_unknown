@@ -60,7 +60,7 @@ class StoryWeaver(StoryBuilder):
         strands: list[Strand] = None,
         **kwargs,
     ):
-        self.strands = strands
+        kwargs["strands"] = strands
         super().__init__(*speech, config=config, assets=assets, world=None, **kwargs)
 
     def __deepcopy__(self, memo):
@@ -78,8 +78,8 @@ class StoryWeaver(StoryBuilder):
         else:
             yield Strand.default(*speech)
 
-    def make(self, strands: list[Strand] = [], **kwargs):
-        spots = self.gather_spots(strands)
+    def make(self, strands: list[Strand] = None, **kwargs):
+        spots = self.gather_spots(strands or [])
         m = Map(spots=spots, config=self.config)
         self.strands = deque(self.build(*self.speech, strands=strands))
         active = [puzzle for strand in self.strands for puzzle in strand.active]
