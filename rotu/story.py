@@ -147,11 +147,11 @@ class Story(StoryWeaver):
         awoken = [puzzle for puzzle in active if puzzle.get_state(Fruition) is None]
         self.world.map.transits.extend(list(self.world.map.build(awoken=awoken)))
         self.world.entities.extend(list(self.world.build(awoken=awoken)))
+        self.world.typewise = Grouping.typewise(self.world.entities)
 
         for puzzle in awoken:
             puzzle.set_state(Fruition.inception)
 
-        self.world.typewise = Grouping.typewise(self.world.entities)
         try:
             self.context.interlude(*args, **kwargs)
         except AttributeError:
