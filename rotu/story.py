@@ -64,16 +64,13 @@ class StoryWeaver(StoryBuilder):
         kwargs["speech"] = speech
         super().__init__(config=config, assets=assets, **kwargs)
 
-    """
     def __deepcopy__(self, memo):
-        # TODO: Does Puzzle.build do a copy into each entity?
+        speech = copy.deepcopy(self.speech, memo)
         config = copy.deepcopy(self.config, memo)
-        w = copy.deepcopy(self.world)
-        rv = self.__class__(*self.speech, config=config, assets=self.assets, strands=self.strands, world=w)
-        rv.world.entities = copy.deepcopy(rv.world.entities)
-        rv.world.map.transits = copy.deepcopy(rv.world.map.transits)
+        assets = copy.deepcopy(self.assets, memo)
+        strands = [strand.make(strand.puzzles.copy()) for strand in self.strands]
+        rv = self.__class__(*speech, config=config, assets=assets, strands=strands)
         return rv
-    """
 
     def build(self, *, speech: tuple[type], strands: list[Strand] = None, **kwargs) -> Generator[Strand]:
         if strands:
