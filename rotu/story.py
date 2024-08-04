@@ -68,13 +68,16 @@ class StoryWeaver(StoryBuilder):
         speech = copy.deepcopy(self.speech, memo)
         config = copy.deepcopy(self.config, memo)
         assets = copy.deepcopy(self.assets, memo)
-        strands = [strand.make(strand.puzzles.copy()) for strand in self.strands]
+        strands = [
+            strand.make(puzzles=[puzzle.make(items=puzzle.items) for puzzle in strand.puzzles])
+            for strand in self.strands
+        ]
         rv = self.__class__(*speech, config=config, assets=assets, strands=strands)
         return rv
 
     def build(self, *, speech: tuple[type], strands: list[Strand] = None, **kwargs) -> Generator[Strand]:
         if strands:
-            yield from (strand.make(strand.puzzles) for strand in strands)
+            yield from (strand.make(puzzles=strand.puzzles) for strand in strands)
         else:
             yield Strand.default(*speech)
 
@@ -85,7 +88,12 @@ class StoryWeaver(StoryBuilder):
         self.strands = deque(self.build(speech=speech, strands=strands))
         self.world = World(map=m, config=self.config, assets=self.assets, strands=self.strands)
 
-        return self.turn(**kwargs)
+        active = [puzzle for strand in self.strands for puzzle in strand.active]
+        awoken = [puzzle for puzzle in active if puzzle.get_state(Fruition) is None]
+        self.world.map.transits.extend(list(self.world.map.build(awoken=awoken)))
+        self.world.entities.extend(list(self.world.build(awoken=awoken)))
+        self.world.typewise = Grouping.typewise(self.world.entities)
+        return self
 
 
 class Map(MapBuilder):

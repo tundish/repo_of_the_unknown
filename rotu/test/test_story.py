@@ -52,7 +52,10 @@ class StoryTests(unittest.TestCase):
             for drama in strand.drama.values():
                 self.assertEqual(sorted(set(drama.names)), sorted(drama.names), drama.names)
                 with self.subTest(a=self.story, b=b, drama=drama):
-                    self.assertNotIn(id(drama), [id(i) for strand in b.strands for i in strand.drama.values()])
+                    self.assertNotIn(
+                        id(drama), [id(i) for strand in b.strands for i in strand.drama.values()],
+                        strand.drama
+                    )
                     witness.append(drama)
 
         self.assertTrue(witness)

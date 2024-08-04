@@ -41,6 +41,11 @@ class Puzzle(Drama):
     class Item(Entity):
         init: list[str | enum.Enum] = dataclasses.field(default_factory=list, compare=False)
 
+    """
+    def __deepcopy__(self, memo):
+        return super().__deepcopy__(self, memo)
+    """
+
     @property
     def focus(self):
         return next((reversed(sorted(self.world.typewise["Focus"], key=operator.attrgetter("state")))), None)
@@ -66,6 +71,7 @@ class Puzzle(Drama):
         self.names = list(set(self.names))
         self.types = self.types.copy()
         self.states = self.states.copy()
+        self.states.clear()
         self.links = self.links.copy()
         self.items = tuple(self.build(m, items=items))
         self.speech = deque(self.speech)

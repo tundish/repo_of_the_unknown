@@ -83,8 +83,6 @@ class Strand:
         )
 
     def make(self, puzzles=[], **kwargs):
-        puzzles = puzzles or list(self.drama.values())  # FIXME: Suspect
-
         self.drama = dict(self.build(puzzles=puzzles))
 
         self.sorter = TopologicalSorter()
