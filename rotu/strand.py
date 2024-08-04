@@ -17,6 +17,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 from collections.abc import Generator
+import copy
 import dataclasses
 from graphlib import TopologicalSorter
 import uuid
@@ -82,7 +83,7 @@ class Strand:
         )
 
     def make(self, puzzles=[], **kwargs):
-        puzzles = puzzles or list(self.drama.values())
+        puzzles = puzzles or list(self.drama.values())  # FIXME: Suspect
 
         self.drama = dict(self.build(puzzles=puzzles))
 

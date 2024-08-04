@@ -63,6 +63,10 @@ class Puzzle(Drama):
             yield rv
 
     def make(self, m: MapBuilder=None, items: list[Item] = [], spots: dict = {}, **kwargs):
+        self.names = list(set(self.names))
+        self.types = self.types.copy()
+        self.states = self.states.copy()
+        self.links = self.links.copy()
         self.items = tuple(self.build(m, items=items))
         self.speech = deque(self.speech)
         self.prompt = ""
