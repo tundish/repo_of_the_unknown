@@ -7,6 +7,13 @@ from balladeer import Prologue
 from balladeer import SpeechTables
 
 
+class ScriptSelector:
+
+    # TODO: accept selector in __init__
+    def scripts(self, assets: list):
+        return [i for i in assets if isinstance(i, Loader.Scene)]
+
+
 class Exploration(Drama):
 
     def interlude(self, *args, **kwargs) -> Entity:

@@ -40,6 +40,10 @@ from rotu.strand import Strand
 
 
 class StoryWeaver(StoryBuilder):
+    pass
+
+
+class StoryWeaver(StoryBuilder):
 
     @staticmethod
     def gather_spots(strands: list[Strand]) -> dict[str, list]:
