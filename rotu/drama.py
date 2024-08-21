@@ -7,7 +7,10 @@ from balladeer import Prologue
 from balladeer import SpeechTables
 
 
-class ScriptSelector:
+class Resident:
+
+    def __init__(self, *args, selector={}, **kwargs):
+        super().__init__(*args, **kwargs)
 
     # TODO: accept selector in __init__
     def scripts(self, assets: list):
