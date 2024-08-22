@@ -16,11 +16,33 @@
 # You should have received a copy of the GNU Affero General Public License along with Rotu.
 # If not, see <https://www.gnu.org/licenses/>.
 
+import enum
 import unittest
 
 from rotu.drama import Resident
 
+from busker.stager import Stager
+
 
 class ResidentTests(unittest.TestCase):
 
-    pass
+    class TestResident(Resident):
+        pass
+
+    def test_is_resident_spot(self):
+        Colour = enum.Enum("Colour", ["red", "blue", "green", "yellow"])
+        Spot = enum.Enum("Spot", {"kitchen": ["kitchen"], "hall": ["hallway"], "cloaks": ["cloakroom", "toilet"]})
+
+        selector = {
+            "paths": [
+                "rotu/assets/scenes/01/*.scene.toml",
+                "rotu/assets/scenes/02/*.scene.toml"
+            ],
+            "states": [
+                "spot.kitchen",
+                "spot.cloaks",
+            ]
+        }
+
+        drama = self.TestResident(selector=selector)
+        self.fail(drama)
