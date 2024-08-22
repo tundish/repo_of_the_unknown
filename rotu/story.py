@@ -42,15 +42,6 @@ from rotu.drama import Interaction
 
 class StoryWeaver(StoryBuilder):
 
-    @staticmethod
-    def staging(assets: Grouping):
-        print(list(assets))
-        print(f"{assets=}")
-        rv = [
-            i for i in assets.get(Loader.Structure, []) if i.suffixes() == ["stage", "toml"]
-        ]
-        return rv
-
     def __init__(
         self,
         *speech: tuple[Speech],
@@ -66,14 +57,11 @@ class StoryWeaver(StoryBuilder):
         speech = copy.deepcopy(self.speech, memo)
         config = copy.deepcopy(self.config, memo)
         assets = copy.deepcopy(self.assets, memo)
-        strands = [
-            strand.make(puzzles=[puzzle.make(items=puzzle.items) for puzzle in strand.puzzles])
-            for strand in self.strands
-        ]
-        rv = self.__class__(*speech, config=config, assets=assets, strands=strands)
+        rv = self.__class__(*speech, config=config, assets=assets)
         return rv
 
     def make(self, **kwargs):
+        print(f"{self.stager.active=}")
         self.drama = dict()
         return self
 
