@@ -51,7 +51,11 @@ class StoryWeaver(StoryBuilder):
     ):
         staging = [i.data for i in assets[Loader.Staging]]
         self.stager = Stager(staging).prepare()
-        super().__init__(*speech, config=config, assets=assets, **kwargs)
+
+        spots = self.stager.gather_state()
+        m = MapBuilder(spots=spots)
+        world = WorldBuilder(map=m, config=config, assets=assets)
+        super().__init__(*speech, config=config, assets=assets, world=world, **kwargs)
 
     def __deepcopy__(self, memo):
         speech = copy.deepcopy(self.speech, memo)
@@ -59,11 +63,6 @@ class StoryWeaver(StoryBuilder):
         assets = copy.deepcopy(self.assets, memo)
         rv = self.__class__(*speech, config=config, assets=assets)
         return rv
-
-    def make(self, **kwargs):
-        print(f"{self.stager.active=}")
-        self.drama = dict()
-        return self
 
 
 class Story(StoryWeaver):
@@ -78,6 +77,10 @@ class Story(StoryWeaver):
         else:
             rv = next(reversed(sorted(self.drama, key=operator.attrgetter("state"))), None)
         return rv
+
+    def make(self, **kwargs):
+        self.drama = dict()
+        return self
 
     def turn(self, *args, **kwargs):
         active = [puzzle for strand in self.strands for puzzle in strand.active]
