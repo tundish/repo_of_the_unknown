@@ -56,16 +56,24 @@ class ResidentTests(unittest.TestCase):
     def test_scripts(self):
         selector = {
             "paths": [
-                "rotu/assets/scenes/01/*.scene.toml",
-                "rotu/assets/scenes/02/*.scene.toml"
+                "rotu/scenes/0[01]/*.scene.toml",
             ],
         }
 
         assets = discover_assets(rotu, "scenes")
         scenes = assets.get(Loader.Scene, [])
-        print(*[i.path for i in scenes], sep="\n")
 
         drama = self.TestResident(selector=selector)
         scripts = drama.scripts(scenes)
+
+        witness = set(i.path.parts[-3:] for i in scripts)
+        self.assertEqual(
+            witness,
+            set((
+                ("scenes", "00", "0.scene.toml"),
+                ("scenes", "00", "a.scene.toml"),
+                ("scenes", "01", "a.scene.toml"),
+            ))
+        )
 
         # self.fail(scripts)

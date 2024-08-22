@@ -17,6 +17,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 import enum
+import pathlib
 
 from balladeer import Detail
 from balladeer import Drama
@@ -38,8 +39,9 @@ class Resident:
         return all(str(i).lower() in self.selector["states"] for i in args)
 
     def scripts(self, assets: list):
-        # TODO: Differentiate between Structure assets for Stage.
-        return [i for i in assets if isinstance(i, Loader.Scene)]
+        return [
+            i for i in assets if isinstance(i, Loader.Scene) and any(i.path.match(p) for p in self.selector["paths"])
+        ]
 
     # Memo
     @property
