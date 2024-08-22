@@ -37,7 +37,6 @@ from balladeer.utils.themes import static_page
 
 import rotu
 from rotu.puzzle import Puzzle
-from rotu.strand import Strand
 from rotu.story import Story
 
 
@@ -137,7 +136,7 @@ class Representer(Presenter):
 
 def run():
     assets = discover_assets(rotu, "")
-    story = Story(assets=assets, strands=strands)
+    story = Story(assets=assets)
     print(static_page().html)
 
     about = textwrap.dedent(f"""

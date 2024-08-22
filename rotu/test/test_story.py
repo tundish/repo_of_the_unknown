@@ -20,19 +20,24 @@ import copy
 import enum
 import unittest
 
+from balladeer import discover_assets
 from balladeer import Entity
 from balladeer import Transit
 
-from rotu.main import strands
-from rotu.puzzle import Puzzle
+import rotu
+from rotu.drama import Resident
 from rotu.story import Story
 
 
 class StoryTests(unittest.TestCase):
 
     def setUp(self):
-        self.story = Story(strands=strands)
-        self.assertTrue(self.story.strands)
+        assets = discover_assets(rotu, "")
+        staging = Story.staging(assets)
+        print(*list(staging), sep="\n")
+        self.story = Story(assets=assets)
+
+    def test_make(self):
         self.assertTrue(issubclass(self.story.world.map.spot, enum.Enum))
 
         self.assertTrue(self.story.world.entities)

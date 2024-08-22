@@ -75,5 +75,3 @@ class ResidentTests(unittest.TestCase):
                 ("scenes", "01", "a.scene.toml"),
             ))
         )
-
-        # self.fail(scripts)
