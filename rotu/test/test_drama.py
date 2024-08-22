@@ -19,9 +19,12 @@
 import enum
 import unittest
 
-from rotu.drama import Resident
-
+from balladeer import discover_assets
+from balladeer import Loader
 from busker.stager import Stager
+
+import rotu
+from rotu.drama import Resident
 
 
 class ResidentTests(unittest.TestCase):
@@ -34,10 +37,6 @@ class ResidentTests(unittest.TestCase):
         Spot = enum.Enum("Spot", {"kitchen": ["kitchen"], "hall": ["hallway"], "cloaks": ["cloakroom", "toilet"]})
 
         selector = {
-            "paths": [
-                "rotu/assets/scenes/01/*.scene.toml",
-                "rotu/assets/scenes/02/*.scene.toml"
-            ],
             "states": [
                 "colour.green",
                 "spot.kitchen",
@@ -53,3 +52,20 @@ class ResidentTests(unittest.TestCase):
 
         self.assertFalse(drama.is_resident(Colour.red, Spot.kitchen))
         self.assertTrue(drama.is_resident(Colour.green, Spot.kitchen))
+
+    def test_scripts(self):
+        selector = {
+            "paths": [
+                "rotu/assets/scenes/01/*.scene.toml",
+                "rotu/assets/scenes/02/*.scene.toml"
+            ],
+        }
+
+        assets = discover_assets(rotu, "scenes")
+        scenes = assets.get(Loader.Scene, [])
+        print(*[i.path for i in scenes], sep="\n")
+
+        drama = self.TestResident(selector=selector)
+        scripts = drama.scripts(scenes)
+
+        # self.fail(scripts)

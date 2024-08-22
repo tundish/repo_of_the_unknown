@@ -22,7 +22,8 @@ from balladeer import Detail
 from balladeer import Drama
 from balladeer import Entity
 from balladeer import Epilogue
-from balladeer.lite.types import Fruition
+from balladeer import Fruition
+from balladeer import Loader
 from balladeer import Prologue
 from balladeer import SpeechTables
 
