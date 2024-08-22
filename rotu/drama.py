@@ -16,6 +16,8 @@
 # You should have received a copy of the GNU Affero General Public License along with Rotu.
 # If not, see <https://www.gnu.org/licenses/>.
 
+import enum
+
 from balladeer import Detail
 from balladeer import Drama
 from balladeer import Entity
@@ -27,14 +29,13 @@ from balladeer import SpeechTables
 
 class Resident:
 
-    def __init__(self, *args, selector={}, **kwargs):
-        self.selector = selector
+    def __init__(self, *args, selector: dict[str, list] = {}, **kwargs):
+        self.selector = selector | {"states": set(selector.get("states", []))}
         super().__init__(*args, **kwargs)
 
-    def is_resident(self, ):
-        return False
+    def is_resident(self, *args: tuple[enum.Enum]):
+        return all(str(i).lower() in self.selector["states"] for i in args)
 
-    # TODO: accept selector in __init__
     def scripts(self, assets: list):
         # TODO: Differentiate between Structure assets for Stage.
         return [i for i in assets if isinstance(i, Loader.Scene)]

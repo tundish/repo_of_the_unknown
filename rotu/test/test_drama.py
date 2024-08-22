@@ -29,7 +29,7 @@ class ResidentTests(unittest.TestCase):
     class TestResident(Resident):
         pass
 
-    def test_is_resident_spot(self):
+    def test_is_resident(self):
         Colour = enum.Enum("Colour", ["red", "blue", "green", "yellow"])
         Spot = enum.Enum("Spot", {"kitchen": ["kitchen"], "hall": ["hallway"], "cloaks": ["cloakroom", "toilet"]})
 
@@ -39,10 +39,17 @@ class ResidentTests(unittest.TestCase):
                 "rotu/assets/scenes/02/*.scene.toml"
             ],
             "states": [
+                "colour.green",
                 "spot.kitchen",
                 "spot.cloaks",
             ]
         }
 
         drama = self.TestResident(selector=selector)
-        self.fail(drama)
+        self.assertIsInstance(drama.selector["states"], set)
+
+        self.assertTrue(drama.is_resident(Colour.green))
+        self.assertFalse(drama.is_resident(Colour.red))
+
+        self.assertFalse(drama.is_resident(Colour.red, Spot.kitchen))
+        self.assertTrue(drama.is_resident(Colour.green, Spot.kitchen))
