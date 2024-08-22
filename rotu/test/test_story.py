@@ -22,6 +22,7 @@ import unittest
 
 from balladeer import discover_assets
 from balladeer import Entity
+from balladeer import Loader
 from balladeer import Stager
 from balladeer import Transit
 
@@ -34,10 +35,15 @@ class StoryTests(unittest.TestCase):
 
     def setUp(self):
         assets = discover_assets(rotu, "")
+        self.assertTrue(assets[Loader.Staging])
         self.story = Story(assets=assets)
 
     def test_make(self):
         self.assertIsInstance(getattr(self.story, "stager"), Stager)
+        self.assertTrue(self.story.stager.realms)
+        self.assertTrue(self.story.stager.strands)
+        self.assertTrue(self.story.stager.active)
+
         self.assertTrue(issubclass(self.story.world.map.spot, enum.Enum))
 
         self.assertTrue(self.story.world.entities)
