@@ -48,6 +48,13 @@ class StoryWeaver(StoryBuilder):
         self.entities = list(self.build(**kwargs))
         self.typewise = Grouping.typewise(self.entities)
 
+    @staticmethod
+    def item_type(name: str, default=Entity):
+        name = name or ""
+        return {
+            cls.__name__.lower(): cls for cls in (Drama, Entity, Exploration, Interaction, Transit)
+        }.get(name.lower(), default)
+
     def __init__(
         self,
         *speech: tuple[Speech],
@@ -76,18 +83,21 @@ class StoryWeaver(StoryBuilder):
         for key in self.stager.active:
             if key not in self.drama:
                 puzzle = self.stager.gather_puzzle(*key)
-                print(f"{puzzle=}")
-                drama_type = {
-                    cls.__name__: cls for cls in (Exploration, Interaction)
-                }.get(puzzle.get("type"), Drama)
+                drama_type = self.item_type(puzzle.get("type"), default=Drama)
                 drama = drama_type(
                     *self.speech,
                     config=self.config,
                     world=self.world,
                     name=puzzle.get("name"),
                     type=drama_type.__name__,
+                    links=set(puzzle.get("chain", {}).keys()),
+                    sketch=puzzle.get("sketch", ""),
+                    aspect=puzzle.get("aspect", ""),
+                    revert=puzzle.get("revert", ""),
                 )
                 print(f"{drama=}")
+                print(f"{puzzle['init']=}")
+                print(f"{puzzle['items']=}")
         # self.world.entities.extend(list(self.build(**kwargs)))
         # self.world.typewise = Grouping.typewise(self.world.entities)
         return {}
