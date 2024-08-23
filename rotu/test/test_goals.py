@@ -25,7 +25,6 @@ from balladeer import discover_assets
 from balladeer import Entity
 
 import rotu
-from rotu.main import strands
 from rotu.story import Story
 
 
@@ -51,7 +50,7 @@ class GoalTests(unittest.TestCase):
 
     def test_build_story(self):
         witness = Counter()
-        story = Story(assets=self.assets, strands=strands)
+        story = Story(assets=self.assets)
 
         for i in story.context.ensemble:
             with self.subTest(i=i):

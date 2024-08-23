@@ -54,7 +54,7 @@ class StoryTests(unittest.TestCase):
         self.assertNotEqual(self.story.uid, b.uid, vars(self.story))
         self.assertIsNot(self.story.director, b.director, vars(self.story.director))
 
-        self.assertFalse(self.story.drama)
+        self.assertTrue(self.story.drama)
         self.assertTrue(self.story.context)
 
         witness = []

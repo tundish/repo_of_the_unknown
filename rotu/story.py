@@ -112,7 +112,6 @@ class StoryWeaver(StoryBuilder):
             aspect=puzzle.get("aspect", ""),
             revert=puzzle.get("revert", ""),
         )
-        self.drama[(realm, name)] = drama
 
         for item in puzzle.get("items"):
             item_type = self.item_type(item.get("type"))
@@ -133,6 +132,7 @@ class StoryWeaver(StoryBuilder):
                 self.world.entities.append(entity)
 
         self.world.typewise = Grouping.typewise(self.world.entities)
+        return drama
 
 
 class Story(StoryWeaver):
