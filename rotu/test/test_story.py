@@ -22,9 +22,13 @@ import unittest
 
 from balladeer import discover_assets
 from balladeer import Entity
+from balladeer import Fruition
+from balladeer import Grouping
 from balladeer import Loader
 from balladeer import Stager
 from balladeer import Transit
+
+from busker.test.test_stager import StagerTests
 
 import rotu
 from rotu.drama import Resident
@@ -117,3 +121,14 @@ class StoryTests(unittest.TestCase):
             for b in s.stager.strands.values():
                 with self.subTest(a=a, b=b):
                     self.assertIsNot(a, b)
+
+    def test_story_turn(self):
+        assets = Grouping.typewise(
+            [Loader.Staging(text=rule, data=next(Stager.load(rule))) for rule in StagerTests.rules]
+        )
+        s = Story(assets=assets)
+        for n, key in enumerate(s.stager.puzzles):
+            d = s.context
+            if n == 0:
+                d.set_state(Fruition.inception)
+            print(f"{d=}")

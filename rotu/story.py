@@ -46,11 +46,6 @@ from rotu.drama import Interaction
 class StoryWeaver(StoryBuilder):
 
     @staticmethod
-    def initialize_puzzle(realm, name):
-        self.entities = list(self.build(**kwargs))
-        self.typewise = Grouping.typewise(self.entities)
-
-    @staticmethod
     def item_state(spec: str | int, pool: list[enum.Enum], default=0):
         try:
             name, value = spec.lower().split(".")
@@ -88,7 +83,7 @@ class StoryWeaver(StoryBuilder):
         super().__init__(*speech, config=config, assets=assets, world=world, **kwargs)
 
         self.drama: dict[tuple[str, str], Drama] = {
-            (realm, name): self.build_drama(realm, name) for (realm, name) in self.stager.active
+            (realm, name): self.build_drama(realm, name) for (realm, name) in self.stager.puzzles
         } or {(None, None): Drama(*speech, config=self.config, world=world)}
 
     def __deepcopy__(self, memo):
@@ -98,24 +93,30 @@ class StoryWeaver(StoryBuilder):
         rv = self.__class__(*speech, config=config, assets=assets)
         return rv
 
+    @property
+    def context(self):
+        drama = [self.drama[(realm, name)] for realm, name in self.stager.active] or list(self.drama.values())
+        return next((reversed(sorted(drama, key=operator.attrgetter("state")))), None)
+
     def build_drama(self, realm: str, name: str):
+        pool = [self.world.map.home, self.world.map.into, self.world.map.exit, self.world.map.spot]
         puzzle = self.stager.gather_puzzle(realm, name)
         drama_type = self.item_type(puzzle.get("type"), default=Drama)
+        states = [self.item_state(f"{k}.{v}", pool=pool) for k, v in puzzle.get("init", {}).items()]
         drama = drama_type(
             *self.speech,
             config=self.config,
             world=self.world,
             name=puzzle.get("name"),
             type=drama_type.__name__,
-            links=set(puzzle.get("chain", {}).keys()),
+            links=set(target for transition in puzzle.get("chain", {}).values() for target in transition),
             sketch=puzzle.get("sketch", ""),
             aspect=puzzle.get("aspect", ""),
             revert=puzzle.get("revert", ""),
-        )
+        ).set_state(0, *states)
 
         for item in puzzle.get("items"):
             item_type = self.item_type(item.get("type"))
-            pool = [self.world.map.home, self.world.map.into, self.world.map.exit, self.world.map.spot]
             states = [self.item_state(i, pool=pool) for i in item.get("states", [])]
             entity = item_type(
                 name=item.get("name"),
@@ -137,17 +138,10 @@ class StoryWeaver(StoryBuilder):
 
 class Story(StoryWeaver):
 
-    @property
-    def context(self):
-        drama = [self.drama[(realm, name)] for realm, name in self.stager.active] or list(self.drama.values())
-        return next((reversed(sorted(drama, key=operator.attrgetter("state")))), None)
-
     def turn(self, *args, **kwargs):
         for realm, name in self.stager.active:
-            try:
-                drama = self.drama[(realm, name)]
-            except KeyError:
-                drama = self.build_drama(realm, name)
+            puzzle = self.stager.gather_puzzle(realm, name)
+            drama = self.drama[(realm, name)]
 
             # self.assertEqual(events, [("rotu", "b", "Fruition.inception")])
             if state := drama.get_state(Fruition) in {
