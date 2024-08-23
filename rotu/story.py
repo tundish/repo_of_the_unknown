@@ -144,9 +144,10 @@ class Story(StoryWeaver):
             drama = self.drama[(realm, name)]
 
             # self.assertEqual(events, [("rotu", "b", "Fruition.inception")])
-            if state := drama.get_state(Fruition) in {
+            if (state := drama.get_state(Fruition)) in {
                 Fruition.withdrawn, Fruition.defaulted, Fruition.cancelled, Fruition.completion
             }:
+                print(f"{state=}")
                 events = list(self.stager.terminate(realm, name, state.value))
                 print(f"{events=}")
 

@@ -131,4 +131,7 @@ class StoryTests(unittest.TestCase):
             d = s.context
             if n == 0:
                 d.set_state(Fruition.inception)
-            print(f"{d=}")
+            with self.subTest(n=n, d=d):
+                s.turn()
+                d.set_state(Fruition.completion)
+                print(f"{d=}")
