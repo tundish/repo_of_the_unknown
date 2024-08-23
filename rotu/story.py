@@ -34,6 +34,7 @@ from balladeer import MapBuilder
 from balladeer import Speech
 from balladeer import StoryBuilder
 from balladeer import Transit
+from balladeer import Traffic
 from balladeer import WorldBuilder
 from busker.stager import Stager
 
@@ -50,11 +51,19 @@ class StoryWeaver(StoryBuilder):
         self.typewise = Grouping.typewise(self.entities)
 
     @staticmethod
-    def item_state(name: str, pool: list[enum.Enum], default=0):
-        name = name or ""
-        return {
-            cls.__name__.lower(): cls for cls in (Drama, Entity, Exploration, Interaction, Transit)
-        }.get(name.lower(), default)
+    def item_state(spec: str | int, pool: list[enum.Enum], default=0):
+        try:
+            name, value = spec.lower().split(".")
+        except AttributeError:
+            return spec
+
+        lookup = {cls.__name__.lower(): cls for cls in pool + [Fruition, Traffic]}
+
+        try:
+            cls = lookup[name]
+            return cls[value]
+        except KeyError as e:
+            return default
 
     @staticmethod
     def item_type(name: str, default=Entity):
