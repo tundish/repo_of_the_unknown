@@ -87,7 +87,9 @@ class StoryWeaver(StoryBuilder):
         world = WorldBuilder(map=m, config=config, assets=assets)
         super().__init__(*speech, config=config, assets=assets, world=world, **kwargs)
 
-        self.drama: dict[tuple[str, str], Drama] = self.build_drama()
+        self.drama: dict[tuple[str, str], Drama] = {
+            (realm, name): self.build_drama(realm, name) for (realm, name) in self.stager.active
+        }
 
     def __deepcopy__(self, memo):
         speech = copy.deepcopy(self.speech, memo)
@@ -96,44 +98,41 @@ class StoryWeaver(StoryBuilder):
         rv = self.__class__(*speech, config=config, assets=assets)
         return rv
 
-    def build_drama(self):
-        for key in self.stager.active:
-            if key not in self.drama:
-                puzzle = self.stager.gather_puzzle(*key)
-                drama_type = self.item_type(puzzle.get("type"), default=Drama)
-                drama = drama_type(
-                    *self.speech,
-                    config=self.config,
-                    world=self.world,
-                    name=puzzle.get("name"),
-                    type=drama_type.__name__,
-                    links=set(puzzle.get("chain", {}).keys()),
-                    sketch=puzzle.get("sketch", ""),
-                    aspect=puzzle.get("aspect", ""),
-                    revert=puzzle.get("revert", ""),
-                )
-                self.drama[key] = drama
+    def build_drama(self, realm: str, name: str):
+        puzzle = self.stager.gather_puzzle(realm, name)
+        drama_type = self.item_type(puzzle.get("type"), default=Drama)
+        drama = drama_type(
+            *self.speech,
+            config=self.config,
+            world=self.world,
+            name=puzzle.get("name"),
+            type=drama_type.__name__,
+            links=set(puzzle.get("chain", {}).keys()),
+            sketch=puzzle.get("sketch", ""),
+            aspect=puzzle.get("aspect", ""),
+            revert=puzzle.get("revert", ""),
+        )
+        self.drama[(realm, name)] = drama
 
-                for item in puzzle.get("items"):
-                    item_type = self.item_type(item.get("type"))
-                    pool = [self.world.map.home, self.world.map.into, self.world.map.exit, self.world.map.spot]
-                    states = [self.item_state(i, pool=pool) for i in item.get("states", [])]
-                    entity = item_type(
-                        name=item.get("name"),
-                        type=item_type.__name__,
-                        links={puzzle.get("name")},
-                        sketch=item.get("sketch", ""),
-                        aspect=item.get("aspect", ""),
-                        revert=item.get("revert", ""),
-                    ).set_state(*states)
+        for item in puzzle.get("items"):
+            item_type = self.item_type(item.get("type"))
+            pool = [self.world.map.home, self.world.map.into, self.world.map.exit, self.world.map.spot]
+            states = [self.item_state(i, pool=pool) for i in item.get("states", [])]
+            entity = item_type(
+                name=item.get("name"),
+                type=item_type.__name__,
+                links={puzzle.get("name")},
+                sketch=item.get("sketch", ""),
+                aspect=item.get("aspect", ""),
+                revert=item.get("revert", ""),
+            ).set_state(*states)
 
-                    if item_type is Transit:
-                        self.world.map.transits.append(entity)
-                    else:
-                        self.world.entities.append(entity)
+            if item_type is Transit:
+                self.world.map.transits.append(entity)
+            else:
+                self.world.entities.append(entity)
 
         self.world.typewise = Grouping.typewise(self.world.entities)
-        return {}
 
 
 class Story(StoryWeaver):
@@ -147,14 +146,16 @@ class Story(StoryWeaver):
         return self
 
     def turn(self, *args, **kwargs):
-        active = [puzzle for strand in self.strands for puzzle in strand.active]
-        awoken = [puzzle for puzzle in active if puzzle.get_state(Fruition) is None]
-        self.world.map.transits.extend(list(self.world.map.build(awoken=awoken)))
-        self.world.entities.extend(list(self.world.build(awoken=awoken)))
-        self.world.typewise = Grouping.typewise(self.world.entities)
+        for realm, name in self.stager.active:
+            try:
+                drama = self.drama[(realm, name)]
+            except KeyError:
+                drama = self.build_drama(realm, name)
 
-        for puzzle in awoken:
-            puzzle.set_state(Fruition.inception)
+            if self.drama[key].get_state(Fruition) in {
+                Fruition.withdrawn, Fruition.defaulted, Fruition.cancelled, Fruition.completion
+            }:
+                print(f"{drama=}")
 
         try:
             self.context.interlude(*args, **kwargs)

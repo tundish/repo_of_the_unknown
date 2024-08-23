@@ -36,7 +36,6 @@ from balladeer import Transit
 from balladeer.utils.themes import static_page
 
 import rotu
-from rotu.puzzle import Puzzle
 from rotu.story import Story
 
 
@@ -71,53 +70,6 @@ Page.themes["blue"] = {
         "glamour": "hsl(46.77, 76.92%, 72.75%)",
     },
 }
-
-
-strands = [
-    Strand(
-        label="Get Gigging",
-        puzzles=[
-            Puzzle(
-                name="tracker manual page 1",
-                spots={
-                    "van_f_ext": ["in front of the van"],
-                    "van_f_int": ["in the van"],
-                    "van_b_ext": ["behind the van"],
-                    "van_b_int": ["in the back of the van"],
-                    "car_park": ["car park"],
-                    "cafe_f_ext": ["in front of the cafe"],
-                    "shed_f_ext": ["in front of the shed"],
-                    "shed_f_int": ["inside the shed"],
-                    "shed_b_int": ["back of the shed"],
-                    "roadside": ["by the roadside"],
-                },
-                items=(
-                    Puzzle.Item(type="Focus", init=("spot.van_f_int",)),
-                    Puzzle.Item(name="goal_00a", init=(Fruition.elaboration,)),
-                    Puzzle.Item(type="Transit", init=("exit.cafe_f_ext", "into.car_park", Traffic.flowing)),
-                    Puzzle.Item(type="Transit", init=("exit.car_park", "into.shed_f_ext", Traffic.flowing)),
-                    Puzzle.Item(type="Transit", init=("exit.shed_f_ext", "into.shed_f_int", Traffic.flowing)),
-                    Puzzle.Item(type="Transit", init=("exit.shed_f_int", "into.shed_b_int", Traffic.flowing)),
-                    Puzzle.Item(type="Transit", init=("exit.car_park", "into.van_f_ext", Traffic.flowing)),
-                    Puzzle.Item(type="Transit", init=("exit.van_f_int", "into.van_b_int", Traffic.blocked)),
-                    Puzzle.Item(
-                        names=["Door", "Van door"], type="Door", aspect="unlocked", sketch="The {0.name} is {aspect}",
-                        init=("exit.van_f_ext", "into.van_f_int", Traffic.flowing)
-                    ),
-                    Puzzle.Item(type="Void", init=("exit.car_park", "into.van_b_ext", Traffic.flowing)),
-                    Puzzle.Item(type="Void", init=("exit.van_b_ext", "into.van_b_int", Traffic.flowing)),
-                    Puzzle.Item(type="Void", init=("exit.van_b_ext", "into.roadside", Traffic.flowing)),
-                ),
-            ),
-            Puzzle(
-                name="collect tracker samples",
-                links={"tracker manual page 1"},
-                items=[
-                ],
-            ),
-        ],
-    ),
-]
 
 
 class Representer(Presenter):

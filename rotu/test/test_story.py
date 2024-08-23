@@ -41,7 +41,6 @@ class StoryTests(unittest.TestCase):
     def test_make(self):
         self.assertIsInstance(getattr(self.story, "stager"), Stager)
         self.assertTrue(self.story.stager.realms)
-        self.assertTrue(self.story.stager.strands)
         self.assertTrue(self.story.stager.active)
 
         self.assertTrue(issubclass(self.story.world.map.spot, enum.Enum))
@@ -59,15 +58,14 @@ class StoryTests(unittest.TestCase):
         self.assertTrue(self.story.context)
 
         witness = []
-        for strand in self.story.strands:
-            for drama in strand.drama.values():
-                self.assertEqual(sorted(set(drama.names)), sorted(drama.names), drama.names)
-                with self.subTest(a=self.story, b=b, drama=drama):
-                    self.assertNotIn(
-                        id(drama), [id(i) for strand in b.strands for i in strand.drama.values()],
-                        strand.drama
-                    )
-                    witness.append(drama)
+        for drama in self.story.drama.values():
+            self.assertEqual(sorted(set(drama.names)), sorted(drama.names), drama.names)
+            with self.subTest(a=self.story, b=b, drama=drama):
+                self.assertNotIn(
+                    id(drama), [id(i) for i in b.drama.values()],
+                    b.drama
+                )
+                witness.append(drama)
 
         self.assertTrue(witness)
 
@@ -75,10 +73,7 @@ class StoryTests(unittest.TestCase):
         a = copy.deepcopy(self.story)
         b = copy.deepcopy(self.story)
 
-        self.assertEqual(
-            [drama.name for s in a.strands for drama in s.drama.values()],
-            [drama.name for s in b.strands for drama in s.drama.values()]
-        )
+        self.assertEqual(list(a.drama), list(b.drama))
 
         for entity in a.world.entities:
             with self.subTest(a=a, b=b, entity=entity):
@@ -114,18 +109,11 @@ class StoryTests(unittest.TestCase):
                 self.assertFalse(any(transit.states is i.states for i in b.world.map.transits))
                 self.assertFalse(any(transit.types is i.types for i in b.world.map.transits))
 
-    def test_story_copy_strands(self):
+    def test_story_copy_stager(self):
         s = copy.deepcopy(self.story)
-        self.assertTrue(s.strands)
-        self.assertEqual(
-            self.story.spots(self.story.strands),
-            s.spots(s.strands),
-            s.strands
-        )
-        self.assertEqual(len(self.story.strands), len(s.strands))
-        for a in self.story.strands:
-            for b in s.strands:
+        self.assertTrue(s.stager)
+        self.assertEqual(len(self.story.stager.strands), len(s.stager.strands))
+        for a in self.story.stager.strands.values():
+            for b in s.stager.strands.values():
                 with self.subTest(a=a, b=b):
-                    self.assertIsNot(a.sorter, b.sorter)
-                    self.assertFalse(set(a.items).intersection(set(b.items)))
-                    self.assertFalse({i.uid for i in a.items}.intersection({i.uid for i in a.items}))
+                    self.assertIsNot(a, b)
