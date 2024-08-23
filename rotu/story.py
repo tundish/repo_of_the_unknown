@@ -37,10 +37,16 @@ from balladeer import WorldBuilder
 from busker.stager import Stager
 
 import rotu
+from rotu.drama import Exploration
 from rotu.drama import Interaction
 
 
 class StoryWeaver(StoryBuilder):
+
+    @staticmethod
+    def initialize_puzzle(realm, name):
+        self.entities = list(self.build(**kwargs))
+        self.typewise = Grouping.typewise(self.entities)
 
     def __init__(
         self,
@@ -57,12 +63,34 @@ class StoryWeaver(StoryBuilder):
         world = WorldBuilder(map=m, config=config, assets=assets)
         super().__init__(*speech, config=config, assets=assets, world=world, **kwargs)
 
+        self.drama: dict[tuple[str, str], Drama] = self.build_drama()
+
     def __deepcopy__(self, memo):
         speech = copy.deepcopy(self.speech, memo)
         config = copy.deepcopy(self.config, memo)
         assets = copy.deepcopy(self.assets, memo)
         rv = self.__class__(*speech, config=config, assets=assets)
         return rv
+
+    def build_drama(self):
+        for key in self.stager.active:
+            if key not in self.drama:
+                puzzle = self.stager.gather_puzzle(*key)
+                print(f"{puzzle=}")
+                drama_type = {
+                    cls.__name__: cls for cls in (Exploration, Interaction)
+                }.get(puzzle.get("type"), Drama)
+                drama = drama_type(
+                    *self.speech,
+                    config=self.config,
+                    world=self.world,
+                    name=puzzle.get("name"),
+                    type=drama_type.__name__,
+                )
+                print(f"{drama=}")
+        # self.world.entities.extend(list(self.build(**kwargs)))
+        # self.world.typewise = Grouping.typewise(self.world.entities)
+        return {}
 
 
 class Story(StoryWeaver):
@@ -77,6 +105,10 @@ class Story(StoryWeaver):
         else:
             rv = next(reversed(sorted(self.drama, key=operator.attrgetter("state"))), None)
         return rv
+
+    @property
+    def context(self):
+        return next((reversed(sorted(self.drama, key=operator.attrgetter("state")))), None)
 
     def make(self, **kwargs):
         self.drama = dict()
