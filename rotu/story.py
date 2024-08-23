@@ -19,6 +19,7 @@
 from collections import deque
 from collections.abc import Generator
 import copy
+import enum
 import itertools
 import operator
 import random
@@ -47,6 +48,13 @@ class StoryWeaver(StoryBuilder):
     def initialize_puzzle(realm, name):
         self.entities = list(self.build(**kwargs))
         self.typewise = Grouping.typewise(self.entities)
+
+    @staticmethod
+    def item_state(name: str, pool: list[enum.Enum], default=0):
+        name = name or ""
+        return {
+            cls.__name__.lower(): cls for cls in (Drama, Entity, Exploration, Interaction, Transit)
+        }.get(name.lower(), default)
 
     @staticmethod
     def item_type(name: str, default=Entity):
@@ -98,7 +106,8 @@ class StoryWeaver(StoryBuilder):
 
                 for item in puzzle.get("items"):
                     item_type = self.item_type(item.get("type"))
-                    states = item.get("states", [])
+                    pool = [self.world.map.home, self.world.map.into, self.world.map.exit, self.world.map.spot]
+                    states = [self.item_state(i, pool=pool) for i in item.get("states", [])]
                     entity = item_type(
                         name=item.get("name"),
                         type=item_type.__name__,
@@ -115,17 +124,6 @@ class StoryWeaver(StoryBuilder):
 
 
 class Story(StoryWeaver):
-
-    @property
-    def context(self):
-        active = [puzzle for strand in self.strands for puzzle in strand.active]
-        if active:
-            self.strands.rotate(-1)
-            rv = random.choice(active)
-            rv.world = self.world
-        else:
-            rv = next(reversed(sorted(self.drama, key=operator.attrgetter("state"))), None)
-        return rv
 
     @property
     def context(self):
