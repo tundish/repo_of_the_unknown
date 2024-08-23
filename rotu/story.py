@@ -89,7 +89,7 @@ class StoryWeaver(StoryBuilder):
 
         self.drama: dict[tuple[str, str], Drama] = {
             (realm, name): self.build_drama(realm, name) for (realm, name) in self.stager.active
-        }
+        } or {(None, None): Drama(*speech, config=self.config, world=world)}
 
     def __deepcopy__(self, memo):
         speech = copy.deepcopy(self.speech, memo)
@@ -139,7 +139,7 @@ class Story(StoryWeaver):
 
     @property
     def context(self):
-        drama = [self.drama[(realm, name)] for realm, name in self.stager.active]
+        drama = [self.drama[(realm, name)] for realm, name in self.stager.active] or list(self.drama.values())
         return next((reversed(sorted(drama, key=operator.attrgetter("state")))), None)
 
     def turn(self, *args, **kwargs):
