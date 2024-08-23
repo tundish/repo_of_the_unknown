@@ -112,6 +112,7 @@ class StoryWeaver(StoryBuilder):
                     aspect=puzzle.get("aspect", ""),
                     revert=puzzle.get("revert", ""),
                 )
+                self.drama[key] = drama
 
                 for item in puzzle.get("items"):
                     item_type = self.item_type(item.get("type"))
@@ -124,11 +125,14 @@ class StoryWeaver(StoryBuilder):
                         sketch=item.get("sketch", ""),
                         aspect=item.get("aspect", ""),
                         revert=item.get("revert", ""),
-                    )
-                    print(f"{entity=}")
-                    print(f"{states=}")
-        # self.world.entities.extend(list(self.build(**kwargs)))
-        # self.world.typewise = Grouping.typewise(self.world.entities)
+                    ).set_state(*states)
+
+                    if item_type is Transit:
+                        self.world.map.transits.append(entity)
+                    else:
+                        self.world.entities.append(entity)
+
+        self.world.typewise = Grouping.typewise(self.world.entities)
         return {}
 
 
