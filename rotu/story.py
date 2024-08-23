@@ -95,9 +95,20 @@ class StoryWeaver(StoryBuilder):
                     aspect=puzzle.get("aspect", ""),
                     revert=puzzle.get("revert", ""),
                 )
-                print(f"{drama=}")
-                print(f"{puzzle['init']=}")
-                print(f"{puzzle['items']=}")
+
+                for item in puzzle.get("items"):
+                    item_type = self.item_type(item.get("type"))
+                    states = item.get("states", [])
+                    entity = item_type(
+                        name=item.get("name"),
+                        type=item_type.__name__,
+                        links={puzzle.get("name")},
+                        sketch=item.get("sketch", ""),
+                        aspect=item.get("aspect", ""),
+                        revert=item.get("revert", ""),
+                    )
+                    print(f"{entity=}")
+                    print(f"{states=}")
         # self.world.entities.extend(list(self.build(**kwargs)))
         # self.world.typewise = Grouping.typewise(self.world.entities)
         return {}
