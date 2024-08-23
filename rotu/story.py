@@ -139,11 +139,8 @@ class Story(StoryWeaver):
 
     @property
     def context(self):
-        return next((reversed(sorted(self.drama, key=operator.attrgetter("state")))), None)
-
-    def make(self, **kwargs):
-        self.drama = dict()
-        return self
+        drama = [self.drama[(realm, name)] for realm, name in self.stager.active]
+        return next((reversed(sorted(drama, key=operator.attrgetter("state")))), None)
 
     def turn(self, *args, **kwargs):
         for realm, name in self.stager.active:
@@ -152,10 +149,12 @@ class Story(StoryWeaver):
             except KeyError:
                 drama = self.build_drama(realm, name)
 
-            if self.drama[key].get_state(Fruition) in {
+            # self.assertEqual(events, [("rotu", "b", "Fruition.inception")])
+            if state := drama.get_state(Fruition) in {
                 Fruition.withdrawn, Fruition.defaulted, Fruition.cancelled, Fruition.completion
             }:
-                print(f"{drama=}")
+                events = list(self.stager.terminate(realm, name, state.value))
+                print(f"{events=}")
 
         try:
             self.context.interlude(*args, **kwargs)

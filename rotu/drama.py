@@ -43,22 +43,6 @@ class Resident:
             i for i in assets if isinstance(i, Loader.Scene) and any(i.path.match(p) for p in self.selector["paths"])
         ]
 
-    # Memo
-    @property
-    def active(self):
-        for key in list(self._active.keys()):
-            try:
-                if self.drama[key].get_state(Fruition) in {
-                    Fruition.withdrawn, Fruition.defaulted, Fruition.cancelled, Fruition.completion
-                }:
-                    del self._active[key]
-                    self.sorter.done(key)
-            except (AttributeError, KeyError, ValueError):
-                continue
-
-        self._active.update({i: self.drama.get(i) for i in self.sorter.get_ready()})
-        return list(self._active.values())
-
 
 class Exploration(Resident, Drama):
 
