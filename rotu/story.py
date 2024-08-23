@@ -46,7 +46,7 @@ from rotu.drama import Interaction
 class StoryWeaver(StoryBuilder):
 
     @staticmethod
-    def item_state(spec: str | int, pool: list[enum.Enum], default=0):
+    def item_state(spec: str | int, pool: list[enum.Enum] = [], default=0):
         try:
             name, value = spec.lower().split(".")
         except AttributeError:
@@ -82,10 +82,6 @@ class StoryWeaver(StoryBuilder):
         world = WorldBuilder(map=m, config=config, assets=assets)
         super().__init__(*speech, config=config, assets=assets, world=world, **kwargs)
 
-        self.drama: dict[tuple[str, str], Drama] = {
-            (realm, name): self.build_drama(realm, name) for (realm, name) in self.stager.puzzles
-        } or {(None, None): Drama(*speech, config=self.config, world=world)}
-
     def __deepcopy__(self, memo):
         speech = copy.deepcopy(self.speech, memo)
         config = copy.deepcopy(self.config, memo)
@@ -93,12 +89,12 @@ class StoryWeaver(StoryBuilder):
         rv = self.__class__(*speech, config=config, assets=assets)
         return rv
 
-    @property
-    def context(self):
-        drama = [self.drama[(realm, name)] for realm, name in self.stager.active] or list(self.drama.values())
-        return next((reversed(sorted(drama, key=operator.attrgetter("state")))), None)
+    def make(self, **kwargs):
+        self.drama: dict[tuple[str, str], Drama] = {
+            (realm, name): self.build(realm, name) for (realm, name) in self.stager.puzzles
+        } or {(None, None): Drama(*self.speech, config=self.config, world=self.world)}
 
-    def build_drama(self, realm: str, name: str):
+    def build(self, realm: str, name: str, **kwargs):
         pool = [self.world.map.home, self.world.map.into, self.world.map.exit, self.world.map.spot]
         puzzle = self.stager.gather_puzzle(realm, name)
         drama_type = self.item_type(puzzle.get("type"), default=Drama)
@@ -135,24 +131,29 @@ class StoryWeaver(StoryBuilder):
         self.world.typewise = Grouping.typewise(self.world.entities)
         return drama
 
-
-class Story(StoryWeaver):
+    @property
+    def context(self):
+        drama = [self.drama[(realm, name)] for realm, name in self.stager.active] or list(self.drama.values())
+        return next((reversed(sorted(drama, key=operator.attrgetter("state")))), None)
 
     def turn(self, *args, **kwargs):
-        for realm, name in self.stager.active:
-            puzzle = self.stager.gather_puzzle(realm, name)
+        for realm, name in self.stager.active.copy():
             drama = self.drama[(realm, name)]
 
-            # self.assertEqual(events, [("rotu", "b", "Fruition.inception")])
             if (state := drama.get_state(Fruition)) in {
                 Fruition.withdrawn, Fruition.defaulted, Fruition.cancelled, Fruition.completion
             }:
-                print(f"{state=}")
-                events = list(self.stager.terminate(realm, name, state.value))
-                print(f"{events=}")
+                events = list(self.stager.terminate(realm, name, state.name))
+                for target_realm, target_name, spec in events:
+                    target_state = self.item_state(spec)
+                    self.drama[target_realm, target_name].set_state(target_state)
 
         try:
             self.context.interlude(*args, **kwargs)
         except AttributeError:
             warnings.warn("Turn exhausted context")
         return self
+
+
+class Story(StoryWeaver):
+    pass

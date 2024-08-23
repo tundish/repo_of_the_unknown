@@ -123,15 +123,24 @@ class StoryTests(unittest.TestCase):
                     self.assertIsNot(a, b)
 
     def test_story_turn(self):
-        assets = Grouping.typewise(
-            [Loader.Staging(text=rule, data=next(Stager.load(rule))) for rule in StagerTests.rules]
-        )
+        assets = Grouping.typewise([
+            stage
+            for rule in StagerTests.rules
+            if (stage := Loader.Staging(text=rule, data=next(Stager.load(rule)))).data["realm"] == "rotu"
+        ])
         s = Story(assets=assets)
-        for n, key in enumerate(s.stager.puzzles):
+        for n, _ in enumerate(s.stager.puzzles):
             d = s.context
-            if n == 0:
-                d.set_state(Fruition.inception)
             with self.subTest(n=n, d=d):
-                s.turn()
+                if n == 0:
+                    self.assertEqual(d.name, "a")
+                    d.set_state(Fruition.completion)
+                    s.turn()
+                    continue
+
+                if d.name == "h":
+                    self.assertIn(d.get_state(Fruition), (Fruition.inception, Fruition.completion))
+                else:
+                    self.assertEqual(d.get_state(Fruition), Fruition.inception)
                 d.set_state(Fruition.completion)
-                print(f"{d=}")
+                s.turn()
