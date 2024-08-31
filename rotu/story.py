@@ -112,18 +112,19 @@ class StoryWeaver(StoryBuilder):
         ).set_state(0, *states)
 
         for item in puzzle.get("items"):
-            item_type = self.item_type(item.get("type"))
+            item_names = [i for i in [item.get("name")] + item.get("names", []) if i]
+            item_types = [self.item_type(i) for i in [item.get("type")] + item.get("types", []) if i]
             states = [self.item_state(i, pool=pool) for i in item.get("states", [])]
-            entity = item_type(
-                name=item.get("name"),
-                type=item_type.__name__,
+            entity = item_types[0](
+                names=item_names,
+                types={i.__name__ for i in item_types},
                 links={puzzle.get("name")},
                 sketch=item.get("sketch", ""),
                 aspect=item.get("aspect", ""),
                 revert=item.get("revert", ""),
             ).set_state(*states)
 
-            if item_type is Transit:
+            if Transit in item_types:
                 self.world.map.transits.append(entity)
             else:
                 self.world.entities.append(entity)

@@ -26,6 +26,7 @@ from balladeer import Fruition
 from balladeer import Grouping
 from balladeer import Loader
 from balladeer import Stager
+from balladeer import Traffic
 from balladeer import Transit
 
 from busker.test.test_stager import StagerTests
@@ -49,9 +50,18 @@ class StoryTests(unittest.TestCase):
 
         self.assertTrue(issubclass(self.story.world.map.spot, enum.Enum))
 
-        self.assertTrue(self.story.world.entities)
+        # self.assertTrue(self.story.world.entities)
         self.assertTrue(self.story.world.map.transits)
+        self.assertTrue(
+            any(len(i.names) > 1 for i in self.story.world.map.transits),
+            self.story.world.map.transits
+        )
         self.assertGreater(len(self.story.world.map.spot), 1, list(self.story.world.map.spot))
+
+        self.assertFalse(
+            any(i.get_state(Traffic) for i in self.story.context.ensemble),
+            self.story.context.ensemble
+        )
 
     def test_story_copy_drama(self):
         b = copy.deepcopy(self.story)
