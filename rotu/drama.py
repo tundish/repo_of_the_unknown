@@ -58,7 +58,7 @@ class Interaction(Resident, SpeechTables, Drama):
         for ent in args:
             ent.set_state(Fruition.elaboration)
 
-    def on_suggesting(self, entity: Entity, *args: tuple[Entity], **kwargs):
+    def on_offering(self, entity: Entity, *args: tuple[Entity], **kwargs):
         for ent in args:
             ent.set_state(Fruition.discussion)
 
@@ -68,9 +68,9 @@ class Interaction(Resident, SpeechTables, Drama):
 
     def on_delivering(self, entity: Entity, *args: tuple[Entity], **kwargs):
         for ent in args:
-            ent.set_state(Fruition.transition)
+            ent.set_state(Fruition.evaluation)
 
-    def on_declaring(self, entity: Entity, *args: tuple[Entity], **kwargs):
+    def on_adopting(self, entity: Entity, *args: tuple[Entity], **kwargs):
         for ent in args:
             ent.set_state(Fruition.completion)
 
