@@ -44,7 +44,7 @@ from rotu.drama import Exploration
 from rotu.drama import Interaction
 
 
-class StoryWeaver(StoryBuilder):
+class StoryStager(StoryBuilder):
 
     @staticmethod
     def item_state(spec: str | int, pool: list[enum.Enum] = [], default=0):
@@ -157,5 +157,5 @@ class StoryWeaver(StoryBuilder):
         return self
 
 
-class Story(StoryWeaver):
+class Story(StoryStager):
     pass
