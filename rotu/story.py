@@ -53,7 +53,7 @@ class StoryWeaver(StoryBuilder):
         except AttributeError:
             return spec
 
-        lookup = {cls.__name__.lower(): cls for cls in pool + [Fruition, Traffic]}
+        lookup = {cls.__name__.lower(): cls for cls in pool + [Compass, Fruition, Traffic]}
 
         try:
             cls = lookup[name]
@@ -96,7 +96,7 @@ class StoryWeaver(StoryBuilder):
         } or {(None, None): Drama(*self.speech, config=self.config, world=self.world)}
 
     def build(self, realm: str, name: str, **kwargs):
-        pool = [self.world.map.home, self.world.map.into, self.world.map.exit, self.world.map.spot, Compass]
+        pool = [self.world.map.home, self.world.map.into, self.world.map.exit, self.world.map.spot]
         puzzle = self.stager.gather_puzzle(realm, name)
         drama_type = self.item_type(puzzle.get("type"), default=Drama)
         states = [self.item_state(f"{k}.{v}", pool=pool) for k, v in puzzle.get("init", {}).items()]
