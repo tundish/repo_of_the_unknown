@@ -46,14 +46,16 @@ from rotu.drama import Interaction
 
 class StoryStager(StoryBuilder):
 
-    @staticmethod
-    def item_state(spec: str | int, pool: list[enum.Enum] = [], default=0):
+    states = [Compass, Fruition, Traffic]
+
+    @classmethod
+    def item_state(cls, spec: str | int, pool: list[enum.Enum] = [], default=0):
         try:
             name, value = spec.lower().split(".")
         except AttributeError:
             return spec
 
-        lookup = {cls.__name__.lower(): cls for cls in pool + [Compass, Fruition, Traffic]}
+        lookup = {typ.__name__.lower(): typ for typ in pool + cls.states}
 
         try:
             cls = lookup[name]
