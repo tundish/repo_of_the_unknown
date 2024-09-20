@@ -25,6 +25,7 @@ import operator
 import random
 import warnings
 
+from balladeer import Compass
 from balladeer import Drama
 from balladeer import Entity
 from balladeer import Fruition
@@ -95,7 +96,7 @@ class StoryWeaver(StoryBuilder):
         } or {(None, None): Drama(*self.speech, config=self.config, world=self.world)}
 
     def build(self, realm: str, name: str, **kwargs):
-        pool = [self.world.map.home, self.world.map.into, self.world.map.exit, self.world.map.spot]
+        pool = [self.world.map.home, self.world.map.into, self.world.map.exit, self.world.map.spot, Compass]
         puzzle = self.stager.gather_puzzle(realm, name)
         drama_type = self.item_type(puzzle.get("type"), default=Drama)
         states = [self.item_state(f"{k}.{v}", pool=pool) for k, v in puzzle.get("init", {}).items()]
