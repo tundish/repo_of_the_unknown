@@ -24,7 +24,7 @@ from balladeer import Loader
 from busker.stager import Stager
 
 import rotu
-from rotu.drama import Resident
+from rotu.resident import Resident
 
 
 class ResidentTests(unittest.TestCase):

@@ -28,20 +28,7 @@ from balladeer import Loader
 from balladeer import Prologue
 from balladeer import SpeechTables
 
-
-class Resident:
-
-    def __init__(self, *args, selector: dict[str, list] = {}, **kwargs):
-        self.selector = selector | {"states": set(selector.get("states", []))}
-        super().__init__(*args, **kwargs)
-
-    def is_resident(self, *args: tuple[enum.Enum]):
-        return all(str(i).lower() in self.selector["states"] for i in args)
-
-    def scripts(self, assets: list):
-        return [
-            i for i in assets if isinstance(i, Loader.Scene) and any(i.path.match(p) for p in self.selector["paths"])
-        ]
+from rotu.resident import Resident
 
 
 class Exploration(Resident, Drama):
