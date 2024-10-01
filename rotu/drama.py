@@ -30,16 +30,7 @@ from balladeer import Resident
 from balladeer import SpeechTables
 
 
-class Exploration(Resident):
-
-    def interlude(self, *args, **kwargs) -> Entity:
-        self.speech.append(
-            Epilogue("<> Guidance")
-        )
-        return super().interlude(*args, **kwargs)
-
-
-class Interaction(Resident, SpeechTables):
+class Interaction(SpeechTables):
     def on_proposing(self, entity: Entity, *args: tuple[Entity], **kwargs):
         for ent in args:
             ent.set_state(Fruition.elaboration)
@@ -78,3 +69,11 @@ class Interaction(Resident, SpeechTables):
             )
             yield Epilogue(f"<> You should maybe:\n{items}")
 
+
+class Exploration(Resident, Interaction):
+
+    def interlude(self, *args, **kwargs) -> Entity:
+        self.speech.append(
+            Epilogue("<> Guidance")
+        )
+        return super().interlude(*args, **kwargs)
