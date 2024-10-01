@@ -57,6 +57,7 @@ class ActionTests(unittest.TestCase):
         page = Page()
         request = PopoverTests.mock_request()
         endpoint = StorySession(dict(type="http"), None, None)
+        self.assertTrue(hasattr(endpoint, "convert_code_into_action"))
         with story.turn() as turn:
             page = endpoint.compose(request, page, story, turn)
         lines = page.html.splitlines()

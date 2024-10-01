@@ -19,8 +19,8 @@ classifiers = [
     "Programming Language :: Python"
 ]
 dependencies = [
-    "balladeer >= 0.53.0",
-    "busker >= 0.12.0",
+    "balladeer >= 0.54.0",
+    "busker >= 0.13.0",
 ]
 
 [project.optional-dependencies]

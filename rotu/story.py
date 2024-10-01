@@ -18,12 +18,12 @@
 
 from balladeer import Drama
 from balladeer import Entity
+from balladeer import StoryStager
 from balladeer import Transit
 
 import rotu
 from rotu.drama import Exploration
 from rotu.drama import Interaction
-from rotu.storystager import StoryStager
 
 
 class Story(StoryStager):

@@ -26,12 +26,11 @@ from balladeer import Epilogue
 from balladeer import Fruition
 from balladeer import Loader
 from balladeer import Prologue
+from balladeer import Resident
 from balladeer import SpeechTables
 
-from rotu.resident import Resident
 
-
-class Exploration(Resident, Drama):
+class Exploration(Resident):
 
     def interlude(self, *args, **kwargs) -> Entity:
         self.speech.append(
@@ -40,7 +39,7 @@ class Exploration(Resident, Drama):
         return super().interlude(*args, **kwargs)
 
 
-class Interaction(Resident, SpeechTables, Drama):
+class Interaction(Resident, SpeechTables):
     def on_proposing(self, entity: Entity, *args: tuple[Entity], **kwargs):
         for ent in args:
             ent.set_state(Fruition.elaboration)
