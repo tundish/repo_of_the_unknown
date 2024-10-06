@@ -19,6 +19,7 @@
 import unittest
 
 from balladeer import Dialogue
+from balladeer import StoryBuilder
 from balladeer import Page
 
 from rotu.frames.session import StorySession
@@ -30,7 +31,7 @@ class ActionTests(unittest.TestCase):
 
     def test_command_form(self):
 
-        story = Story(
+        story = StoryBuilder(
             Dialogue("<> Perhaps it's time to go to bed?"),
         )
 
@@ -50,7 +51,7 @@ class ActionTests(unittest.TestCase):
 
     def test_code_implies_action(self):
 
-        story = Story(
+        story = StoryBuilder(
             Dialogue("<> Perhaps it's time to `go to bed`?"),
         )
 
