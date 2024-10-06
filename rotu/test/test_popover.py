@@ -21,6 +21,7 @@ import unittest
 from unittest.mock import Mock
 
 from balladeer import Dialogue
+from balladeer import StoryBuilder
 from balladeer import Page
 from starlette.applications import Starlette
 from starlette.datastructures import State
@@ -44,7 +45,7 @@ class PopoverTests(unittest.TestCase):
 
     def test_label_implies_popover(self):
 
-        story = Story(
+        story = StoryBuilder(
             Dialogue("<?label=test-01> Knock, knock."),
         )
 
@@ -60,7 +61,7 @@ class PopoverTests(unittest.TestCase):
 
     def test_href_to_id_becomes_popovertarget(self):
 
-        story = Story(
+        story = StoryBuilder(
             Dialogue("<> Want to [know more](#more-info)?"),
         )
 
